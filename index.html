@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Recess — Your Trust Filter for AI</title>
+  <meta name="description" content="Three creators. One hour. Everything you need to know this week. A brain trust for people who want to stay ahead of AI without losing their minds.">
+  <meta property="og:title" content="AI Recess — Your Trust Filter for AI">
+  <meta property="og:description" content="Three creators. One hour. Everything you need to know this week.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1a1815;
+      --bg-warm: #231f1b;
+      --surface: #2c2723;
+      --chalk: #f0ebe3;
+      --chalk-dim: #b8b0a4;
+      --accent: #e8734a;
+      --accent-glow: #f4945f;
+      --yellow: #f2d06b;
+      --green: #7ec88b;
+      --blue: #6ba3c7;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--chalk);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* Chalkboard texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(232, 115, 74, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(106, 163, 199, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .page { position: relative; z-index: 2; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    .hero-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-hand);
+      font-size: 1.25rem;
+      color: var(--yellow);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .badge .bell {
+      display: inline-block;
+      animation: ring 1.5s ease-in-out 1.2s;
+      transform-origin: top center;
+      font-size: 1.4rem;
+    }
+
+    @keyframes ring {
+      0%, 100% { transform: rotate(0deg); }
+      10% { transform: rotate(14deg); }
+      20% { transform: rotate(-12deg); }
+      30% { transform: rotate(10deg); }
+      40% { transform: rotate(-8deg); }
+      50% { transform: rotate(4deg); }
+      60% { transform: rotate(0deg); }
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2.4rem, 7vw, 4rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero .subtitle {
+      font-size: 1.15rem;
+      color: var(--chalk-dim);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.5s;
+    }
+
+    .hero .subtitle strong {
+      color: var(--chalk);
+      font-weight: 500;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      color: var(--chalk-dim);
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 1.4s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .scroll-hint .arrow {
+      animation: bounce 2s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 5rem 1.5rem;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* ─── THE ANTI-PITCH ─── */
+    .anti-pitch {
+      padding-top: 3rem;
+    }
+
+    .strikethrough-stack {
+      margin-bottom: 2.5rem;
+    }
+
+    .strikethrough-stack p {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 4vw, 1.7rem);
+      line-height: 1.4;
+      color: var(--chalk-dim);
+      text-decoration: line-through;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 2px;
+      margin-bottom: 0.6rem;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.5s ease;
+    }
+
+    .strikethrough-stack p.visible {
+      opacity: 0.6;
+      transform: translateX(0);
+    }
+
+    .the-answer {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 4.5vw, 1.9rem);
+      line-height: 1.35;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.6s ease;
+    }
+
+    .the-answer.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .the-answer strong {
+      color: var(--accent);
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    .speed-note {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      color: var(--yellow);
+      opacity: 0;
+      transition: all 0.5s ease 0.2s;
+    }
+
+    .speed-note.visible {
+      opacity: 0.85;
+    }
+
+    /* ─── THE WHAT ─── */
+    .the-what p {
+      margin-bottom: 1.5rem;
+      color: var(--chalk-dim);
+    }
+
+    .the-what p:first-of-type {
+      font-size: 1.1rem;
+      color: var(--chalk);
+    }
+
+    .highlight-block {
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin: 2rem 0;
+      font-size: 0.95rem;
+    }
+
+    .highlight-block .label {
+      font-family: var(--font-hand);
+      font-size: 1.15rem;
+      color: var(--yellow);
+      margin-bottom: 0.4rem;
+    }
+
+    /* ─── THE WHO ─── */
+    .the-who {
+      text-align: center;
+    }
+
+    .the-who .intro-text {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--chalk-dim);
+      margin-bottom: 3rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .creators {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .creator {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.75rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .creator:hover {
+      transform: translateY(-2px);
+    }
+
+    .creator::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .creator:nth-child(1)::before { background: var(--accent); }
+    .creator:nth-child(2)::before { background: var(--yellow); }
+    .creator:nth-child(3)::before { background: var(--green); }
+
+    .creator .name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .creator .handle {
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .creator:nth-child(2) .handle { color: var(--yellow); }
+    .creator:nth-child(3) .handle { color: var(--green); }
+
+    .creator .bio {
+      font-size: 0.9rem;
+      color: var(--chalk-dim);
+      line-height: 1.55;
+    }
+
+    /* ─── NO STRESS ─── */
+    .no-stress {
+      background: var(--bg-warm);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      margin: 0 auto;
+      max-width: 640px;
+      text-align: center;
+    }
+
+    .no-stress h2 {
+      font-family: var(--font-hand);
+      font-size: 1.8rem;
+      color: var(--green);
+      margin-bottom: 1rem;
+    }
+
+    .no-stress p {
+      color: var(--chalk-dim);
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .no-stress .bold-line {
+      color: var(--chalk);
+      font-weight: 500;
+      font-size: 1.05rem;
+      margin-top: 1rem;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      text-align: center;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .price-tag {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid rgba(232, 115, 74, 0.2);
+      border-radius: 12px;
+      padding: 1.75rem 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .price-tag .founding {
+      font-family: var(--font-hand);
+      font-size: 1.2rem;
+      color: var(--yellow);
+      margin-bottom: 0.25rem;
+    }
+
+    .price-tag .price {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--chalk);
+    }
+
+    .price-tag .price span {
+      font-size: 1rem;
+      color: var(--chalk-dim);
+      font-family: var(--font-body);
+    }
+
+    .price-tag .after {
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+      margin-top: 0.25rem;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      padding: 1rem 3rem;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-btn:hover {
+      background: var(--accent-glow);
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(232, 115, 74, 0.25);
+    }
+
+    .cta-btn:active {
+      transform: scale(0.98);
+    }
+
+    .launch-date {
+      font-family: var(--font-hand);
+      font-size: 1.15rem;
+      color: var(--chalk-dim);
+      margin-top: 0.75rem;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem 3rem;
+      font-size: 0.8rem;
+      color: var(--chalk-dim);
+      opacity: 0.5;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* stagger children */
+    .stagger-children .fade-in:nth-child(1) { transition-delay: 0s; }
+    .stagger-children .fade-in:nth-child(2) { transition-delay: 0.1s; }
+    .stagger-children .fade-in:nth-child(3) { transition-delay: 0.2s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (min-width: 640px) {
+      .creators {
+        flex-direction: row;
+        gap: 1.25rem;
+      }
+      .creator {
+        flex: 1;
+      }
+      section {
+        padding: 6rem 2rem;
+      }
+      .no-stress {
+        padding: 3rem 2.5rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      body { font-size: 16px; }
+      .hero { padding: 1.5rem 1.25rem; }
+      section { padding: 3.5rem 1.25rem; }
+      .price-tag { padding: 1.5rem 1.75rem; }
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--surface);
+      margin: 0 auto;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="badge">
+          <span class="bell">&#x1F514;</span>
+          Recess starts March 20
+        </div>
+        <h1>Three creators. One hour.<br>Everything you need to know <em>this week.</em></h1>
+        <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything &mdash; and bring you what actually matters.</p>
+      </div>
+      <div class="scroll-hint">
+        <span>hear us out</span>
+        <span class="arrow">&darr;</span>
+      </div>
+    </header>
+
+    <!-- ANTI-PITCH -->
+    <section class="anti-pitch">
+      <div class="strikethrough-stack">
+        <p>You don't need another course.</p>
+        <p>You don't need another community.</p>
+        <p>You don't need another newsletter you won't read.</p>
+      </div>
+      <div class="the-answer">
+        AI is moving too fast for any of that.<br>
+        You need a <strong>trust filter.</strong>
+      </div>
+      <p class="speed-note">^ three people who are already deep in it, filtering for you.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- THE WHAT -->
+    <section class="the-what">
+      <p class="fade-in">
+        Every Friday at 4pm ET, we get together and talk about what actually mattered this week. The tools. The takes. The things everyone will be talking about on Monday.
+      </p>
+      <p class="fade-in">
+        Someone spins a wheel. Someone shares their screen. Someone says something wrong and gets roasted. You're in the room.
+      </p>
+
+      <div class="highlight-block fade-in">
+        <div class="label">Between Fridays</div>
+        The Discord &mdash; curated reads, hot takes, the occasional unhinged thread about whether agents are overhyped. Your async brain trust, running all week.
+      </div>
+
+      <p class="fade-in">
+        Think of it as three heads instead of one. We're reading the papers, testing the tools, and having the arguments so you can show up Monday sounding like you know things.
+      </p>
+      <p class="fade-in" style="font-family: var(--font-hand); font-size: 1.25rem; color: var(--yellow);">
+        Because you will.
+      </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- THE WHO -->
+    <section class="the-who">
+      <p class="intro-text fade-in">
+        We're not gurus. We're not coaches. We're three people who won't shut up about AI.<br>
+        <span style="font-size: 0.85em; opacity: 0.7;">(Our partners are relieved we found each&nbsp;other.)</span>
+      </p>
+
+      <div class="creators stagger-children">
+        <div class="creator fade-in">
+          <div class="name">Logan</div>
+          <div class="handle">@loganinthefuture</div>
+          <div class="bio">Career strategist turned AI obsessive. Harvard learning design background. Will connect your question to three papers you've never heard of.</div>
+        </div>
+        <div class="creator fade-in">
+          <div class="name">Kevin</div>
+          <div class="handle">@vibewithkevin</div>
+          <div class="bio">Builder. Posts every single day. Will share his screen and show you the thing he broke last night at 2am. Vibe codes apps for his sourdough.</div>
+        </div>
+        <div class="creator fade-in">
+          <div class="name">Vanessa</div>
+          <div class="handle">@thinkwithv</div>
+          <div class="bio">The one who asks the question everyone was thinking. Will tell you when the hype is hype. Brings the real talk and also the woo factor, in the best way possible.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NO STRESS -->
+    <section style="padding-top: 2rem; padding-bottom: 0;">
+      <div class="no-stress fade-in">
+        <h2>No stress. Seriously.</h2>
+        <p>
+          No backlog. No homework. Miss a Friday? The chat catches you up. This isn't a commitment &mdash; it's a cheat code.
+        </p>
+        <p class="bold-line">
+          If you've got an hour a week, we've got you covered.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="price-tag fade-in">
+        <div class="founding">Founding rate &mdash; first 100 members</div>
+        <div class="price">$15 <span>/ month</span></div>
+        <div class="after">Then it goes up. Lock it in now.</div>
+      </div>
+      <br>
+      <a href="#" class="cta-btn">I'm in</a>
+      <div class="launch-date">First session: March 20, 2026 &bull; Fridays at 4pm ET</div>
+    </section>
+
+    <footer>
+      AI Recess &copy; 2026 &bull; A brain trust, not a brand.
+    </footer>
+
+  </div>
+
+  <script>
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    // Observe all animated elements
+    document.querySelectorAll('.fade-in, .strikethrough-stack p, .the-answer, .speed-note')
+      .forEach(el => observer.observe(el));
+
+    // Stagger strikethrough animations
+    const strikes = document.querySelectorAll('.strikethrough-stack p');
+    const strikeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          strikes.forEach((s, i) => {
+            setTimeout(() => s.classList.add('visible'), i * 200);
+          });
+          strikeObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    if (strikes.length) strikeObserver.observe(strikes[0]);
+  </script>
+</body>
+</html>
