@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#1a1815"/>
+  <g transform="translate(16,15)">
+    <!-- Bell body -->
+    <path d="M-6.5,1 C-6.5,-3.5 -3.5,-7 0,-7 C3.5,-7 6.5,-3.5 6.5,1 L6.5,5 L-6.5,5 Z" fill="#e8734a"/>
+    <!-- Bell brim -->
+    <rect x="-8.5" y="5" width="17" height="2" rx="1" fill="#e8734a"/>
+    <!-- Clapper -->
+    <circle cx="0" cy="9" r="1.8" fill="#f2d06b"/>
+    <!-- Top knob -->
+    <circle cx="0" cy="-7" r="1.3" fill="#e8734a"/>
+  </g>
+</svg>

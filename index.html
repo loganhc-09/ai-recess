@@ -8,6 +8,22 @@
   <meta property="og:title" content="AI Recess — Your Trust Filter for AI">
   <meta property="og:description" content="Three creators. One hour. Everything you need to know this week.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://joinairecess.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Recess — Your Trust Filter for AI">
+  <meta name="twitter:description" content="Three creators. One hour. Everything you need to know this week.">
+  <meta name="twitter:image" content="https://joinairecess.com/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TSXP27S2PH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TSXP27S2PH');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -16,6 +32,7 @@
       --bg: #1a1815;
       --bg-warm: #231f1b;
       --surface: #2c2723;
+      --surface-hover: #352f2a;
       --chalk: #f0ebe3;
       --chalk-dim: #b8b0a4;
       --accent: #e8734a;
@@ -65,6 +82,292 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 1;
+    }
+
+    /* ═══════════════════════════════════
+       WAITLIST GATE
+       ═══════════════════════════════════ */
+    #waitlist-gate {
+      position: relative;
+      z-index: 2;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    #waitlist-gate.hidden {
+      display: none;
+    }
+
+    .gate-inner {
+      max-width: 440px;
+      width: 100%;
+    }
+
+    .gate-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-hand);
+      font-size: 1.2rem;
+      color: var(--yellow);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.15s;
+    }
+
+    .gate-badge .bell {
+      display: inline-block;
+      animation: ring 1.5s ease-in-out 1s;
+      transform-origin: top center;
+      font-size: 1.3rem;
+    }
+
+    .gate-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2.2rem, 7vw, 3.2rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.3s;
+    }
+
+    .gate-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .gate-subtitle {
+      font-size: 1.05rem;
+      color: var(--chalk-dim);
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.45s;
+    }
+
+    .gate-details {
+      font-family: var(--font-hand);
+      font-size: 1.15rem;
+      color: var(--chalk-dim);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.55s;
+    }
+
+    .gate-details span {
+      color: var(--green);
+    }
+
+    /* ─── FORM ─── */
+    .waitlist-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.65s;
+    }
+
+    .waitlist-form input {
+      width: 100%;
+      padding: 0.9rem 1.15rem;
+      background: var(--surface);
+      border: 1.5px solid transparent;
+      border-radius: 10px;
+      color: var(--chalk);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .waitlist-form input::placeholder {
+      color: var(--chalk-dim);
+      opacity: 0.6;
+    }
+
+    .waitlist-form input:focus {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .waitlist-form .phone-note {
+      font-size: 0.78rem;
+      color: var(--chalk-dim);
+      opacity: 0.5;
+      text-align: left;
+      margin-top: -0.35rem;
+    }
+
+    .submit-btn {
+      display: inline-block;
+      width: 100%;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.25rem;
+      position: relative;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-glow);
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(232, 115, 74, 0.2);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .form-error {
+      font-size: 0.85rem;
+      color: #e85d5d;
+      min-height: 1.25rem;
+    }
+
+    .gate-founding {
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.8s;
+    }
+
+    .gate-founding .price-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      background: var(--surface);
+      border: 1px solid rgba(232, 115, 74, 0.15);
+      border-radius: 10px;
+      padding: 0.65rem 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .gate-founding .price-pill .label {
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      color: var(--yellow);
+    }
+
+    .gate-founding .price-pill .amount {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--chalk);
+    }
+
+    .gate-founding .price-pill .period {
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+    }
+
+    .gate-founding .limit {
+      font-size: 0.82rem;
+      color: var(--chalk-dim);
+      margin-top: 0.35rem;
+    }
+
+    /* ─── CONFIRMATION STATE ─── */
+    .confirmation {
+      display: none;
+      text-align: center;
+    }
+
+    .confirmation.show {
+      display: block;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .confirmation .check-ring {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 3px solid var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      animation: scaleIn 0.4s ease forwards;
+    }
+
+    .confirmation .check-ring svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--green);
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: drawCheck 0.4s ease forwards 0.3s;
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .confirmation h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .confirmation .confirm-sub {
+      color: var(--chalk-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .confirmation .confirm-detail {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 1.15rem 1.5rem;
+      font-size: 0.9rem;
+      color: var(--chalk-dim);
+      line-height: 1.6;
+    }
+
+    .confirmation .confirm-detail strong {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════
+       FULL SITE
+       ═══════════════════════════════════ */
+    #full-site {
+      display: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    #full-site.show {
+      display: block;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .page { position: relative; z-index: 2; }
@@ -466,10 +769,18 @@
       transform: translateY(0);
     }
 
-    /* stagger children */
     .stagger-children .fade-in:nth-child(1) { transition-delay: 0s; }
     .stagger-children .fade-in:nth-child(2) { transition-delay: 0.1s; }
     .stagger-children .fade-in:nth-child(3) { transition-delay: 0.2s; }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--surface);
+      margin: 0 auto;
+      border-radius: 3px;
+    }
 
     /* ─── RESPONSIVE ─── */
     @media (min-width: 640px) {
@@ -493,136 +804,287 @@
       .hero { padding: 1.5rem 1.25rem; }
       section { padding: 3.5rem 1.25rem; }
       .price-tag { padding: 1.5rem 1.75rem; }
-    }
-
-    /* ─── DIVIDER ─── */
-    .divider {
-      width: 60px;
-      height: 3px;
-      background: var(--surface);
-      margin: 0 auto;
-      border-radius: 3px;
+      #waitlist-gate { padding: 1.5rem 1.25rem; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
 
-    <!-- HERO -->
-    <header class="hero">
-      <div class="hero-inner">
-        <div class="badge">
-          <span class="bell">&#x1F514;</span>
-          Recess starts March 20
+  <!-- ═══════════════════════════════════════════════
+       WAITLIST GATE
+       Phase 1: form → inline confirmation
+       Phase 2: form → reveals full site below
+       Phase 3: hidden entirely
+       ═══════════════════════════════════════════════ -->
+  <div id="waitlist-gate">
+    <div class="gate-inner">
+
+      <!-- Branding + pitch -->
+      <div class="gate-badge">
+        <span class="bell">&#x1F514;</span>
+        Something's coming March 20
+      </div>
+
+      <h1 class="gate-title">Your <em>trust filter</em> for AI.</h1>
+
+      <p class="gate-subtitle">Three creators. One hour. Everything you need to know this week.</p>
+
+      <p class="gate-details">Every Friday at 4pm ET &bull; Live session + community <span>&bull; Launching March 20</span></p>
+
+      <!-- Form -->
+      <div id="waitlist-form-wrap">
+        <form class="waitlist-form" id="waitlist-form" autocomplete="on">
+          <input type="email" name="email" id="wl-email" placeholder="Your email" required autocomplete="email">
+          <input type="tel" name="phone" id="wl-phone" placeholder="Phone number (optional)" autocomplete="tel">
+          <p class="phone-note">We'll text you when we launch. No spam.</p>
+          <button type="submit" class="submit-btn" id="submit-btn">Join the waitlist</button>
+        </form>
+        <p class="form-error" id="form-error"></p>
+      </div>
+
+      <!-- Confirmation (shown after submit) -->
+      <div class="confirmation" id="confirmation">
+        <div class="check-ring">
+          <svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>
         </div>
-        <h1>Three creators. One hour.<br>Everything you need to know <em>this week.</em></h1>
-        <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything &mdash; and bring you what actually matters.</p>
-      </div>
-      <div class="scroll-hint">
-        <span>hear us out</span>
-        <span class="arrow">&darr;</span>
-      </div>
-    </header>
-
-    <!-- ANTI-PITCH -->
-    <section class="anti-pitch">
-      <div class="strikethrough-stack">
-        <p>You don't need another course.</p>
-        <p>You don't need another community.</p>
-        <p>You don't need another newsletter you won't read.</p>
-      </div>
-      <div class="the-answer">
-        AI is moving too fast for any of that.<br>
-        You need a <strong>trust filter.</strong>
-      </div>
-      <p class="speed-note">^ three people who are already deep in it, filtering for you.</p>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- THE WHAT -->
-    <section class="the-what">
-      <p class="fade-in">
-        Every Friday at 4pm ET, we get together and talk about what actually mattered this week. The tools. The takes. The things everyone will be talking about on Monday.
-      </p>
-      <p class="fade-in">
-        Someone spins a wheel. Someone shares their screen. Someone says something wrong and gets roasted. You're in the room.
-      </p>
-
-      <div class="highlight-block fade-in">
-        <div class="label">Between Fridays</div>
-        The Discord &mdash; curated reads, hot takes, the occasional unhinged thread about whether agents are overhyped. Your async brain trust, running all week.
-      </div>
-
-      <p class="fade-in">
-        Think of it as three heads instead of one. We're reading the papers, testing the tools, and having the arguments so you can show up Monday sounding like you know things.
-      </p>
-      <p class="fade-in" style="font-family: var(--font-hand); font-size: 1.25rem; color: var(--yellow);">
-        Because you will.
-      </p>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- THE WHO -->
-    <section class="the-who">
-      <p class="intro-text fade-in">
-        We're not gurus. We're not coaches. We're three people who won't shut up about AI.<br>
-        <span style="font-size: 0.85em; opacity: 0.7;">(Our partners are relieved we found each&nbsp;other.)</span>
-      </p>
-
-      <div class="creators stagger-children">
-        <div class="creator fade-in">
-          <div class="name">Logan</div>
-          <div class="handle">@loganinthefuture</div>
-          <div class="bio">Career strategist turned AI obsessive. Harvard learning design background. Will connect your question to three papers you've never heard of.</div>
-        </div>
-        <div class="creator fade-in">
-          <div class="name">Kevin</div>
-          <div class="handle">@vibewithkevin</div>
-          <div class="bio">Builder. Posts every single day. Will share his screen and show you the thing he broke last night at 2am. Vibe codes apps for his sourdough.</div>
-        </div>
-        <div class="creator fade-in">
-          <div class="name">Vanessa</div>
-          <div class="handle">@thinkwithv</div>
-          <div class="bio">The one who asks the question everyone was thinking. Will tell you when the hype is hype. Brings the real talk and also the woo factor, in the best way possible.</div>
+        <h2>You're on the list.</h2>
+        <p class="confirm-sub">We'll reach out when it's go time.</p>
+        <div class="confirm-detail">
+          <strong>Founding member pricing locked in.</strong><br>
+          First 100 members get the lowest rate, forever. We'll be in touch before March 20.
         </div>
       </div>
-    </section>
 
-    <!-- NO STRESS -->
-    <section style="padding-top: 2rem; padding-bottom: 0;">
-      <div class="no-stress fade-in">
-        <h2>No stress. Seriously.</h2>
-        <p>
-          No backlog. No homework. Miss a Friday? The chat catches you up. This isn't a commitment &mdash; it's a cheat code.
+      <!-- Founding rate callout -->
+      <div class="gate-founding" id="gate-founding">
+        <div class="price-pill">
+          <span class="label">Founding rate</span>
+          <span class="amount">$15</span>
+          <span class="period">/ month</span>
+        </div>
+        <p class="limit">First 100 members lock this price in. Then it goes up.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       FULL SITE
+       Hidden in Phase 1, revealed after waitlist in Phase 2,
+       always visible in Phase 3
+       ═══════════════════════════════════════════════ -->
+  <div id="full-site">
+    <div class="page">
+
+      <!-- HERO -->
+      <header class="hero">
+        <div class="hero-inner">
+          <div class="badge">
+            <span class="bell">&#x1F514;</span>
+            Recess starts March 20
+          </div>
+          <h1>Three creators. One hour.<br>Everything you need to know <em>this week.</em></h1>
+          <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything, and bring you what actually matters.</p>
+        </div>
+        <div class="scroll-hint">
+          <span>hear us out</span>
+          <span class="arrow">&darr;</span>
+        </div>
+      </header>
+
+      <!-- ANTI-PITCH -->
+      <section class="anti-pitch">
+        <div class="strikethrough-stack">
+          <p>You don't need another course.</p>
+          <p>You don't need another community.</p>
+          <p>You don't need another newsletter you won't read.</p>
+        </div>
+        <div class="the-answer">
+          AI is moving too fast for any of that.<br>
+          You need a <strong>trust filter.</strong>
+        </div>
+        <p class="speed-note">^ three people who are already deep in it, filtering for you.</p>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- THE WHAT -->
+      <section class="the-what">
+        <p class="fade-in">
+          Every Friday at 4pm ET, we get together and talk about what actually mattered this week. The tools. The takes. The things everyone will be talking about on Monday.
         </p>
-        <p class="bold-line">
-          If you've got an hour a week, we've got you covered.
+        <p class="fade-in">
+          Someone spins a wheel. Someone shares their screen. Someone says something wrong and gets roasted. You're in the room.
         </p>
-      </div>
-    </section>
 
-    <!-- CTA -->
-    <section class="cta-section">
-      <div class="price-tag fade-in">
-        <div class="founding">Founding rate &mdash; first 100 members</div>
-        <div class="price">$15 <span>/ month</span></div>
-        <div class="after">Then it goes up. Lock it in now.</div>
-      </div>
-      <br>
-      <a href="#" class="cta-btn">I'm in</a>
-      <div class="launch-date">First session: March 20, 2026 &bull; Fridays at 4pm ET</div>
-    </section>
+        <div class="highlight-block fade-in">
+          <div class="label">Between Fridays</div>
+          The community stays active all week. Curated reads, hot takes, the occasional unhinged thread about whether agents are overhyped. Your async brain trust, running 24/7.
+        </div>
 
-    <footer>
-      AI Recess &copy; 2026 &bull; A brain trust, not a brand.
-    </footer>
+        <p class="fade-in">
+          Think of it as three heads instead of one. We're reading the papers, testing the tools, and having the arguments so you can show up Monday sounding like you know things.
+        </p>
+        <p class="fade-in" style="font-family: var(--font-hand); font-size: 1.25rem; color: var(--yellow);">
+          Because you will.
+        </p>
+      </section>
 
+      <div class="divider"></div>
+
+      <!-- THE WHO -->
+      <section class="the-who">
+        <p class="intro-text fade-in">
+          We're not gurus. We're not coaches. We're three people who won't shut up about AI.<br>
+          <span style="font-size: 0.85em; opacity: 0.7;">(Our partners are relieved we found each&nbsp;other.)</span>
+        </p>
+
+        <div class="creators stagger-children">
+          <div class="creator fade-in">
+            <div class="name">Logan</div>
+            <div class="handle">@loganinthefuture</div>
+            <div class="bio">Career strategist turned AI obsessive. Harvard learning design background. Will connect your question to three papers you've never heard of.</div>
+          </div>
+          <div class="creator fade-in">
+            <div class="name">Kevin</div>
+            <div class="handle">@vibewithkevin</div>
+            <div class="bio">Builder. Posts every single day. Will share his screen and show you the thing he broke last night at 2am. Ships apps between batches of sourdough.</div>
+          </div>
+          <div class="creator fade-in">
+            <div class="name">Vanessa</div>
+            <div class="handle">@thinkwithv</div>
+            <div class="bio">The one who asks the question everyone was thinking. Will tell you when the hype is hype. Brings the real talk and also the woo factor, in the best way possible.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NO STRESS -->
+      <section style="padding-top: 2rem; padding-bottom: 0;">
+        <div class="no-stress fade-in">
+          <h2>No stress. Seriously.</h2>
+          <p>
+            No backlog. No homework. Miss a Friday? The chat catches you up. This isn't a commitment, it's a cheat code.
+          </p>
+          <p class="bold-line">
+            If you've got an hour a week, we've got you covered.
+          </p>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="price-tag fade-in">
+          <div class="founding">Founding rate, first 100 members</div>
+          <div class="price">$15 <span>/ month</span></div>
+          <div class="after">Then it goes up. Lock it in now.</div>
+        </div>
+        <br>
+        <!-- Phase 3: Replace href with Stripe payment link -->
+        <a href="#" class="cta-btn" id="cta-btn">I'm in</a>
+        <div class="launch-date">First session: March 20, 2026 &bull; Fridays at 4pm ET</div>
+      </section>
+
+      <footer>
+        AI Recess &copy; 2026 &bull; A brain trust, not a brand.
+      </footer>
+
+    </div>
   </div>
 
   <script>
-    // Intersection Observer for scroll animations
+    // ═══════════════════════════════════════════════
+    // CONFIGURATION — Change this to switch phases
+    // ═══════════════════════════════════════════════
+    // Phase 1: Waitlist only (now through March 15)
+    // Phase 2: Waitlist gate → reveals full site (March 16-20)
+    // Phase 3: Full site only, no waitlist (March 20+)
+    const SITE_PHASE = 1;
+
+    // Supabase config
+    const SUPABASE_URL = 'https://mbgwdivgxbphktvanusd.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_80clQucgcyE62xYsw9_1sA_BLcE4PJH';
+
+    // ═══════════════════════════════════════════════
+    // PHASE LOGIC
+    // ═══════════════════════════════════════════════
+    const gate = document.getElementById('waitlist-gate');
+    const fullSite = document.getElementById('full-site');
+
+    if (SITE_PHASE === 3) {
+      // Phase 3: No waitlist, full site visible, Stripe CTA
+      gate.classList.add('hidden');
+      fullSite.classList.add('show');
+    }
+
+    // ═══════════════════════════════════════════════
+    // WAITLIST FORM
+    // ═══════════════════════════════════════════════
+    const form = document.getElementById('waitlist-form');
+    const formWrap = document.getElementById('waitlist-form-wrap');
+    const confirmation = document.getElementById('confirmation');
+    const formError = document.getElementById('form-error');
+    const submitBtn = document.getElementById('submit-btn');
+    const gateFoundingEl = document.getElementById('gate-founding');
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        formError.textContent = '';
+
+        const email = document.getElementById('wl-email').value.trim();
+        const phone = document.getElementById('wl-phone').value.trim();
+
+        if (!email) {
+          formError.textContent = 'Email is required.';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Joining...';
+
+        try {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ email, phone: phone || null })
+          });
+
+          if (!res.ok) {
+            throw new Error('Something went wrong. Please try again.');
+          }
+
+          // Success: show confirmation
+          formWrap.style.display = 'none';
+          gateFoundingEl.style.display = 'none';
+          confirmation.classList.add('show');
+
+          // Phase 2: After a moment, reveal full site below
+          if (SITE_PHASE === 2) {
+            setTimeout(() => {
+              fullSite.classList.add('show');
+              // Scroll down to reveal
+              setTimeout(() => {
+                fullSite.scrollIntoView({ behavior: 'smooth' });
+              }, 400);
+            }, 2000);
+          }
+
+        } catch (err) {
+          formError.textContent = err.message || 'Something went wrong. Please try again.';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Join the waitlist';
+        }
+      });
+    }
+
+    // ═══════════════════════════════════════════════
+    // SCROLL ANIMATIONS (for full site)
+    // ═══════════════════════════════════════════════
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -634,7 +1096,6 @@
       rootMargin: '0px 0px -40px 0px'
     });
 
-    // Observe all animated elements
     document.querySelectorAll('.fade-in, .strikethrough-stack p, .the-answer, .speed-note')
       .forEach(el => observer.observe(el));
 
