@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1815">
   <title>AI Recess — Your Trust Filter for AI</title>
   <meta name="description" content="Three creators. One hour. Everything you need to know this week. A brain trust for people who want to stay ahead of AI without losing their minds.">
   <meta property="og:title" content="AI Recess — Your Trust Filter for AI">
@@ -34,7 +35,7 @@
       --surface: #2c2723;
       --surface-hover: #352f2a;
       --chalk: #f0ebe3;
-      --chalk-dim: #b8b0a4;
+      --chalk-dim: #c4bdb2;
       --accent: #e8734a;
       --accent-glow: #f4945f;
       --yellow: #f2d06b;
@@ -61,6 +62,30 @@
       overflow-x: hidden;
     }
 
+    /* Skip to content link */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.5rem 1rem;
+      border-radius: 0 0 8px 8px;
+      z-index: 100;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Global focus ring */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
     /* Chalkboard texture */
     body::before {
       content: '';
@@ -82,6 +107,15 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 1;
+    }
+
+    /* SVG bell icon (replaces emoji) */
+    .bell-icon {
+      display: inline-block;
+      width: 1.2em;
+      height: 1.2em;
+      vertical-align: -0.15em;
+      fill: currentColor;
     }
 
     /* ═══════════════════════════════════
@@ -120,11 +154,9 @@
       animation: fadeUp 0.6s ease forwards 0.15s;
     }
 
-    .gate-badge .bell {
-      display: inline-block;
+    .gate-badge .bell-icon {
       animation: ring 1.5s ease-in-out 1s;
       transform-origin: top center;
-      font-size: 1.3rem;
     }
 
     .gate-title {
@@ -164,6 +196,80 @@
       color: var(--green);
     }
 
+    /* ─── COUNTDOWN TIMER ─── */
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.6s;
+    }
+
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 56px;
+    }
+
+    .countdown-unit .num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--chalk);
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 0.5rem 0.65rem;
+      min-width: 52px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-unit .lbl {
+      font-family: var(--font-hand);
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+      margin-top: 0.3rem;
+    }
+
+    .countdown-colon {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--chalk-dim);
+      opacity: 0.4;
+      align-self: flex-start;
+      padding-top: 0.5rem;
+    }
+
+    /* ─── WAITLIST COUNTER ─── */
+    .waitlist-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.7s;
+    }
+
+    .counter-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
     /* ─── FORM ─── */
     .waitlist-form {
       display: flex;
@@ -184,7 +290,7 @@
       font-family: var(--font-body);
       font-size: 1rem;
       outline: none;
-      transition: border-color 0.25s ease, background 0.25s ease;
+      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     }
 
     .waitlist-form input::placeholder {
@@ -195,12 +301,13 @@
     .waitlist-form input:focus {
       border-color: var(--accent);
       background: var(--surface-hover);
+      box-shadow: 0 0 0 3px rgba(232, 115, 74, 0.15);
     }
 
     .waitlist-form .phone-note {
       font-size: 0.78rem;
       color: var(--chalk-dim);
-      opacity: 0.5;
+      opacity: 0.6;
       text-align: left;
       margin-top: -0.35rem;
     }
@@ -216,7 +323,7 @@
       border: none;
       border-radius: 60px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       margin-top: 0.25rem;
       position: relative;
     }
@@ -240,7 +347,7 @@
 
     .form-error {
       font-size: 0.85rem;
-      color: #e85d5d;
+      color: #f07070;
       min-height: 1.25rem;
     }
 
@@ -281,6 +388,34 @@
       font-size: 0.82rem;
       color: var(--chalk-dim);
       margin-top: 0.35rem;
+    }
+
+    .cal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+
+    .cal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--surface);
+      border: 1px solid rgba(240, 235, 227, 0.08);
+      border-radius: 8px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.78rem;
+      color: var(--chalk-dim);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cal-btn:hover {
+      background: var(--surface-hover);
+      color: var(--chalk);
+      border-color: rgba(240, 235, 227, 0.15);
     }
 
     /* ─── CONFIRMATION STATE ─── */
@@ -400,11 +535,9 @@
       animation: fadeUp 0.6s ease forwards 0.2s;
     }
 
-    .badge .bell {
-      display: inline-block;
+    .badge .bell-icon {
       animation: ring 1.5s ease-in-out 1.2s;
       transform-origin: top center;
-      font-size: 1.4rem;
     }
 
     @keyframes ring {
@@ -453,7 +586,7 @@
       left: 50%;
       transform: translateX(-50%);
       font-family: var(--font-hand);
-      font-size: 1rem;
+      font-size: 1.4rem;
       color: var(--chalk-dim);
       opacity: 0;
       animation: fadeUp 0.6s ease forwards 1.4s;
@@ -464,6 +597,7 @@
     }
 
     .scroll-hint .arrow {
+      font-size: 1.8rem;
       animation: bounce 2s ease infinite;
     }
 
@@ -482,6 +616,21 @@
       padding: 5rem 1.5rem;
       max-width: 640px;
       margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      color: var(--yellow);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.5s ease;
+    }
+
+    .section-label.visible {
+      opacity: 0.8;
+      transform: translateX(0);
     }
 
     /* ─── THE ANTI-PITCH ─── */
@@ -546,6 +695,20 @@
     }
 
     /* ─── THE WHAT ─── */
+    .the-what h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2rem);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.6s ease;
+    }
+
+    .the-what h2.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .the-what p {
       margin-bottom: 1.5rem;
       color: var(--chalk-dim);
@@ -563,6 +726,11 @@
       border-radius: 0 8px 8px 0;
       margin: 2rem 0;
       font-size: 0.95rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .highlight-block:hover {
+      border-left-color: var(--accent-glow);
     }
 
     .highlight-block .label {
@@ -572,9 +740,88 @@
       margin-bottom: 0.4rem;
     }
 
+    /* ─── SEGMENT PILLS ─── */
+    .segment-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 2rem 0;
+    }
+
+    .segment-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--surface);
+      border: 1px solid rgba(240, 235, 227, 0.06);
+      border-radius: 20px;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.82rem;
+      color: var(--chalk-dim);
+      opacity: 0;
+      transform: translateY(8px) scale(0.95);
+      transition: all 0.4s ease, background 0.2s ease;
+    }
+
+    .segment-pill.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .segment-pill:hover {
+      background: var(--surface-hover);
+      color: var(--chalk);
+    }
+
+    .segment-pill .pill-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .segment-pill:nth-child(1) .pill-icon { color: var(--accent); }
+    .segment-pill:nth-child(2) .pill-icon { color: var(--blue); }
+    .segment-pill:nth-child(3) .pill-icon { color: var(--yellow); }
+    .segment-pill:nth-child(4) .pill-icon { color: var(--green); }
+    .segment-pill:nth-child(5) .pill-icon { color: var(--accent); }
+    .segment-pill:nth-child(6) .pill-icon { color: var(--blue); }
+
+    /* ─── MID-PAGE CTA ─── */
+    .mid-cta {
+      text-align: center;
+      padding: 2rem 0 1rem;
+    }
+
+    .mid-cta .cta-btn {
+      font-size: 1.2rem;
+      padding: 0.85rem 2.5rem;
+    }
+
+    .mid-cta .cta-note {
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      color: var(--chalk-dim);
+      margin-top: 0.5rem;
+      opacity: 0.6;
+    }
+
     /* ─── THE WHO ─── */
     .the-who {
       text-align: center;
+    }
+
+    .the-who h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2rem);
+      margin-bottom: 0.75rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.6s ease;
+    }
+
+    .the-who h2.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .the-who .intro-text {
@@ -602,11 +849,12 @@
       text-align: left;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .creator:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     .creator::before {
@@ -616,6 +864,11 @@
       left: 0;
       right: 0;
       height: 3px;
+      transition: height 0.25s ease;
+    }
+
+    .creator:hover::before {
+      height: 4px;
     }
 
     .creator:nth-child(1)::before { background: var(--accent); }
@@ -631,10 +884,15 @@
     .creator .handle {
       font-family: var(--font-hand);
       font-size: 1.1rem;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
     }
 
+    .creator .handle:hover {
+      opacity: 0.8;
+    }
+
+    .creator:nth-child(1) .handle { color: var(--accent); }
     .creator:nth-child(2) .handle { color: var(--yellow); }
     .creator:nth-child(3) .handle { color: var(--green); }
 
@@ -642,6 +900,7 @@
       font-size: 0.9rem;
       color: var(--chalk-dim);
       line-height: 1.55;
+      margin-top: 0.5rem;
     }
 
     /* ─── NO STRESS ─── */
@@ -652,6 +911,19 @@
       margin: 0 auto;
       max-width: 640px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .no-stress::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(126, 200, 139, 0.04) 0%, transparent 60%);
+      pointer-events: none;
     }
 
     .no-stress h2 {
@@ -659,12 +931,14 @@
       font-size: 1.8rem;
       color: var(--green);
       margin-bottom: 1rem;
+      position: relative;
     }
 
     .no-stress p {
       color: var(--chalk-dim);
       max-width: 440px;
       margin: 0 auto;
+      position: relative;
     }
 
     .no-stress .bold-line {
@@ -687,6 +961,12 @@
       border-radius: 12px;
       padding: 1.75rem 2.5rem;
       margin-bottom: 2rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .price-tag:hover {
+      border-color: rgba(232, 115, 74, 0.35);
+      box-shadow: 0 4px 20px rgba(232, 115, 74, 0.08);
     }
 
     .price-tag .founding {
@@ -725,10 +1005,23 @@
       border-radius: 60px;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       margin-bottom: 1rem;
       position: relative;
       overflow: hidden;
+    }
+
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .cta-btn:hover::after {
+      transform: translateX(100%);
     }
 
     .cta-btn:hover {
@@ -752,9 +1045,9 @@
     footer {
       text-align: center;
       padding: 2rem 1.5rem 3rem;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--chalk-dim);
-      opacity: 0.5;
+      opacity: 0.6;
     }
 
     /* ─── ANIMATIONS ─── */
@@ -769,21 +1062,58 @@
       transform: translateY(0);
     }
 
-    .stagger-children .fade-in:nth-child(1) { transition-delay: 0s; }
-    .stagger-children .fade-in:nth-child(2) { transition-delay: 0.1s; }
-    .stagger-children .fade-in:nth-child(3) { transition-delay: 0.2s; }
+    /* Slide from left */
+    .slide-left {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s ease;
+    }
 
-    /* ─── DIVIDER ─── */
+    .slide-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .stagger-children .fade-in:nth-child(1) { transition-delay: 0s; }
+    .stagger-children .fade-in:nth-child(2) { transition-delay: 0.12s; }
+    .stagger-children .fade-in:nth-child(3) { transition-delay: 0.24s; }
+
+    /* ─── ANIMATED DIVIDER ─── */
     .divider {
-      width: 60px;
-      height: 3px;
-      background: var(--surface);
+      width: 100%;
+      max-width: 640px;
+      height: 1px;
       margin: 0 auto;
-      border-radius: 3px;
+      position: relative;
+      background: transparent;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, var(--surface), var(--accent), var(--surface), transparent);
+      background-size: 200% 100%;
+      animation: divider-flow 4s ease-in-out infinite;
+    }
+
+    @keyframes divider-flow {
+      0% { background-position: 100% 0; }
+      50% { background-position: 0% 0; }
+      100% { background-position: 100% 0; }
     }
 
     /* ─── RESPONSIVE ─── */
     @media (min-width: 640px) {
+      body {
+        font-size: 19px;
+      }
+      .the-what p {
+        font-size: 1.15rem;
+      }
+      .highlight-block {
+        font-size: 1.05rem;
+      }
       .creators {
         flex-direction: row;
         gap: 1.25rem;
@@ -806,22 +1136,35 @@
       .price-tag { padding: 1.5rem 1.75rem; }
       #waitlist-gate { padding: 1.5rem 1.25rem; }
     }
+
+    /* ─── REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-in, .slide-left, .strikethrough-stack p,
+      .the-answer, .speed-note, .section-label,
+      .segment-pill, .the-what h2, .the-who h2 {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
   <!-- ═══════════════════════════════════════════════
        WAITLIST GATE
-       Phase 1: form → inline confirmation
-       Phase 2: form → reveals full site below
-       Phase 3: hidden entirely
        ═══════════════════════════════════════════════ -->
   <div id="waitlist-gate">
     <div class="gate-inner">
 
-      <!-- Branding + pitch -->
       <div class="gate-badge">
-        <span class="bell">&#x1F514;</span>
+        <svg class="bell-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.7 2 6 4.7 6 8v4l-2 2v1h16v-1l-2-2V8c0-3.3-2.7-6-6-6zm0 20a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2z"/></svg>
         Something's coming March 20
       </div>
 
@@ -829,23 +1172,52 @@
 
       <p class="gate-subtitle">Three creators. One hour. Everything you need to know this week.</p>
 
-      <p class="gate-details">Every Friday at 4pm ET &bull; Live session + community <span>&bull; Launching March 20</span></p>
+      <p class="gate-details">Every Friday at 4pm ET &bull; Live session + community</p>
+
+      <!-- Countdown to March 20, 2026 4pm ET -->
+      <div class="countdown" id="countdown" aria-label="Countdown to launch">
+        <div class="countdown-unit">
+          <span class="num" id="cd-days">--</span>
+          <span class="lbl">days</span>
+        </div>
+        <span class="countdown-colon">:</span>
+        <div class="countdown-unit">
+          <span class="num" id="cd-hours">--</span>
+          <span class="lbl">hours</span>
+        </div>
+        <span class="countdown-colon">:</span>
+        <div class="countdown-unit">
+          <span class="num" id="cd-mins">--</span>
+          <span class="lbl">min</span>
+        </div>
+        <span class="countdown-colon">:</span>
+        <div class="countdown-unit">
+          <span class="num" id="cd-secs">--</span>
+          <span class="lbl">sec</span>
+        </div>
+      </div>
+
+      <!-- Social proof counter -->
+      <div class="waitlist-counter" id="waitlist-counter" style="display:none;">
+        <span class="counter-dot"></span>
+        <span id="counter-text"></span>
+      </div>
 
       <!-- Form -->
       <div id="waitlist-form-wrap">
         <form class="waitlist-form" id="waitlist-form" autocomplete="on">
-          <input type="email" name="email" id="wl-email" placeholder="Your email" required autocomplete="email">
-          <input type="tel" name="phone" id="wl-phone" placeholder="Phone number (optional)" autocomplete="tel">
+          <input type="email" name="email" id="wl-email" placeholder="Your email" required autocomplete="email" aria-label="Email address" inputmode="email">
+          <input type="tel" name="phone" id="wl-phone" placeholder="Phone number (optional)" autocomplete="tel" aria-label="Phone number (optional)" inputmode="tel">
           <p class="phone-note">We'll text you when we launch. No spam.</p>
           <button type="submit" class="submit-btn" id="submit-btn">Join the waitlist</button>
         </form>
-        <p class="form-error" id="form-error"></p>
+        <p class="form-error" id="form-error" role="alert" aria-live="assertive"></p>
       </div>
 
-      <!-- Confirmation (shown after submit) -->
-      <div class="confirmation" id="confirmation">
+      <!-- Confirmation -->
+      <div class="confirmation" id="confirmation" role="status" aria-live="polite">
         <div class="check-ring">
-          <svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4,12 10,18 20,6"/></svg>
         </div>
         <h2>You're on the list.</h2>
         <p class="confirm-sub">We'll reach out when it's go time.</p>
@@ -863,6 +1235,17 @@
           <span class="period">/ month</span>
         </div>
         <p class="limit">First 100 members lock this price in. Then it goes up.</p>
+        <p class="limit" style="margin-top: 0.75rem;">March 20, 2026 &bull; Fridays at 4pm ET</p>
+        <div class="cal-buttons">
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=AI+Recess+%E2%80%94+First+Session&dates=20260320T200000Z/20260320T210000Z&details=Your+trust+filter+for+AI.+Three+creators,+one+hour.+joinairecess.com&recur=RRULE:FREQ=WEEKLY;BYDAY=FR" target="_blank" rel="noopener noreferrer" class="cal-btn" aria-label="Add to Google Calendar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Google
+          </a>
+          <a href="/ai-recess.ics" class="cal-btn" aria-label="Add to Apple Calendar" download>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            iCal
+          </a>
+        </div>
       </div>
 
     </div>
@@ -870,30 +1253,28 @@
 
   <!-- ═══════════════════════════════════════════════
        FULL SITE
-       Hidden in Phase 1, revealed after waitlist in Phase 2,
-       always visible in Phase 3
        ═══════════════════════════════════════════════ -->
   <div id="full-site">
-    <div class="page">
+    <div class="page" id="main-content">
 
       <!-- HERO -->
       <header class="hero">
         <div class="hero-inner">
           <div class="badge">
-            <span class="bell">&#x1F514;</span>
+            <svg class="bell-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.7 2 6 4.7 6 8v4l-2 2v1h16v-1l-2-2V8c0-3.3-2.7-6-6-6zm0 20a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2z"/></svg>
             Recess starts March 20
           </div>
           <h1>Three creators. One hour.<br>Everything you need to know <em>this week.</em></h1>
           <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything, and bring you what actually matters.</p>
         </div>
-        <div class="scroll-hint">
+        <div class="scroll-hint" aria-hidden="true">
           <span>hear us out</span>
           <span class="arrow">&darr;</span>
         </div>
       </header>
 
       <!-- ANTI-PITCH -->
-      <section class="anti-pitch">
+      <section class="anti-pitch" aria-label="Why AI Recess">
         <div class="strikethrough-stack">
           <p>You don't need another course.</p>
           <p>You don't need another community.</p>
@@ -909,31 +1290,58 @@
       <div class="divider"></div>
 
       <!-- THE WHAT -->
-      <section class="the-what">
+      <section class="the-what" aria-label="What you get">
+        <h2 class="fade-in">Every Friday at 4pm ET</h2>
         <p class="fade-in">
-          Every Friday at 4pm ET, we get together and talk about what actually mattered this week. The tools. The takes. The things everyone will be talking about on Monday.
+          We get together and cover what actually mattered this week. The tools. The takes. The things everyone will be talking about on Monday.
         </p>
         <p class="fade-in">
-          Someone spins a wheel. Someone shares their screen. Someone says something wrong and gets roasted. You're in the room.
+          Live tool walkthroughs. Real workflows, not slide decks. We test things on screen, share what's working (and what's not), and cut through the hype when it's hype. You bring the questions, we bring the answers. And when we're wrong, you'll watch us find out in real time.
         </p>
+
+        <!-- Segment pills -->
+        <div class="segment-grid" aria-label="Show segments">
+          <span class="segment-pill">
+            <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            What's Popping
+          </span>
+          <span class="segment-pill">
+            <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Live Tool Walkthrough
+          </span>
+          <span class="segment-pill">
+            <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            Workflow Showcase
+          </span>
+          <span class="segment-pill">
+            <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Community Q&A
+          </span>
+          <span class="segment-pill">
+            <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Existential Corner
+          </span>
+          <span class="segment-pill">
+            <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Weekend Challenge
+          </span>
+        </div>
 
         <div class="highlight-block fade-in">
           <div class="label">Between Fridays</div>
-          The community stays active all week. Curated reads, hot takes, the occasional unhinged thread about whether agents are overhyped. Your async brain trust, running 24/7.
+          This isn't a "see you next week" situation. We drop something to try every weekend: a prompt, a tool, a small build. Monday, the community shares what happened. It's active, not passive. The Skool community runs all week with Q&A threads, member prompts, and the occasional unhinged debate.
         </div>
 
         <p class="fade-in">
-          Think of it as three heads instead of one. We're reading the papers, testing the tools, and having the arguments so you can show up Monday sounding like you know things.
+          Three heads instead of one. We're testing the tools, reading the papers, and having the arguments so you can show up Monday knowing things.
         </p>
-        <p class="fade-in" style="font-family: var(--font-hand); font-size: 1.25rem; color: var(--yellow);">
-          Because you will.
-        </p>
+
       </section>
 
       <div class="divider"></div>
 
       <!-- THE WHO -->
-      <section class="the-who">
+      <section class="the-who" aria-label="The creators">
         <p class="intro-text fade-in">
           We're not gurus. We're not coaches. We're three people who won't shut up about AI.<br>
           <span style="font-size: 0.85em; opacity: 0.7;">(Our partners are relieved we found each&nbsp;other.)</span>
@@ -942,24 +1350,24 @@
         <div class="creators stagger-children">
           <div class="creator fade-in">
             <div class="name">Logan</div>
-            <div class="handle">@loganinthefuture</div>
+            <a href="https://www.tiktok.com/@loganinthefuture" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Logan on TikTok">@loganinthefuture</a>
             <div class="bio">Career strategist turned AI obsessive. Harvard learning design background. Will connect your question to three papers you've never heard of.</div>
           </div>
           <div class="creator fade-in">
             <div class="name">Kevin</div>
-            <div class="handle">@vibewithkevin</div>
-            <div class="bio">Consultant who builds real tools with AI, not slide decks. Posts every single day. Will share his screen and show you exactly what he shipped and what broke at 2am.</div>
+            <a href="https://www.tiktok.com/@vibewithkevin" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Kevin on TikTok">@vibewithkevin</a>
+            <div class="bio">Consultant who builds real tools with AI, not slide decks. Will share his screen and show you exactly what he shipped and what broke at 2am.</div>
           </div>
           <div class="creator fade-in">
             <div class="name">Vanessa</div>
-            <div class="handle">@thinkwithv</div>
+            <a href="https://www.tiktok.com/@thinkwithv" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Vanessa on TikTok">@thinkwithv</a>
             <div class="bio">The one who asks the question everyone was thinking. Will tell you when the hype is hype. Brings the real talk and also the woo factor, in the best way possible.</div>
           </div>
         </div>
       </section>
 
       <!-- NO STRESS -->
-      <section style="padding-top: 2rem; padding-bottom: 0;">
+      <section style="padding-top: 2rem; padding-bottom: 0;" aria-label="No commitment needed">
         <div class="no-stress fade-in">
           <h2>No stress. Seriously.</h2>
           <p>
@@ -972,7 +1380,7 @@
       </section>
 
       <!-- CTA -->
-      <section class="cta-section">
+      <section class="cta-section" aria-label="Join AI Recess">
         <div class="price-tag fade-in">
           <div class="founding">Founding rate, first 100 members</div>
           <div class="price">$15 <span>/ month</span></div>
@@ -993,14 +1401,10 @@
 
   <script>
     // ═══════════════════════════════════════════════
-    // CONFIGURATION — Change this to switch phases
+    // CONFIGURATION
     // ═══════════════════════════════════════════════
-    // Phase 1: Waitlist only (now through March 15)
-    // Phase 2: Waitlist gate → reveals full site (March 16-20)
-    // Phase 3: Full site only, no waitlist (March 20+)
     const SITE_PHASE = 1;
 
-    // Supabase config
     const SUPABASE_URL = 'https://mbgwdivgxbphktvanusd.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_80clQucgcyE62xYsw9_1sA_BLcE4PJH';
 
@@ -1011,7 +1415,6 @@
     const fullSite = document.getElementById('full-site');
 
     if (SITE_PHASE === 3) {
-      // Phase 3: No waitlist, full site visible, Stripe CTA
       gate.classList.add('hidden');
       fullSite.classList.add('show');
     }
@@ -1025,6 +1428,74 @@
     const formError = document.getElementById('form-error');
     const submitBtn = document.getElementById('submit-btn');
     const gateFoundingEl = document.getElementById('gate-founding');
+
+    // ═══════════════════════════════════════════════
+    // COUNTDOWN TIMER
+    // ═══════════════════════════════════════════════
+    const LAUNCH_DATE = new Date('2026-03-20T16:00:00-04:00'); // March 20, 4pm ET
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = LAUNCH_DATE - now;
+
+      if (diff <= 0) {
+        const cdEl = document.getElementById('countdown');
+        cdEl.textContent = '';
+        const liveMsg = document.createElement('p');
+        liveMsg.className = 'gate-details';
+        liveMsg.style.cssText = 'margin-bottom:0;color:var(--green);';
+        liveMsg.textContent = "We're live!";
+        cdEl.appendChild(liveMsg);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+      document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+    }
+
+    if (SITE_PHASE < 3) {
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+
+    // Fetch waitlist count for social proof
+    async function updateWaitlistCount() {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist?select=id`, {
+          method: 'HEAD',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'count=exact'
+          }
+        });
+        const range = res.headers.get('content-range');
+        if (range) {
+          const count = parseInt(range.split('/')[1], 10);
+          if (count > 0) {
+            const counterEl = document.getElementById('waitlist-counter');
+            const counterText = document.getElementById('counter-text');
+            counterText.textContent = count === 1
+              ? '1 person on the waitlist'
+              : `${count} people on the waitlist`;
+            counterEl.style.display = 'inline-flex';
+          }
+        }
+      } catch (e) {
+        // Silently fail, counter just won't show
+      }
+    }
+
+    if (SITE_PHASE < 3) {
+      updateWaitlistCount();
+    }
 
     if (form) {
       form.addEventListener('submit', async (e) => {
@@ -1054,20 +1525,27 @@
             body: JSON.stringify({ email, phone: phone || null })
           });
 
+          if (res.status === 409 || res.status === 409) {
+            // Unique constraint violation - already on waitlist
+            formWrap.style.display = 'none';
+            gateFoundingEl.style.display = 'none';
+            const confH2 = confirmation.querySelector('h2');
+            confH2.textContent = "You're already on the list!";
+            confirmation.classList.add('show');
+            return;
+          }
+
           if (!res.ok) {
             throw new Error('Something went wrong. Please try again.');
           }
 
-          // Success: show confirmation
           formWrap.style.display = 'none';
           gateFoundingEl.style.display = 'none';
           confirmation.classList.add('show');
 
-          // Phase 2: After a moment, reveal full site below
           if (SITE_PHASE === 2) {
             setTimeout(() => {
               fullSite.classList.add('show');
-              // Scroll down to reveal
               setTimeout(() => {
                 fullSite.scrollIntoView({ behavior: 'smooth' });
               }, 400);
@@ -1083,7 +1561,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // SCROLL ANIMATIONS (for full site)
+    // SCROLL ANIMATIONS
     // ═══════════════════════════════════════════════
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1096,7 +1574,7 @@
       rootMargin: '0px 0px -40px 0px'
     });
 
-    document.querySelectorAll('.fade-in, .strikethrough-stack p, .the-answer, .speed-note')
+    document.querySelectorAll('.fade-in, .slide-left, .strikethrough-stack p, .the-answer, .speed-note, .section-label, .the-what h2, .the-who h2')
       .forEach(el => observer.observe(el));
 
     // Stagger strikethrough animations
@@ -1113,6 +1591,22 @@
     }, { threshold: 0.3 });
 
     if (strikes.length) strikeObserver.observe(strikes[0]);
+
+    // Stagger segment pill animations
+    const pills = document.querySelectorAll('.segment-pill');
+    const pillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          pills.forEach((p, i) => {
+            setTimeout(() => p.classList.add('visible'), i * 80);
+          });
+          pillObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    if (pills.length) pillObserver.observe(pills[0]);
+
   </script>
 </body>
 </html>
