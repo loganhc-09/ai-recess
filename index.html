@@ -44,6 +44,7 @@
       --font-display: 'Instrument Serif', Georgia, serif;
       --font-body: 'DM Sans', -apple-system, sans-serif;
       --font-hand: 'Caveat', cursive;
+      --font-hand-weight: 600;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -60,6 +61,16 @@
       font-size: 17px;
       line-height: 1.65;
       overflow-x: hidden;
+    }
+
+    /* Handwritten font weight boost for readability */
+    [style*="font-hand"],
+    .gate-badge, .gate-details, .speed-note, .section-label,
+    .highlight-block .label, .scroll-hint, .badge, .launch-date,
+    .founding, .gate-founding .price-pill .label, .phone-note,
+    .countdown-unit .lbl, .cal-btn, .cta-note, .limit,
+    .creator .handle, .counter-dot + span, .no-stress h2 {
+      font-weight: var(--font-hand-weight);
     }
 
     /* Skip to content link */
