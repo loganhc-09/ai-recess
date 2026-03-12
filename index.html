@@ -1403,7 +1403,10 @@
     // ═══════════════════════════════════════════════
     // CONFIGURATION
     // ═══════════════════════════════════════════════
-    const SITE_PHASE = 1;
+    const now = new Date();
+    const PHASE_2_DATE = new Date('2026-03-16T09:00:00-05:00'); // March 16, 9am EST
+    const PHASE_3_DATE = new Date('2026-03-20T15:00:00-04:00'); // March 20, 3pm ET (EDT)
+    const SITE_PHASE = now >= PHASE_3_DATE ? 3 : now >= PHASE_2_DATE ? 2 : 1;
 
     const SUPABASE_URL = 'https://mbgwdivgxbphktvanusd.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_80clQucgcyE62xYsw9_1sA_BLcE4PJH';
