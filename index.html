@@ -1400,7 +1400,7 @@
         </div>
         <br>
         <!-- Phase 3: Replace href with Stripe payment link -->
-        <a href="#" class="cta-btn" id="cta-btn">I'm in</a>
+        <a href="#waitlist-gate" class="cta-btn" id="cta-btn">I'm in</a>
         <div class="launch-date">First session: March 20, 2026 &bull; Fridays at 4pm ET</div>
       </section>
 
@@ -1429,9 +1429,11 @@
     const gate = document.getElementById('waitlist-gate');
     const fullSite = document.getElementById('full-site');
 
+    if (SITE_PHASE >= 2) {
+      fullSite.classList.add('show');
+    }
     if (SITE_PHASE === 3) {
       gate.classList.add('hidden');
-      fullSite.classList.add('show');
     }
 
     // ═══════════════════════════════════════════════
@@ -1547,15 +1549,6 @@
             const confH2 = confirmation.querySelector('h2');
             confH2.textContent = "You're already on the list!";
             confirmation.classList.add('show');
-
-            if (SITE_PHASE === 2) {
-              setTimeout(() => {
-                fullSite.classList.add('show');
-                setTimeout(() => {
-                  fullSite.scrollIntoView({ behavior: 'smooth' });
-                }, 400);
-              }, 2000);
-            }
             return;
           }
 
@@ -1566,15 +1559,6 @@
           formWrap.style.display = 'none';
           gateFoundingEl.style.display = 'none';
           confirmation.classList.add('show');
-
-          if (SITE_PHASE === 2) {
-            setTimeout(() => {
-              fullSite.classList.add('show');
-              setTimeout(() => {
-                fullSite.scrollIntoView({ behavior: 'smooth' });
-              }, 400);
-            }, 2000);
-          }
 
         } catch (err) {
           formError.textContent = err.message || 'Something went wrong. Please try again.';
