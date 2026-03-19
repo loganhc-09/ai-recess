@@ -1547,6 +1547,15 @@
             const confH2 = confirmation.querySelector('h2');
             confH2.textContent = "You're already on the list!";
             confirmation.classList.add('show');
+
+            if (SITE_PHASE === 2) {
+              setTimeout(() => {
+                fullSite.classList.add('show');
+                setTimeout(() => {
+                  fullSite.scrollIntoView({ behavior: 'smooth' });
+                }, 400);
+              }, 2000);
+            }
             return;
           }
 
