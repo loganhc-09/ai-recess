@@ -1099,6 +1099,16 @@
       .picks-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
+    @media (min-width: 960px) {
+      .picks-grid { max-width: 900px; margin-left: auto; margin-right: auto; }
+      .creators { max-width: 900px; margin-left: auto; margin-right: auto; }
+      .goody-items { max-width: 700px; margin-left: auto; margin-right: auto; }
+      .goody-cta { max-width: 600px; margin-left: auto; margin-right: auto; }
+      .anti-pitch { max-width: 700px; margin-left: auto; margin-right: auto; }
+      .hero-inner { max-width: 700px; }
+      section { padding: 6rem 3rem; }
+    }
+
     @media (max-width: 400px) {
       body { font-size: 16px; }
       .hero { padding: 4.5rem 1.25rem 1.5rem; }
@@ -1130,102 +1140,39 @@
         </div>
         <h1>Three creators. One hour.<br>Everything you need to know <em>this week.</em></h1>
         <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything &mdash; so you can show up Monday sounding like you know things.</p>
+        <div class="countdown" id="next-recess-countdown" style="display:flex; justify-content:center; gap:1rem; margin: 1.5rem 0;">
+          <div class="countdown-unit" style="display:flex; flex-direction:column; align-items:center;">
+            <span class="num" id="cd-days" style="font-family:var(--font-display); font-size:2rem; background:var(--surface); border-radius:8px; padding:0.5rem 0.65rem; min-width:52px; text-align:center;">--</span>
+            <span style="font-family:var(--font-hand); font-size:0.85rem; color:var(--chalk-dim); margin-top:0.3rem;">days</span>
+          </div>
+          <span style="font-family:var(--font-display); font-size:1.8rem; color:var(--chalk-dim); opacity:0.4; padding-top:0.5rem;">:</span>
+          <div class="countdown-unit" style="display:flex; flex-direction:column; align-items:center;">
+            <span class="num" id="cd-hours" style="font-family:var(--font-display); font-size:2rem; background:var(--surface); border-radius:8px; padding:0.5rem 0.65rem; min-width:52px; text-align:center;">--</span>
+            <span style="font-family:var(--font-hand); font-size:0.85rem; color:var(--chalk-dim); margin-top:0.3rem;">hours</span>
+          </div>
+          <span style="font-family:var(--font-display); font-size:1.8rem; color:var(--chalk-dim); opacity:0.4; padding-top:0.5rem;">:</span>
+          <div class="countdown-unit" style="display:flex; flex-direction:column; align-items:center;">
+            <span class="num" id="cd-mins" style="font-family:var(--font-display); font-size:2rem; background:var(--surface); border-radius:8px; padding:0.5rem 0.65rem; min-width:52px; text-align:center;">--</span>
+            <span style="font-family:var(--font-hand); font-size:0.85rem; color:var(--chalk-dim); margin-top:0.3rem;">min</span>
+          </div>
+        </div>
         <div class="hero-cta-row">
           <a href="https://www.skool.com/ai-recess" class="cta-btn-sm join-cta" data-cta="hero">I'm in</a>
           <a href="#this-week" style="color: var(--chalk-dim); font-size: 0.9rem; text-decoration: none;">or see what you missed &darr;</a>
         </div>
       </div>
 
-      <h1 class="gate-title">Your <em>trust filter</em> for AI.</h1>
-
-      <p class="gate-subtitle">Three creators. One hour. Everything you need to know this week.</p>
-
-      <p class="gate-details">Every Friday at 4pm ET &bull; Live session + community</p>
-
-      <!-- Countdown to March 20, 2026 4pm ET -->
-      <div class="countdown" id="countdown" aria-label="Countdown to launch">
-        <div class="countdown-unit">
-          <span class="num" id="cd-days">--</span>
-          <span class="lbl">days</span>
-        </div>
-        <span class="countdown-colon">:</span>
-        <div class="countdown-unit">
-          <span class="num" id="cd-hours">--</span>
-          <span class="lbl">hours</span>
-        </div>
-        <span class="countdown-colon">:</span>
-        <div class="countdown-unit">
-          <span class="num" id="cd-mins">--</span>
-          <span class="lbl">min</span>
-        </div>
-        <span class="countdown-colon">:</span>
-        <div class="countdown-unit">
-          <span class="num" id="cd-secs">--</span>
-          <span class="lbl">sec</span>
-        </div>
-      </div>
-
-      <!-- Social proof counter -->
-      <div class="waitlist-counter" id="waitlist-counter" style="display:none;">
-        <span class="counter-dot"></span>
-        <span id="counter-text"></span>
-      </div>
-
-      <!-- Form -->
-      <div id="waitlist-form-wrap">
-        <form class="waitlist-form" id="waitlist-form" autocomplete="on">
-          <input type="email" name="email" id="wl-email" placeholder="Your email" required autocomplete="email" aria-label="Email address" inputmode="email">
-          <input type="tel" name="phone" id="wl-phone" placeholder="Phone number (optional)" autocomplete="tel" aria-label="Phone number (optional)" inputmode="tel">
-          <p class="phone-note">We'll text you when we launch. No spam. We already have enough AI generating that.</p>
-          <button type="submit" class="submit-btn" id="submit-btn">Join the waitlist</button>
-        </form>
-        <p class="form-error" id="form-error" role="alert" aria-live="assertive"></p>
-      </div>
-
-      <!-- Confirmation -->
-      <div class="confirmation" id="confirmation" role="status" aria-live="polite">
-        <div class="check-ring">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4,12 10,18 20,6"/></svg>
-        </div>
-        <h2>You're on the list.</h2>
-        <p class="confirm-sub">We'll reach out when it's go time.</p>
-        <div class="confirm-detail">
-          <strong>Founding member pricing locked in.</strong><br>
-          First 100 members get the lowest rate, forever. We'll be in touch before March 20.
-        </div>
-      </div>
-
-      <!-- Founding rate callout -->
-      <div class="gate-founding" id="gate-founding">
-        <div class="price-pill">
-          <span class="label">Founding rate</span>
-          <span class="amount">$15</span>
-          <span class="period">/ month</span>
-        </div>
-        <p class="limit">First 100 members lock this price in. Then it goes up.</p>
-        <p class="limit" style="margin-top: 0.75rem;">March 20, 2026 &bull; Fridays at 4pm ET</p>
-        <div class="cal-buttons">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=AI+Recess+%E2%80%94+First+Session&dates=20260320T200000Z/20260320T210000Z&details=Your+trust+filter+for+AI.+Three+creators,+one+hour.+joinairecess.com&recur=RRULE:FREQ=WEEKLY;BYDAY=FR" target="_blank" rel="noopener noreferrer" class="cal-btn" aria-label="Add to Google Calendar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            Google
-          </a>
-          <a href="/ai-recess.ics" class="cal-btn" aria-label="Add to Apple Calendar" download>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            iCal
-          </a>
-        </div>
-      </div>
-
-      <div class="scroll-hint" aria-hidden="true">
-        <span>see what's inside</span>
+      <div class="scroll-hint">
+        <span>hear us out</span>
         <span class="arrow">&darr;</span>
       </div>
+    </header>
 
     <!-- LATEST SESSION -->
     <section class="this-week" id="this-week">
       <div class="section-label fade-in">First Recess &mdash; March 20</div>
       <h2 class="section-title fade-in">What we <em>got into</em></h2>
-      <p class="fade-in" style="color: var(--chalk-dim); margin-bottom: 2rem;">The inaugural recess. Kevin shared his screen, Logan talked systems, V brought field notes. Here's what went down.</p>
+      <p class="fade-in" style="color: var(--chalk-dim); margin-bottom: 2rem;">Kevin shared his screen. Logan translated. V asked the question everyone was thinking. Here's what went down.</p>
 
       <div class="picks-grid">
         <div class="pick-card fade-in">
@@ -1233,24 +1180,24 @@
             <span class="pick-who">Kevin</span>
             <span class="pick-tag">Show & tell</span>
           </div>
-          <div class="pick-title">Open Claw Walkthrough</div>
-          <p class="pick-why">Full screen-share of the multi-agent setup he runs daily. People were taking notes.</p>
+          <div class="pick-title">Open Claw Demo</div>
+          <p class="pick-why">Kevin's full multi-agent setup, live on screen. The $200 API bill. The Mr. Pibb hunt. Real costs, real failures, real workflows.</p>
         </div>
         <div class="pick-card fade-in">
           <div class="pick-header">
             <span class="pick-who">Logan</span>
-            <span class="pick-tag">Workflow</span>
+            <span class="pick-tag">Framing</span>
           </div>
-          <div class="pick-title">Claude Code as Chief of Staff</div>
-          <p class="pick-why">The system file, the hooks, the morning routine. How she got an AI to run her life (and judge her reading habits).</p>
+          <div class="pick-title">Why Having an Opinion Matters</div>
+          <p class="pick-why">The case for AI as professional currency. Why showing up Monday with an informed take is the real skill right now.</p>
         </div>
         <div class="pick-card fade-in">
           <div class="pick-header">
             <span class="pick-who">V</span>
-            <span class="pick-tag">Field report</span>
+            <span class="pick-tag">Real talk</span>
           </div>
-          <div class="pick-title">AI at a Live Conference</div>
-          <p class="pick-why">Brought AI agents to a conference and used them in real time &mdash; prep, navigation, capture. She has screenshots.</p>
+          <div class="pick-title">The Skeptic's Seat</div>
+          <p class="pick-why">V asked "so what?" at exactly the right moment. Gave everyone permission to be excited and nervous at the same time.</p>
         </div>
       </div>
 
@@ -1314,7 +1261,7 @@
         <div class="creator fade-in">
           <div class="name">Logan</div>
           <div class="handle">@loganinthefuture</div>
-          <div class="bio">Career strategist turned AI obsessive. Harvard learning design background. Will connect your question to three papers you've never heard of.</div>
+          <div class="bio">Career strategist who fell into AI and never came back. Runs her entire life through Claude Code. Will reframe your question in a way that makes you go "oh."</div>
         </div>
         <div class="creator fade-in">
           <div class="name">Kevin</div>
@@ -1344,82 +1291,62 @@
       <div class="launch-date">Fridays at 4pm ET &bull; Live recess + goody bags + the group chat</div>
     </section>
 
-        <div class="highlight-block fade-in">
-          <div class="label">Between Fridays</div>
-          This isn't a "see you next week" situation. We drop something to try every weekend: a prompt, a tool, a small build. Monday, the community shares what happened. It's active, not passive. The Skool community runs all week with Q&A threads, member prompts, and the occasional unhinged debate.
-        </div>
-
-        <p class="fade-in">
-          Three heads instead of one. We're testing the tools, reading the papers, and having the arguments so you can show up Monday knowing things.
-        </p>
-
-        <div class="mid-cta fade-in">
-          <a href="https://www.skool.com/ai-recess" class="cta-btn" target="_blank" rel="noopener">I'm in</a>
-          <div class="cta-note">$15/mo founding rate &bull; Cancel anytime</div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <!-- THE WHO -->
-      <section class="the-who" aria-label="The creators">
-        <p class="intro-text fade-in">
-          We're not gurus. We're not coaches. We're three people who won't shut up about AI.<br>
-          <span style="font-size: 0.85em; opacity: 0.7;">(Our partners are relieved we found each&nbsp;other.)</span>
-        </p>
-
-        <div class="creators stagger-children">
-          <div class="creator fade-in">
-            <div class="name">Logan</div>
-            <a href="https://www.tiktok.com/@loganinthefuture" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Logan on TikTok">@loganinthefuture</a>
-            <div class="bio">Career strategist turned AI obsessive. Harvard learning design background. Will connect your question to three papers you've never heard of.</div>
-          </div>
-          <div class="creator fade-in">
-            <div class="name">Kevin</div>
-            <a href="https://www.tiktok.com/@vibewithkevin" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Kevin on TikTok">@vibewithkevin</a>
-            <div class="bio">Consultant who builds real tools with AI, not slide decks. Will share his screen and show you exactly what he shipped and what broke at 2am.</div>
-          </div>
-          <div class="creator fade-in">
-            <div class="name">Vanessa</div>
-            <a href="https://www.tiktok.com/@thinkwithv" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Vanessa on TikTok">@thinkwithv</a>
-            <div class="bio">Writer, entrepreneur, and recovering productivity nerd with ADHD brain. Believes that "intelligence" is more than what AI can automate and that the point of all this tech to make you more YOU.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- NO STRESS -->
-      <section style="padding-top: 2rem; padding-bottom: 0;" aria-label="No commitment needed">
-        <div class="no-stress fade-in">
-          <h2>No stress. Seriously.</h2>
-          <p>
-            No backlog. No homework. Miss a Friday? The chat catches you up. This isn't a commitment, it's a cheat code.
-          </p>
-          <p class="bold-line">
-            If you've got an hour a week, we've got you covered.
-          </p>
-        </div>
-      </section>
-
-      <!-- CTA -->
-      <section class="cta-section" aria-label="Join AI Recess">
-        <div class="price-tag fade-in">
-          <div class="founding">Founding rate, first 100 members</div>
-          <div class="price">$15 <span>/ month</span></div>
-          <div class="after">Then it goes up. Lock it in now.</div>
-        </div>
-        <br>
-        <a href="https://www.skool.com/ai-recess" class="cta-btn" id="cta-btn" target="_blank" rel="noopener">I'm in</a>
-        <div class="launch-date">First session: March 20, 2026 &bull; Fridays at 4pm ET</div>
-      </section>
-
-      <footer>
-        AI Recess &copy; 2026 &bull; A brain trust, not a brand.
-      </footer>
-
-    </div>
   </div>
 
   <script src="/analytics/tracker.js"></script>
+  <script>
+    // ─── COUNTDOWN TO NEXT FRIDAY 4PM ET ───
+    (function() {
+      function getNextFriday4pmET() {
+        // Get current time in ET
+        var now = new Date();
+        var etStr = now.toLocaleString('en-US', { timeZone: 'America/New_York' });
+        var etNow = new Date(etStr);
+
+        // Find next Friday
+        var day = etNow.getDay(); // 0=Sun, 5=Fri
+        var daysUntilFriday = (5 - day + 7) % 7;
+        if (daysUntilFriday === 0) {
+          // It's Friday — check if 4pm has passed
+          if (etNow.getHours() >= 17) daysUntilFriday = 7; // past 5pm, next week
+        }
+
+        var target = new Date(etNow);
+        target.setDate(target.getDate() + daysUntilFriday);
+        target.setHours(16, 0, 0, 0); // 4pm ET
+
+        // Convert back to UTC for countdown math
+        var targetUTC = new Date(target.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        // Offset: get the difference between local and ET
+        var offset = now.getTime() - etNow.getTime();
+        return new Date(targetUTC.getTime() + offset);
+      }
+
+      function updateCountdown() {
+        var target = getNextFriday4pmET();
+        var now = new Date();
+        var diff = target - now;
+
+        if (diff <= 0) {
+          document.getElementById('cd-days').textContent = '0';
+          document.getElementById('cd-hours').textContent = '0';
+          document.getElementById('cd-mins').textContent = '0';
+          return;
+        }
+
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+        document.getElementById('cd-days').textContent = days;
+        document.getElementById('cd-hours').textContent = hours;
+        document.getElementById('cd-mins').textContent = mins;
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 60000);
+    })();
+  </script>
   <script>
     // ─── SCROLL ANIMATIONS ───
     var observer = new IntersectionObserver(function(entries) {
