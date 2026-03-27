@@ -8,6 +8,8 @@
   <meta property="og:title" content="AI Recess — Your Trust Filter for AI">
   <meta property="og:description" content="Three creators. One hour. Everything you need to know this week.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://joinairecess.com">
+  <link rel="canonical" href="https://joinairecess.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -16,6 +18,7 @@
       --bg: #1a1815;
       --bg-warm: #231f1b;
       --surface: #2c2723;
+      --surface-hover: #353029;
       --chalk: #f0ebe3;
       --chalk-dim: #b8b0a4;
       --accent: #e8734a;
@@ -29,11 +32,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-    }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
     body {
       background: var(--bg);
@@ -44,7 +43,6 @@
       overflow-x: hidden;
     }
 
-    /* Chalkboard texture */
     body::before {
       content: '';
       position: fixed;
@@ -56,7 +54,6 @@
       z-index: 0;
     }
 
-    /* Grain overlay */
     body::after {
       content: '';
       position: fixed;
@@ -69,13 +66,71 @@
 
     .page { position: relative; z-index: 2; }
 
+    /* ─── NAV ─── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(26, 24, 21, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(240, 235, 227, 0.06);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--chalk);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo em { color: var(--accent); font-style: italic; }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--chalk); }
+
+    .nav-links .nav-cta {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.4rem 1.1rem;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .nav-links .nav-cta:hover {
+      background: var(--accent-glow);
+      color: var(--bg);
+    }
+
     /* ─── HERO ─── */
     .hero {
       min-height: 100svh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 2rem 1.5rem;
+      padding: 5rem 1.5rem 2rem;
       position: relative;
     }
 
@@ -125,10 +180,7 @@
       animation: fadeUp 0.6s ease forwards 0.35s;
     }
 
-    .hero h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
 
     .hero .subtitle {
       font-size: 1.15rem;
@@ -139,9 +191,15 @@
       animation: fadeUp 0.6s ease forwards 0.5s;
     }
 
-    .hero .subtitle strong {
-      color: var(--chalk);
-      font-weight: 500;
+    .hero .subtitle strong { color: var(--chalk); font-weight: 500; }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.65s;
     }
 
     .scroll-hint {
@@ -160,9 +218,7 @@
       gap: 0.25rem;
     }
 
-    .scroll-hint .arrow {
-      animation: bounce 2s ease infinite;
-    }
+    .scroll-hint .arrow { animation: bounce 2s ease infinite; }
 
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
@@ -181,14 +237,117 @@
       margin: 0 auto;
     }
 
-    /* ─── THE ANTI-PITCH ─── */
-    .anti-pitch {
+    .section-label {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      color: var(--yellow);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* ─── THIS WEEK (What's Poppin) ─── */
+    .this-week {
+      max-width: 740px;
       padding-top: 3rem;
     }
 
-    .strikethrough-stack {
-      margin-bottom: 2.5rem;
+    .this-week .section-title em { color: var(--accent); font-style: italic; }
+
+    .picks-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
     }
+
+    .pick-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border-left: 3px solid var(--accent);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .pick-card:hover {
+      transform: translateY(-2px);
+      background: var(--surface-hover);
+    }
+
+    .pick-card:nth-child(2) { border-left-color: var(--yellow); }
+    .pick-card:nth-child(3) { border-left-color: var(--green); }
+
+    .pick-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.5rem;
+    }
+
+    .pick-who {
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    .pick-card:nth-child(2) .pick-who { color: var(--yellow); }
+    .pick-card:nth-child(3) .pick-who { color: var(--green); }
+
+    .pick-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--chalk-dim);
+      background: rgba(240, 235, 227, 0.06);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .pick-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .pick-why {
+      font-size: 0.9rem;
+      color: var(--chalk-dim);
+      line-height: 1.5;
+    }
+
+    .week-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .week-date {
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+    }
+
+    .week-link {
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .week-link:hover { color: var(--accent-glow); }
+
+    /* ─── ANTI-PITCH ─── */
+    .anti-pitch { padding-top: 3rem; }
+
+    .strikethrough-stack { margin-bottom: 2.5rem; }
 
     .strikethrough-stack p {
       font-family: var(--font-display);
@@ -204,10 +363,7 @@
       transition: all 0.5s ease;
     }
 
-    .strikethrough-stack p.visible {
-      opacity: 0.6;
-      transform: translateX(0);
-    }
+    .strikethrough-stack p.visible { opacity: 0.6; transform: translateX(0); }
 
     .the-answer {
       font-family: var(--font-display);
@@ -219,16 +375,8 @@
       transition: all 0.6s ease;
     }
 
-    .the-answer.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .the-answer strong {
-      color: var(--accent);
-      font-weight: 400;
-      font-style: italic;
-    }
+    .the-answer.visible { opacity: 1; transform: translateY(0); }
+    .the-answer strong { color: var(--accent); font-weight: 400; font-style: italic; }
 
     .speed-note {
       font-family: var(--font-hand);
@@ -238,20 +386,11 @@
       transition: all 0.5s ease 0.2s;
     }
 
-    .speed-note.visible {
-      opacity: 0.85;
-    }
+    .speed-note.visible { opacity: 0.85; }
 
     /* ─── THE WHAT ─── */
-    .the-what p {
-      margin-bottom: 1.5rem;
-      color: var(--chalk-dim);
-    }
-
-    .the-what p:first-of-type {
-      font-size: 1.1rem;
-      color: var(--chalk);
-    }
+    .the-what p { margin-bottom: 1.5rem; color: var(--chalk-dim); }
+    .the-what p:first-of-type { font-size: 1.1rem; color: var(--chalk); }
 
     .highlight-block {
       background: var(--surface);
@@ -269,10 +408,83 @@
       margin-bottom: 0.4rem;
     }
 
-    /* ─── THE WHO ─── */
-    .the-who {
-      text-align: center;
+    /* ─── GOODY BAG PREVIEW ─── */
+    .goody-preview {
+      max-width: 740px;
     }
+
+    .goody-preview .section-title em { color: var(--green); font-style: italic; }
+
+    .goody-items {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .goody-item {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: transform 0.2s ease;
+    }
+
+    .goody-item:hover { transform: translateY(-2px); }
+
+    .goody-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(126, 200, 139, 0.1);
+      border-radius: 8px;
+    }
+
+    .goody-info { flex: 1; }
+
+    .goody-info h4 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .goody-info p {
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+      line-height: 1.5;
+    }
+
+    .goody-info .goody-by {
+      font-family: var(--font-hand);
+      font-size: 0.95rem;
+      color: var(--green);
+      margin-top: 0.35rem;
+    }
+
+    .goody-cta {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--bg-warm);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .goody-cta p {
+      color: var(--chalk-dim);
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .goody-cta p strong { color: var(--chalk); font-weight: 500; }
+
+    /* ─── THE WHO ─── */
+    .the-who { text-align: center; }
 
     .the-who .intro-text {
       font-family: var(--font-display);
@@ -302,9 +514,7 @@
       transition: transform 0.3s ease;
     }
 
-    .creator:hover {
-      transform: translateY(-2px);
-    }
+    .creator:hover { transform: translateY(-2px); }
 
     .creator::before {
       content: '';
@@ -319,57 +529,11 @@
     .creator:nth-child(2)::before { background: var(--yellow); }
     .creator:nth-child(3)::before { background: var(--green); }
 
-    .creator .name {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      margin-bottom: 0.15rem;
-    }
-
-    .creator .handle {
-      font-family: var(--font-hand);
-      font-size: 1.1rem;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-
+    .creator .name { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.15rem; }
+    .creator .handle { font-family: var(--font-hand); font-size: 1.1rem; color: var(--accent); margin-bottom: 0.5rem; }
     .creator:nth-child(2) .handle { color: var(--yellow); }
     .creator:nth-child(3) .handle { color: var(--green); }
-
-    .creator .bio {
-      font-size: 0.9rem;
-      color: var(--chalk-dim);
-      line-height: 1.55;
-    }
-
-    /* ─── NO STRESS ─── */
-    .no-stress {
-      background: var(--bg-warm);
-      border-radius: 16px;
-      padding: 2.5rem 2rem;
-      margin: 0 auto;
-      max-width: 640px;
-      text-align: center;
-    }
-
-    .no-stress h2 {
-      font-family: var(--font-hand);
-      font-size: 1.8rem;
-      color: var(--green);
-      margin-bottom: 1rem;
-    }
-
-    .no-stress p {
-      color: var(--chalk-dim);
-      max-width: 440px;
-      margin: 0 auto;
-    }
-
-    .no-stress .bold-line {
-      color: var(--chalk);
-      font-weight: 500;
-      font-size: 1.05rem;
-      margin-top: 1rem;
-    }
+    .creator .bio { font-size: 0.9rem; color: var(--chalk-dim); line-height: 1.55; }
 
     /* ─── CTA ─── */
     .cta-section {
@@ -386,30 +550,10 @@
       margin-bottom: 2rem;
     }
 
-    .price-tag .founding {
-      font-family: var(--font-hand);
-      font-size: 1.2rem;
-      color: var(--yellow);
-      margin-bottom: 0.25rem;
-    }
-
-    .price-tag .price {
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      color: var(--chalk);
-    }
-
-    .price-tag .price span {
-      font-size: 1rem;
-      color: var(--chalk-dim);
-      font-family: var(--font-body);
-    }
-
-    .price-tag .after {
-      font-size: 0.85rem;
-      color: var(--chalk-dim);
-      margin-top: 0.25rem;
-    }
+    .price-tag .founding { font-family: var(--font-hand); font-size: 1.2rem; color: var(--yellow); margin-bottom: 0.25rem; }
+    .price-tag .price { font-family: var(--font-display); font-size: 2.5rem; color: var(--chalk); }
+    .price-tag .price span { font-size: 1rem; color: var(--chalk-dim); font-family: var(--font-body); }
+    .price-tag .after { font-size: 0.85rem; color: var(--chalk-dim); margin-top: 0.25rem; }
 
     .cta-btn {
       display: inline-block;
@@ -424,8 +568,6 @@
       text-decoration: none;
       transition: all 0.3s ease;
       margin-bottom: 1rem;
-      position: relative;
-      overflow: hidden;
     }
 
     .cta-btn:hover {
@@ -434,8 +576,25 @@
       box-shadow: 0 0 30px rgba(232, 115, 74, 0.25);
     }
 
-    .cta-btn:active {
-      transform: scale(0.98);
+    .cta-btn:active { transform: scale(0.98); }
+
+    .cta-btn-sm {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      padding: 0.7rem 2rem;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .cta-btn-sm:hover {
+      background: var(--accent-glow);
+      transform: scale(1.03);
     }
 
     .launch-date {
@@ -443,6 +602,12 @@
       font-size: 1.15rem;
       color: var(--chalk-dim);
       margin-top: 0.75rem;
+    }
+
+    .member-count {
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+      margin-top: 0.5rem;
     }
 
     /* ─── FOOTER ─── */
@@ -461,41 +626,12 @@
       transition: all 0.6s ease;
     }
 
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* stagger children */
     .stagger-children .fade-in:nth-child(1) { transition-delay: 0s; }
     .stagger-children .fade-in:nth-child(2) { transition-delay: 0.1s; }
     .stagger-children .fade-in:nth-child(3) { transition-delay: 0.2s; }
 
-    /* ─── RESPONSIVE ─── */
-    @media (min-width: 640px) {
-      .creators {
-        flex-direction: row;
-        gap: 1.25rem;
-      }
-      .creator {
-        flex: 1;
-      }
-      section {
-        padding: 6rem 2rem;
-      }
-      .no-stress {
-        padding: 3rem 2.5rem;
-      }
-    }
-
-    @media (max-width: 400px) {
-      body { font-size: 16px; }
-      .hero { padding: 1.5rem 1.25rem; }
-      section { padding: 3.5rem 1.25rem; }
-      .price-tag { padding: 1.5rem 1.75rem; }
-    }
-
-    /* ─── DIVIDER ─── */
     .divider {
       width: 60px;
       height: 3px;
@@ -503,26 +639,124 @@
       margin: 0 auto;
       border-radius: 3px;
     }
+
+    /* ─── RESPONSIVE ─── */
+    @media (min-width: 640px) {
+      .creators { flex-direction: row; gap: 1.25rem; }
+      .creator { flex: 1; }
+      section { padding: 6rem 2rem; }
+      .no-stress { padding: 3rem 2.5rem; }
+      .picks-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 400px) {
+      body { font-size: 16px; }
+      .hero { padding: 4.5rem 1.25rem 1.5rem; }
+      section { padding: 3.5rem 1.25rem; }
+      .price-tag { padding: 1.5rem 1.75rem; }
+      .nav-links a:not(.nav-cta) { display: none; }
+    }
   </style>
 </head>
 <body>
   <div class="page">
+
+    <!-- NAV -->
+    <nav class="nav">
+      <a href="/" class="nav-logo">AI <em>Recess</em></a>
+      <div class="nav-links">
+        <a href="#this-week">This Week</a>
+        <a href="/archive.html">Goody Bags</a>
+        <a href="#who">Who We Are</a>
+        <a href="https://www.skool.com/ai-recess" class="nav-cta join-cta" data-cta="nav">Join</a>
+      </div>
+    </nav>
 
     <!-- HERO -->
     <header class="hero">
       <div class="hero-inner">
         <div class="badge">
           <span class="bell">&#x1F514;</span>
-          Recess starts March 20
+          The bell rings every Friday at 4pm ET
         </div>
         <h1>Three creators. One hour.<br>Everything you need to know <em>this week.</em></h1>
-        <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything &mdash; and bring you what actually matters.</p>
+        <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything &mdash; so you can show up Monday sounding like you know things.</p>
+        <div class="hero-cta-row">
+          <a href="https://www.skool.com/ai-recess" class="cta-btn-sm join-cta" data-cta="hero">I'm in</a>
+          <a href="#this-week" style="color: var(--chalk-dim); font-size: 0.9rem; text-decoration: none;">or see what you missed &darr;</a>
+        </div>
       </div>
       <div class="scroll-hint">
         <span>hear us out</span>
         <span class="arrow">&darr;</span>
       </div>
     </header>
+
+    <!-- LATEST SESSION -->
+    <section class="this-week" id="this-week">
+      <div class="section-label fade-in">First Recess &mdash; March 20</div>
+      <h2 class="section-title fade-in">What we <em>got into</em></h2>
+      <p class="fade-in" style="color: var(--chalk-dim); margin-bottom: 2rem;">The inaugural recess. Kevin shared his screen, Logan talked systems, V brought field notes. Here's what went down.</p>
+
+      <div class="picks-grid">
+        <div class="pick-card fade-in">
+          <div class="pick-header">
+            <span class="pick-who">Kevin</span>
+            <span class="pick-tag">Show & tell</span>
+          </div>
+          <div class="pick-title">Open Claw Walkthrough</div>
+          <p class="pick-why">Full screen-share of the multi-agent setup he runs daily. People were taking notes.</p>
+        </div>
+        <div class="pick-card fade-in">
+          <div class="pick-header">
+            <span class="pick-who">Logan</span>
+            <span class="pick-tag">Workflow</span>
+          </div>
+          <div class="pick-title">Claude Code as Chief of Staff</div>
+          <p class="pick-why">The system file, the hooks, the morning routine. How she got an AI to run her life (and judge her reading habits).</p>
+        </div>
+        <div class="pick-card fade-in">
+          <div class="pick-header">
+            <span class="pick-who">V</span>
+            <span class="pick-tag">Field report</span>
+          </div>
+          <div class="pick-title">AI at a Live Conference</div>
+          <p class="pick-why">Brought AI agents to a conference and used them in real time &mdash; prep, navigation, capture. She has screenshots.</p>
+        </div>
+      </div>
+
+      <div class="week-meta fade-in">
+        <span class="week-date">Next recess: Friday at 4pm ET</span>
+        <a href="/archive.html" class="week-link">See the archive &rarr;</a>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- GOODY BAG -->
+    <section class="goody-preview" id="goody-bag">
+      <div class="section-label fade-in">The Goody Bag</div>
+      <h2 class="section-title fade-in">You leave with <em>something</em></h2>
+      <p class="fade-in" style="color: var(--chalk-dim); margin-bottom: 2rem;">Every week we open-source something from our own setups. A skill, a workflow, a repo. Copy it. Break it. Make it weird.</p>
+
+      <div class="goody-items">
+        <div class="goody-item fade-in">
+          <div class="goody-icon" style="background: rgba(126, 200, 139, 0.1);">&#x1F9F0;</div>
+          <div class="goody-info">
+            <h4>Kevin's Open Claw Setup</h4>
+            <p>His full multi-agent system. The one he showed on the call and everyone immediately wanted to steal.</p>
+            <div class="goody-by">by Kevin &mdash; First Recess</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="goody-cta fade-in">
+        <p>Join and get <strong>every goody bag</strong> &mdash; past, present, and whatever we drop next Friday.</p>
+        <a href="https://www.skool.com/ai-recess" class="cta-btn-sm join-cta" data-cta="goody-bag">Grab the goody bags</a>
+      </div>
+    </section>
+
+    <div class="divider"></div>
 
     <!-- ANTI-PITCH -->
     <section class="anti-pitch">
@@ -533,39 +767,15 @@
       </div>
       <div class="the-answer">
         AI is moving too fast for any of that.<br>
-        You need a <strong>trust filter.</strong>
+        You need <strong>three friends who are already in it.</strong>
       </div>
-      <p class="speed-note">^ three people who are already deep in it, filtering for you.</p>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- THE WHAT -->
-    <section class="the-what">
-      <p class="fade-in">
-        Every Friday at 4pm ET, we get together and talk about what actually mattered this week. The tools. The takes. The things everyone will be talking about on Monday.
-      </p>
-      <p class="fade-in">
-        Someone spins a wheel. Someone shares their screen. Someone says something wrong and gets roasted. You're in the room.
-      </p>
-
-      <div class="highlight-block fade-in">
-        <div class="label">Between Fridays</div>
-        The Discord &mdash; curated reads, hot takes, the occasional unhinged thread about whether agents are overhyped. Your async brain trust, running all week.
-      </div>
-
-      <p class="fade-in">
-        Think of it as three heads instead of one. We're reading the papers, testing the tools, and having the arguments so you can show up Monday sounding like you know things.
-      </p>
-      <p class="fade-in" style="font-family: var(--font-hand); font-size: 1.25rem; color: var(--yellow);">
-        Because you will.
-      </p>
+      <p class="speed-note">^ reading the papers, testing the tools, having the arguments.</p>
     </section>
 
     <div class="divider"></div>
 
     <!-- THE WHO -->
-    <section class="the-who">
+    <section class="the-who" id="who">
       <p class="intro-text fade-in">
         We're not gurus. We're not coaches. We're three people who won't shut up about AI.<br>
         <span style="font-size: 0.85em; opacity: 0.7;">(Our partners are relieved we found each&nbsp;other.)</span>
@@ -580,39 +790,29 @@
         <div class="creator fade-in">
           <div class="name">Kevin</div>
           <div class="handle">@vibewithkevin</div>
-          <div class="bio">Builder. Posts every single day. Will share his screen and show you the thing he broke last night at 2am. Vibe codes apps for his sourdough.</div>
+          <div class="bio">Builder. Posts every single day. Will share his screen and show you the thing he broke last night at 2am. Has a sourdough app.</div>
         </div>
         <div class="creator fade-in">
           <div class="name">Vanessa</div>
           <div class="handle">@thinkwithv</div>
-          <div class="bio">The one who asks the question everyone was thinking. Will tell you when the hype is hype. Brings the real talk and also the woo factor, in the best way possible.</div>
+          <div class="bio">The one who asks the question everyone was thinking. Will tell you when the hype is hype. Tested AI agents at a live conference just to see what would happen.</div>
         </div>
-      </div>
-    </section>
-
-    <!-- NO STRESS -->
-    <section style="padding-top: 2rem; padding-bottom: 0;">
-      <div class="no-stress fade-in">
-        <h2>No stress. Seriously.</h2>
-        <p>
-          No backlog. No homework. Miss a Friday? The chat catches you up. This isn't a commitment &mdash; it's a cheat code.
-        </p>
-        <p class="bold-line">
-          If you've got an hour a week, we've got you covered.
-        </p>
       </div>
     </section>
 
     <!-- CTA -->
     <section class="cta-section">
+      <p class="fade-in" style="color: var(--chalk-dim); max-width: 440px; margin: 0 auto 2rem; font-size: 0.95rem;">
+        No homework. Miss a Friday? We package the takeaways. You're never behind.
+      </p>
       <div class="price-tag fade-in">
-        <div class="founding">Founding rate &mdash; first 100 members</div>
+        <div class="founding">Founding rate &mdash; first 100</div>
         <div class="price">$15 <span>/ month</span></div>
-        <div class="after">Then it goes up. Lock it in now.</div>
+        <div class="after">Goes up after that. This is the lock-in price.</div>
       </div>
       <br>
-      <a href="#" class="cta-btn">I'm in</a>
-      <div class="launch-date">First session: March 20, 2026 &bull; Fridays at 4pm ET</div>
+      <a href="https://www.skool.com/ai-recess" class="cta-btn join-cta" data-cta="bottom">I'm in</a>
+      <div class="launch-date">Fridays at 4pm ET &bull; Live recess + goody bags + the group chat</div>
     </section>
 
     <footer>
@@ -621,30 +821,25 @@
 
   </div>
 
+  <script src="/analytics/tracker.js"></script>
   <script>
-    // Intersection Observer for scroll animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+    // ─── SCROLL ANIMATIONS ───
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
-    }, {
-      threshold: 0.15,
-      rootMargin: '0px 0px -40px 0px'
-    });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-    // Observe all animated elements
     document.querySelectorAll('.fade-in, .strikethrough-stack p, .the-answer, .speed-note')
-      .forEach(el => observer.observe(el));
+      .forEach(function(el) { observer.observe(el); });
 
-    // Stagger strikethrough animations
-    const strikes = document.querySelectorAll('.strikethrough-stack p');
-    const strikeObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+    // Stagger strikethroughs
+    var strikes = document.querySelectorAll('.strikethrough-stack p');
+    var strikeObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
         if (entry.isIntersecting) {
-          strikes.forEach((s, i) => {
-            setTimeout(() => s.classList.add('visible'), i * 200);
+          strikes.forEach(function(s, i) {
+            setTimeout(function() { s.classList.add('visible'); }, i * 200);
           });
           strikeObserver.disconnect();
         }
