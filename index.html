@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1815">
   <title>AI Recess — Your Trust Filter for AI</title>
   <meta name="description" content="Three creators. One hour. Everything you need to know this week. A brain trust for people who want to stay ahead of AI without losing their minds.">
   <meta property="og:title" content="AI Recess — Your Trust Filter for AI">
@@ -20,7 +21,7 @@
       --surface: #2c2723;
       --surface-hover: #353029;
       --chalk: #f0ebe3;
-      --chalk-dim: #b8b0a4;
+      --chalk-dim: #c4bdb2;
       --accent: #e8734a;
       --accent-glow: #f4945f;
       --yellow: #f2d06b;
@@ -29,6 +30,7 @@
       --font-display: 'Instrument Serif', Georgia, serif;
       --font-body: 'DM Sans', -apple-system, sans-serif;
       --font-hand: 'Caveat', cursive;
+      --font-hand-weight: 600;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -62,6 +64,402 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 1;
+    }
+
+    /* SVG bell icon (replaces emoji) */
+    .bell-icon {
+      display: inline-block;
+      width: 1.2em;
+      height: 1.2em;
+      vertical-align: -0.15em;
+      fill: currentColor;
+    }
+
+    /* ═══════════════════════════════════
+       WAITLIST GATE
+       ═══════════════════════════════════ */
+    #waitlist-gate {
+      position: relative;
+      z-index: 2;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    #waitlist-gate.hidden {
+      display: none;
+    }
+
+    .gate-inner {
+      max-width: 440px;
+      width: 100%;
+    }
+
+    .gate-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-hand);
+      font-size: 1.2rem;
+      color: var(--yellow);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.15s;
+    }
+
+    .gate-badge .bell-icon {
+      animation: ring 1.5s ease-in-out 1s;
+      transform-origin: top center;
+    }
+
+    .gate-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2.2rem, 7vw, 3.2rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.3s;
+    }
+
+    .gate-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .gate-subtitle {
+      font-size: 1.05rem;
+      color: var(--chalk-dim);
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.45s;
+    }
+
+    .gate-details {
+      font-family: var(--font-hand);
+      font-size: 1.15rem;
+      color: var(--chalk-dim);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.55s;
+    }
+
+    .gate-details span {
+      color: var(--green);
+    }
+
+    /* ─── COUNTDOWN TIMER ─── */
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.6s;
+    }
+
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 56px;
+    }
+
+    .countdown-unit .num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--chalk);
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 0.5rem 0.65rem;
+      min-width: 52px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-unit .lbl {
+      font-family: var(--font-hand);
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+      margin-top: 0.3rem;
+    }
+
+    .countdown-colon {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--chalk-dim);
+      opacity: 0.4;
+      align-self: flex-start;
+      padding-top: 0.5rem;
+    }
+
+    /* ─── WAITLIST COUNTER ─── */
+    .waitlist-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.7s;
+    }
+
+    .counter-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ─── FORM ─── */
+    .waitlist-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.65s;
+    }
+
+    .waitlist-form input {
+      width: 100%;
+      padding: 0.9rem 1.15rem;
+      background: var(--surface);
+      border: 1.5px solid transparent;
+      border-radius: 10px;
+      color: var(--chalk);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .waitlist-form input::placeholder {
+      color: var(--chalk-dim);
+      opacity: 0.6;
+    }
+
+    .waitlist-form input:focus {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+      box-shadow: 0 0 0 3px rgba(232, 115, 74, 0.15);
+    }
+
+    .waitlist-form .phone-note {
+      font-size: 0.78rem;
+      color: var(--chalk-dim);
+      opacity: 0.6;
+      text-align: center;
+      margin-top: -0.35rem;
+    }
+
+    .submit-btn {
+      display: inline-block;
+      width: 100%;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 0.25rem;
+      position: relative;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-glow);
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(232, 115, 74, 0.2);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .form-error {
+      font-size: 0.85rem;
+      color: #f07070;
+      min-height: 1.25rem;
+    }
+
+    .gate-founding {
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.8s;
+    }
+
+    .gate-founding .price-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      background: var(--surface);
+      border: 1px solid rgba(232, 115, 74, 0.15);
+      border-radius: 10px;
+      padding: 0.65rem 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .gate-founding .price-pill .label {
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      color: var(--yellow);
+    }
+
+    .gate-founding .price-pill .amount {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--chalk);
+    }
+
+    .gate-founding .price-pill .period {
+      font-size: 0.85rem;
+      color: var(--chalk-dim);
+    }
+
+    .gate-founding .limit {
+      font-size: 0.82rem;
+      color: var(--chalk-dim);
+      margin-top: 0.35rem;
+    }
+
+    .cal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+
+    .cal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--surface);
+      border: 1px solid rgba(240, 235, 227, 0.08);
+      border-radius: 8px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.78rem;
+      color: var(--chalk-dim);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cal-btn:hover {
+      background: var(--surface-hover);
+      color: var(--chalk);
+      border-color: rgba(240, 235, 227, 0.15);
+    }
+
+    /* ─── CONFIRMATION STATE ─── */
+    .confirmation {
+      display: none;
+      text-align: center;
+    }
+
+    .confirmation.show {
+      display: block;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .confirmation .check-ring {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 3px solid var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      animation: scaleIn 0.4s ease forwards;
+    }
+
+    .confirmation .check-ring svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--green);
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: drawCheck 0.4s ease forwards 0.3s;
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .confirmation h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .confirmation .confirm-sub {
+      color: var(--chalk-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .confirmation .confirm-detail {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 1.15rem 1.5rem;
+      font-size: 0.9rem;
+      color: var(--chalk-dim);
+      line-height: 1.6;
+    }
+
+    .confirmation .confirm-detail strong {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════
+       FULL SITE
+       ═══════════════════════════════════ */
+    #full-site {
+      display: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    #full-site.show {
+      display: block;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .page { position: relative; z-index: 2; }
@@ -152,11 +550,9 @@
       animation: fadeUp 0.6s ease forwards 0.2s;
     }
 
-    .badge .bell {
-      display: inline-block;
+    .badge .bell-icon {
       animation: ring 1.5s ease-in-out 1.2s;
       transform-origin: top center;
-      font-size: 1.4rem;
     }
 
     @keyframes ring {
@@ -208,7 +604,7 @@
       left: 50%;
       transform: translateX(-50%);
       font-family: var(--font-hand);
-      font-size: 1rem;
+      font-size: 1.4rem;
       color: var(--chalk-dim);
       opacity: 0;
       animation: fadeUp 0.6s ease forwards 1.4s;
@@ -399,6 +795,11 @@
       border-radius: 0 8px 8px 0;
       margin: 2rem 0;
       font-size: 0.95rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .highlight-block:hover {
+      border-left-color: var(--accent-glow);
     }
 
     .highlight-block .label {
@@ -511,7 +912,7 @@
       text-align: left;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .creator:hover { transform: translateY(-2px); }
@@ -523,6 +924,11 @@
       left: 0;
       right: 0;
       height: 3px;
+      transition: height 0.25s ease;
+    }
+
+    .creator:hover::before {
+      height: 4px;
     }
 
     .creator:nth-child(1)::before { background: var(--accent); }
@@ -548,6 +954,12 @@
       border-radius: 12px;
       padding: 1.75rem 2.5rem;
       margin-bottom: 2rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .price-tag:hover {
+      border-color: rgba(232, 115, 74, 0.35);
+      box-shadow: 0 4px 20px rgba(232, 115, 74, 0.08);
     }
 
     .price-tag .founding { font-family: var(--font-hand); font-size: 1.2rem; color: var(--yellow); margin-bottom: 0.25rem; }
@@ -566,8 +978,21 @@
       border-radius: 60px;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       margin-bottom: 1rem;
+    }
+
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .cta-btn:hover::after {
+      transform: translateX(100%);
     }
 
     .cta-btn:hover {
@@ -614,9 +1039,9 @@
     footer {
       text-align: center;
       padding: 2rem 1.5rem 3rem;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--chalk-dim);
-      opacity: 0.5;
+      opacity: 0.6;
     }
 
     /* ─── ANIMATIONS ─── */
@@ -629,8 +1054,33 @@
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     .stagger-children .fade-in:nth-child(1) { transition-delay: 0s; }
-    .stagger-children .fade-in:nth-child(2) { transition-delay: 0.1s; }
-    .stagger-children .fade-in:nth-child(3) { transition-delay: 0.2s; }
+    .stagger-children .fade-in:nth-child(2) { transition-delay: 0.12s; }
+    .stagger-children .fade-in:nth-child(3) { transition-delay: 0.24s; }
+
+    /* ─── ANIMATED DIVIDER ─── */
+    .divider {
+      width: 100%;
+      max-width: 640px;
+      height: 1px;
+      margin: 0 auto;
+      position: relative;
+      background: transparent;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, var(--surface), var(--accent), var(--surface), transparent);
+      background-size: 200% 100%;
+      animation: divider-flow 4s ease-in-out infinite;
+    }
+
+    @keyframes divider-flow {
+      0% { background-position: 100% 0; }
+      50% { background-position: 0% 0; }
+      100% { background-position: 100% 0; }
+    }
 
     .divider {
       width: 60px;
@@ -659,7 +1109,6 @@
   </style>
 </head>
 <body>
-  <div class="page">
 
     <!-- NAV -->
     <nav class="nav">
@@ -686,11 +1135,91 @@
           <a href="#this-week" style="color: var(--chalk-dim); font-size: 0.9rem; text-decoration: none;">or see what you missed &darr;</a>
         </div>
       </div>
-      <div class="scroll-hint">
-        <span>hear us out</span>
+
+      <h1 class="gate-title">Your <em>trust filter</em> for AI.</h1>
+
+      <p class="gate-subtitle">Three creators. One hour. Everything you need to know this week.</p>
+
+      <p class="gate-details">Every Friday at 4pm ET &bull; Live session + community</p>
+
+      <!-- Countdown to March 20, 2026 4pm ET -->
+      <div class="countdown" id="countdown" aria-label="Countdown to launch">
+        <div class="countdown-unit">
+          <span class="num" id="cd-days">--</span>
+          <span class="lbl">days</span>
+        </div>
+        <span class="countdown-colon">:</span>
+        <div class="countdown-unit">
+          <span class="num" id="cd-hours">--</span>
+          <span class="lbl">hours</span>
+        </div>
+        <span class="countdown-colon">:</span>
+        <div class="countdown-unit">
+          <span class="num" id="cd-mins">--</span>
+          <span class="lbl">min</span>
+        </div>
+        <span class="countdown-colon">:</span>
+        <div class="countdown-unit">
+          <span class="num" id="cd-secs">--</span>
+          <span class="lbl">sec</span>
+        </div>
+      </div>
+
+      <!-- Social proof counter -->
+      <div class="waitlist-counter" id="waitlist-counter" style="display:none;">
+        <span class="counter-dot"></span>
+        <span id="counter-text"></span>
+      </div>
+
+      <!-- Form -->
+      <div id="waitlist-form-wrap">
+        <form class="waitlist-form" id="waitlist-form" autocomplete="on">
+          <input type="email" name="email" id="wl-email" placeholder="Your email" required autocomplete="email" aria-label="Email address" inputmode="email">
+          <input type="tel" name="phone" id="wl-phone" placeholder="Phone number (optional)" autocomplete="tel" aria-label="Phone number (optional)" inputmode="tel">
+          <p class="phone-note">We'll text you when we launch. No spam. We already have enough AI generating that.</p>
+          <button type="submit" class="submit-btn" id="submit-btn">Join the waitlist</button>
+        </form>
+        <p class="form-error" id="form-error" role="alert" aria-live="assertive"></p>
+      </div>
+
+      <!-- Confirmation -->
+      <div class="confirmation" id="confirmation" role="status" aria-live="polite">
+        <div class="check-ring">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4,12 10,18 20,6"/></svg>
+        </div>
+        <h2>You're on the list.</h2>
+        <p class="confirm-sub">We'll reach out when it's go time.</p>
+        <div class="confirm-detail">
+          <strong>Founding member pricing locked in.</strong><br>
+          First 100 members get the lowest rate, forever. We'll be in touch before March 20.
+        </div>
+      </div>
+
+      <!-- Founding rate callout -->
+      <div class="gate-founding" id="gate-founding">
+        <div class="price-pill">
+          <span class="label">Founding rate</span>
+          <span class="amount">$15</span>
+          <span class="period">/ month</span>
+        </div>
+        <p class="limit">First 100 members lock this price in. Then it goes up.</p>
+        <p class="limit" style="margin-top: 0.75rem;">March 20, 2026 &bull; Fridays at 4pm ET</p>
+        <div class="cal-buttons">
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=AI+Recess+%E2%80%94+First+Session&dates=20260320T200000Z/20260320T210000Z&details=Your+trust+filter+for+AI.+Three+creators,+one+hour.+joinairecess.com&recur=RRULE:FREQ=WEEKLY;BYDAY=FR" target="_blank" rel="noopener noreferrer" class="cal-btn" aria-label="Add to Google Calendar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Google
+          </a>
+          <a href="/ai-recess.ics" class="cal-btn" aria-label="Add to Apple Calendar" download>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            iCal
+          </a>
+        </div>
+      </div>
+
+      <div class="scroll-hint" aria-hidden="true">
+        <span>see what's inside</span>
         <span class="arrow">&darr;</span>
       </div>
-    </header>
 
     <!-- LATEST SESSION -->
     <section class="this-week" id="this-week">
@@ -815,10 +1344,79 @@
       <div class="launch-date">Fridays at 4pm ET &bull; Live recess + goody bags + the group chat</div>
     </section>
 
-    <footer>
-      AI Recess &copy; 2026 &bull; A brain trust, not a brand.
-    </footer>
+        <div class="highlight-block fade-in">
+          <div class="label">Between Fridays</div>
+          This isn't a "see you next week" situation. We drop something to try every weekend: a prompt, a tool, a small build. Monday, the community shares what happened. It's active, not passive. The Skool community runs all week with Q&A threads, member prompts, and the occasional unhinged debate.
+        </div>
 
+        <p class="fade-in">
+          Three heads instead of one. We're testing the tools, reading the papers, and having the arguments so you can show up Monday knowing things.
+        </p>
+
+        <div class="mid-cta fade-in">
+          <a href="https://www.skool.com/ai-recess" class="cta-btn" target="_blank" rel="noopener">I'm in</a>
+          <div class="cta-note">$15/mo founding rate &bull; Cancel anytime</div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- THE WHO -->
+      <section class="the-who" aria-label="The creators">
+        <p class="intro-text fade-in">
+          We're not gurus. We're not coaches. We're three people who won't shut up about AI.<br>
+          <span style="font-size: 0.85em; opacity: 0.7;">(Our partners are relieved we found each&nbsp;other.)</span>
+        </p>
+
+        <div class="creators stagger-children">
+          <div class="creator fade-in">
+            <div class="name">Logan</div>
+            <a href="https://www.tiktok.com/@loganinthefuture" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Logan on TikTok">@loganinthefuture</a>
+            <div class="bio">Career strategist turned AI obsessive. Harvard learning design background. Will connect your question to three papers you've never heard of.</div>
+          </div>
+          <div class="creator fade-in">
+            <div class="name">Kevin</div>
+            <a href="https://www.tiktok.com/@vibewithkevin" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Kevin on TikTok">@vibewithkevin</a>
+            <div class="bio">Consultant who builds real tools with AI, not slide decks. Will share his screen and show you exactly what he shipped and what broke at 2am.</div>
+          </div>
+          <div class="creator fade-in">
+            <div class="name">Vanessa</div>
+            <a href="https://www.tiktok.com/@thinkwithv" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Vanessa on TikTok">@thinkwithv</a>
+            <div class="bio">Writer, entrepreneur, and recovering productivity nerd with ADHD brain. Believes that "intelligence" is more than what AI can automate and that the point of all this tech to make you more YOU.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NO STRESS -->
+      <section style="padding-top: 2rem; padding-bottom: 0;" aria-label="No commitment needed">
+        <div class="no-stress fade-in">
+          <h2>No stress. Seriously.</h2>
+          <p>
+            No backlog. No homework. Miss a Friday? The chat catches you up. This isn't a commitment, it's a cheat code.
+          </p>
+          <p class="bold-line">
+            If you've got an hour a week, we've got you covered.
+          </p>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section" aria-label="Join AI Recess">
+        <div class="price-tag fade-in">
+          <div class="founding">Founding rate, first 100 members</div>
+          <div class="price">$15 <span>/ month</span></div>
+          <div class="after">Then it goes up. Lock it in now.</div>
+        </div>
+        <br>
+        <a href="https://www.skool.com/ai-recess" class="cta-btn" id="cta-btn" target="_blank" rel="noopener">I'm in</a>
+        <div class="launch-date">First session: March 20, 2026 &bull; Fridays at 4pm ET</div>
+      </section>
+
+      <footer>
+        AI Recess &copy; 2026 &bull; A brain trust, not a brand.
+      </footer>
+
+    </div>
   </div>
 
   <script src="/analytics/tracker.js"></script>
@@ -847,6 +1445,22 @@
     }, { threshold: 0.3 });
 
     if (strikes.length) strikeObserver.observe(strikes[0]);
+
+    // Stagger segment pill animations
+    const pills = document.querySelectorAll('.segment-pill');
+    const pillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          pills.forEach((p, i) => {
+            setTimeout(() => p.classList.add('visible'), i * 80);
+          });
+          pillObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    if (pills.length) pillObserver.observe(pills[0]);
+
   </script>
 </body>
 </html>

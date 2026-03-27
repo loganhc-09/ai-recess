@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//AI Recess//EN
+BEGIN:VEVENT
+DTSTART:20260320T200000Z
+DTEND:20260320T210000Z
+RRULE:FREQ=WEEKLY;BYDAY=FR
+SUMMARY:AI Recess — Weekly Session
+DESCRIPTION:Your trust filter for AI. Three creators, one hour. joinairecess.com
+URL:https://joinairecess.com
+END:VEVENT
+END:VCALENDAR
