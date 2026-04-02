@@ -114,6 +114,47 @@
 
     .nav-links .nav-cta:hover { background: var(--accent-glow); color: var(--bg); }
 
+    /* ─── MOBILE NAV ─── */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+      color: var(--chalk);
+    }
+    .nav-toggle svg { display: block; }
+
+    @media (max-width: 640px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: rgba(26, 24, 21, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(240, 235, 227, 0.08);
+        padding: 0.5rem 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a {
+        padding: 0.85rem 1.5rem;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(240, 235, 227, 0.04);
+      }
+      .nav-links .nav-cta {
+        margin: 0.75rem 1.5rem;
+        text-align: center;
+        padding: 0.75rem;
+        font-size: 1rem;
+      }
+    }
+
     /* ─── PAGE HEADER ─── */
     .page-header {
       padding: 7rem 1.5rem 3rem;
@@ -344,7 +385,10 @@
     <!-- NAV -->
     <nav class="nav">
       <a href="/" class="nav-logo">AI <em>Recess</em></a>
-      <div class="nav-links">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <div class="nav-links" id="nav-links">
         <a href="/">Home</a>
         <a href="/archive.html" style="color: var(--chalk);">Goody Bags</a>
         <a href="https://www.skool.com/ai-recess" class="nav-cta join-cta" data-cta="nav-archive">Join</a>
@@ -354,7 +398,7 @@
     <!-- HEADER -->
     <div class="page-header">
       <h1>The <em>Goody Bag</em> Archive</h1>
-      <p>Every recess, you leave with something. Workflows, skills, repos &mdash; stuff we actually use. Here's the collection so far.</p>
+      <p>Every recess, you leave with something. Workflows, skills, repos. Stuff we actually use. Here's the collection so far.</p>
     </div>
 
     <!-- ARCHIVE -->
@@ -383,7 +427,7 @@
 
     <!-- BOTTOM CTA -->
     <div class="archive-cta">
-      <p>This grows every Friday. Join and get <strong>the whole collection</strong> &mdash; everything we've dropped so far, plus whatever comes next.</p>
+      <p>This grows every Friday. Join and get <strong>the whole collection</strong>: everything we've dropped so far, plus whatever comes next.</p>
       <a href="https://www.skool.com/ai-recess" class="cta-btn join-cta" data-cta="archive-bottom">I'm in</a>
     </div>
 
@@ -394,5 +438,21 @@
   </div>
 
   <script src="/analytics/tracker.js"></script>
+  <script>
+    var navToggle = document.getElementById('nav-toggle');
+    var navLinks = document.getElementById('nav-links');
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', function() {
+        var isOpen = navLinks.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', isOpen);
+      });
+      navLinks.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          navLinks.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  </script>
 </body>
 </html>

@@ -11,17 +11,25 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://joinairecess.com">
   <link rel="canonical" href="https://joinairecess.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta property="og:image" content="https://joinairecess.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Recess — Your Trust Filter for AI">
+  <meta name="twitter:description" content="Three creators. One hour. Everything you need to know this week.">
+  <meta name="twitter:image" content="https://joinairecess.com/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #1a1815;
-      --bg-warm: #231f1b;
-      --surface: #2c2723;
-      --surface-hover: #353029;
+      --bg: #1c1e21;
+      --bg-warm: #222529;
+      --surface: #2a2d32;
+      --surface-hover: #33373d;
       --chalk: #f0ebe3;
-      --chalk-dim: #c4bdb2;
+      --chalk-dim: #d8d2c9;
       --accent: #e8734a;
       --accent-glow: #f4945f;
       --yellow: #f2d06b;
@@ -40,30 +48,35 @@
       background: var(--bg);
       color: var(--chalk);
       font-family: var(--font-body);
-      font-size: 17px;
+      font-size: 18px;
+      font-weight: 400;
       line-height: 1.65;
       overflow-x: hidden;
     }
 
+    /* Blacktop asphalt texture */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(232, 115, 74, 0.03) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(106, 163, 199, 0.03) 0%, transparent 50%);
+      opacity: 0.14;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='0.5'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 0;
     }
 
+    /* Playground court lines - weathered SVG overlay */
     body::after {
       content: '';
       position: fixed;
       inset: 0;
-      opacity: 0.35;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 1;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='2400' fill='none'%3E%3Cdefs%3E%3Cfilter id='worn' x='-5%25' y='-5%25' width='110%25' height='110%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='noise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='noise' scale='3' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Cfilter id='worn2' x='-5%25' y='-5%25' width='110%25' height='110%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='2' result='noise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='noise' scale='4' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/defs%3E%3C!-- Four square court (yellow, thick, weathered) --%3E%3Cg filter='url(%23worn)' opacity='0.85'%3E%3Crect x='70' y='100' width='260' height='260' stroke='%23d4b94e' stroke-width='5' rx='2'/%3E%3Cline x1='200' y1='100' x2='200' y2='360' stroke='%23d4b94e' stroke-width='4.5'/%3E%3Cline x1='70' y1='232' x2='330' y2='232' stroke='%23d4b94e' stroke-width='4'/%3E%3Ctext x='112' y='185' font-size='32' font-family='Arial,sans-serif' font-weight='bold' fill='%23d4b94e' opacity='0.5'%3E1%3C/text%3E%3Ctext x='235' y='185' font-size='32' font-family='Arial,sans-serif' font-weight='bold' fill='%23d4b94e' opacity='0.4'%3E2%3C/text%3E%3Ctext x='112' y='325' font-size='32' font-family='Arial,sans-serif' font-weight='bold' fill='%23d4b94e' opacity='0.6'%3E4%3C/text%3E%3Ctext x='235' y='325' font-size='32' font-family='Arial,sans-serif' font-weight='bold' fill='%23d4b94e' opacity='0.35'%3E3%3C/text%3E%3C/g%3E%3C!-- Hopscotch (white, uneven, faded) --%3E%3Cg filter='url(%23worn2)' opacity='0.6'%3E%3Crect x='1000' y='480' width='80' height='80' stroke='%23e8e0d0' stroke-width='5'/%3E%3Crect x='955' y='570' width='80' height='80' stroke='%23e8e0d0' stroke-width='4.5'/%3E%3Crect x='1045' y='570' width='80' height='80' stroke='%23e8e0d0' stroke-width='5.5'/%3E%3Crect x='1000' y='660' width='80' height='80' stroke='%23e8e0d0' stroke-width='4'/%3E%3Crect x='955' y='750' width='80' height='80' stroke='%23e8e0d0' stroke-width='5'/%3E%3Crect x='1045' y='750' width='80' height='80' stroke='%23e8e0d0' stroke-width='4'/%3E%3Crect x='1000' y='840' width='80' height='80' stroke='%23e8e0d0' stroke-width='4.5'/%3E%3Crect x='1000' y='930' width='80' height='80' stroke='%23e8e0d0' stroke-width='3.5'/%3E%3C/g%3E%3C!-- Parking stall lines (white, thick, varying fade) --%3E%3Cg filter='url(%23worn)' opacity='0.5'%3E%3Cline x1='720' y1='60' x2='718' y2='190' stroke='%23e8e0d0' stroke-width='5'/%3E%3Cline x1='785' y1='62' x2='787' y2='188' stroke='%23e8e0d0' stroke-width='4.5'/%3E%3Cline x1='850' y1='58' x2='849' y2='192' stroke='%23e8e0d0' stroke-width='5.5'/%3E%3Cline x1='915' y1='61' x2='916' y2='189' stroke='%23e8e0d0' stroke-width='4'/%3E%3Cline x1='980' y1='60' x2='978' y2='190' stroke='%23e8e0d0' stroke-width='5'/%3E%3Cline x1='720' y1='190' x2='980' y2='190' stroke='%23e8e0d0' stroke-width='4.5'/%3E%3C/g%3E%3C!-- Basketball half court (white, worn, thick) --%3E%3Cg filter='url(%23worn2)' opacity='0.7'%3E%3Cpath d='M 420 1350 A 140 140 0 0 1 700 1350' stroke='%23e8e0d0' stroke-width='5'/%3E%3Cline x1='420' y1='1350' x2='700' y2='1350' stroke='%23e8e0d0' stroke-width='5'/%3E%3Ccircle cx='560' cy='1350' r='24' stroke='%23e8e0d0' stroke-width='4'/%3E%3C/g%3E%3C!-- Court boundary (yellow, faded unevenly) --%3E%3Cg filter='url(%23worn)' opacity='0.55'%3E%3Cline x1='55' y1='1080' x2='520' y2='1082' stroke='%23d4b94e' stroke-width='5'/%3E%3Cline x1='55' y1='1080' x2='57' y2='1560' stroke='%23d4b94e' stroke-width='4.5'/%3E%3Cline x1='520' y1='1080' x2='518' y2='1560' stroke='%23d4b94e' stroke-width='4'/%3E%3C/g%3E%3C!-- Tetherball circle (very faded) --%3E%3Cg filter='url(%23worn2)' opacity='0.4'%3E%3Ccircle cx='1150' cy='1700' r='70' stroke='%23e8e0d0' stroke-width='5'/%3E%3Ccircle cx='1150' cy='1700' r='5' fill='%23e8e0d0'/%3E%3C/g%3E%3C!-- Random kickball diamond (very faded yellow) --%3E%3Cg filter='url(%23worn)' opacity='0.35'%3E%3Cpolygon points='300,1800 380,1900 300,2000 220,1900' stroke='%23d4b94e' stroke-width='5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 1400px 2400px;
+      background-position: center top;
+      background-repeat: repeat-y;
     }
 
     /* SVG bell icon (replaces emoji) */
@@ -499,7 +512,7 @@
     }
 
     .nav-links a {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--chalk-dim);
       text-decoration: none;
       transition: color 0.2s;
@@ -510,16 +523,77 @@
     .nav-links .nav-cta {
       background: var(--accent);
       color: var(--bg);
-      padding: 0.4rem 1.1rem;
+      padding: 0.45rem 1.2rem;
       border-radius: 40px;
-      font-weight: 500;
-      font-size: 0.85rem;
+      font-weight: 600;
+      font-size: 0.9rem;
       transition: all 0.2s;
     }
 
     .nav-links .nav-cta:hover {
       background: var(--accent-glow);
       color: var(--bg);
+    }
+
+    /* ─── MOBILE NAV ─── */
+    /* ─── SKIP LINK ─── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.5rem 1rem;
+      border-radius: 0 0 8px 8px;
+      z-index: 200;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 0; }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0.5rem;
+      color: var(--chalk);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-toggle svg { display: block; }
+
+    @media (max-width: 640px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: rgba(26, 24, 21, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(240, 235, 227, 0.08);
+        padding: 0.5rem 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a {
+        padding: 0.85rem 1.5rem;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(240, 235, 227, 0.04);
+      }
+      .nav-links .nav-cta {
+        margin: 0.75rem 1.5rem;
+        text-align: center;
+        padding: 0.75rem;
+        font-size: 1rem;
+      }
     }
 
     /* ─── HERO ─── */
@@ -579,7 +653,7 @@
     .hero h1 em { font-style: italic; color: var(--accent); }
 
     .hero .subtitle {
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       color: var(--chalk-dim);
       max-width: 480px;
       margin-bottom: 2.5rem;
@@ -592,6 +666,7 @@
     .hero-cta-row {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 1.25rem;
       flex-wrap: wrap;
       opacity: 0;
@@ -712,7 +787,7 @@
     }
 
     .pick-why {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--chalk-dim);
       line-height: 1.5;
     }
@@ -731,14 +806,29 @@
     }
 
     .week-link {
-      font-family: var(--font-hand);
-      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 1rem;
+      background: var(--surface);
+      border: 1px solid rgba(232, 115, 74, 0.2);
+      border-radius: 10px;
+      padding: 0.65rem 1.25rem;
       color: var(--accent);
       text-decoration: none;
       transition: color 0.2s;
     }
 
-    .week-link:hover { color: var(--accent-glow); }
+    .week-link:hover {
+      color: var(--accent-glow);
+      border-color: rgba(232, 115, 74, 0.4);
+      background: var(--surface-hover);
+    }
+    .week-link svg {
+      flex-shrink: 0;
+    }
 
     /* ─── ANTI-PITCH ─── */
     .anti-pitch { padding-top: 3rem; }
@@ -935,11 +1025,181 @@
     .creator:nth-child(2)::before { background: var(--yellow); }
     .creator:nth-child(3)::before { background: var(--green); }
 
+    .creator .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 0.75rem;
+      border: 2px solid var(--surface-hover);
+      transition: transform 0.25s ease;
+    }
+    .creator:hover .avatar { transform: scale(1.05); }
+    .creator:nth-child(1) .avatar { border-color: var(--accent); }
+    .creator:nth-child(2) .avatar { border-color: var(--yellow); }
+    .creator:nth-child(3) .avatar { border-color: var(--green); }
+
     .creator .name { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.15rem; }
-    .creator .handle { font-family: var(--font-hand); font-size: 1.1rem; color: var(--accent); margin-bottom: 0.5rem; }
+    .creator .handle {
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      border-bottom: 1.5px solid transparent;
+      padding-bottom: 1px;
+      transition: all 0.2s ease;
+    }
+    .creator .handle:hover { border-bottom-color: currentColor; }
     .creator:nth-child(2) .handle { color: var(--yellow); }
     .creator:nth-child(3) .handle { color: var(--green); }
-    .creator .bio { font-size: 0.9rem; color: var(--chalk-dim); line-height: 1.55; }
+    .creator .bio { font-size: 0.95rem; color: var(--chalk-dim); line-height: 1.6; }
+
+    /* ─── TIKTOK EMBEDS ─── */
+    .tiktok-section {
+      max-width: 960px;
+    }
+    .tiktok-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2rem);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .tiktok-section .section-subtitle {
+      text-align: center;
+      color: var(--chalk-dim);
+      margin-bottom: 2.5rem;
+      font-size: 1.05rem;
+    }
+    .tiktok-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .tiktok-card {
+      background: var(--surface);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .tiktok-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    .tiktok-placeholder {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      background: var(--surface);
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tiktok-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+    .tiktok-play {
+      width: 64px;
+      height: 64px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+    .tiktok-play svg {
+      width: 24px;
+      height: 24px;
+      color: var(--bg);
+      margin-left: 3px;
+    }
+    .tiktok-placeholder:hover .tiktok-play {
+      transform: scale(1.1);
+      background: var(--accent-glow);
+    }
+    .tiktok-card iframe {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      border: none;
+      display: block;
+    }
+    .tiktok-card .tiktok-creator {
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tiktok-card .tiktok-creator img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .tiktok-card .tiktok-creator span {
+      font-family: var(--font-hand);
+      font-size: 0.95rem;
+    }
+    .tiktok-card:nth-child(1) .tiktok-creator span { color: var(--accent); }
+    .tiktok-card:nth-child(2) .tiktok-creator span { color: var(--yellow); }
+    .tiktok-card:nth-child(3) .tiktok-creator span { color: var(--green); }
+
+    @media (max-width: 900px) {
+      .tiktok-grid {
+        grid-template-columns: 1fr;
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials {
+      max-width: 740px;
+    }
+    .testimonials h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2rem);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+    .testimonial {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .testimonial p {
+      font-size: 0.95rem;
+      color: var(--chalk-dim);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .testimonial .attribution {
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      color: var(--yellow);
+    }
+    @media (max-width: 640px) {
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
     /* ─── CTA ─── */
     .cta-section {
@@ -1057,41 +1317,18 @@
     .stagger-children .fade-in:nth-child(2) { transition-delay: 0.12s; }
     .stagger-children .fade-in:nth-child(3) { transition-delay: 0.24s; }
 
-    /* ─── ANIMATED DIVIDER ─── */
+    /* ─── DIVIDER (chalk line on blacktop) ─── */
     .divider {
-      width: 100%;
-      max-width: 640px;
-      height: 1px;
+      width: 80px;
+      height: 2px;
+      background: rgba(240, 235, 227, 0.12);
       margin: 0 auto;
-      position: relative;
-      background: transparent;
-    }
-
-    .divider::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, var(--surface), var(--accent), var(--surface), transparent);
-      background-size: 200% 100%;
-      animation: divider-flow 4s ease-in-out infinite;
-    }
-
-    @keyframes divider-flow {
-      0% { background-position: 100% 0; }
-      50% { background-position: 0% 0; }
-      100% { background-position: 100% 0; }
-    }
-
-    .divider {
-      width: 60px;
-      height: 3px;
-      background: var(--surface);
-      margin: 0 auto;
-      border-radius: 3px;
+      border-radius: 1px;
     }
 
     /* ─── RESPONSIVE ─── */
     @media (min-width: 640px) {
+      body { font-size: 19px; }
       .creators { flex-direction: row; gap: 1.25rem; }
       .creator { flex: 1; }
       section { padding: 6rem 2rem; }
@@ -1100,6 +1337,7 @@
     }
 
     @media (min-width: 960px) {
+      body { font-size: 20px; }
       .picks-grid { max-width: 900px; margin-left: auto; margin-right: auto; }
       .creators { max-width: 900px; margin-left: auto; margin-right: auto; }
       .goody-items { max-width: 700px; margin-left: auto; margin-right: auto; }
@@ -1114,16 +1352,35 @@
       .hero { padding: 4.5rem 1.25rem 1.5rem; }
       section { padding: 3.5rem 1.25rem; }
       .price-tag { padding: 1.5rem 1.75rem; }
-      .nav-links a:not(.nav-cta) { display: none; }
+    }
+
+    /* ─── REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-in, .strikethrough-stack p,
+      .the-answer, .speed-note, .section-label,
+      .segment-pill {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
   </style>
 </head>
 <body>
 
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
     <!-- NAV -->
     <nav class="nav">
       <a href="/" class="nav-logo">AI <em>Recess</em></a>
-      <div class="nav-links">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <div class="nav-links" id="nav-links">
         <a href="#this-week">This Week</a>
         <a href="/archive.html">Goody Bags</a>
         <a href="#who">Who We Are</a>
@@ -1132,14 +1389,14 @@
     </nav>
 
     <!-- HERO -->
-    <header class="hero">
+    <header class="hero" id="main-content">
       <div class="hero-inner">
         <div class="badge">
-          <span class="bell">&#x1F514;</span>
+          <svg class="bell-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.7 2 6 4.7 6 8v4l-2 2v1h16v-1l-2-2V8c0-3.3-2.7-6-6-6zm0 20a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2z"/></svg>
           The bell rings every Friday at 4pm ET
         </div>
         <h1>Three creators. One hour.<br>Everything you need to know <em>this week.</em></h1>
-        <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything &mdash; so you can show up Monday sounding like you know things.</p>
+        <p class="subtitle">Your <strong>trust filter</strong> for AI. We read everything, test everything, argue about everything, so you can show up Monday sounding like you know things.</p>
         <div class="countdown" id="next-recess-countdown" style="display:flex; justify-content:center; gap:1rem; margin: 1.5rem 0;">
           <div class="countdown-unit" style="display:flex; flex-direction:column; align-items:center;">
             <span class="num" id="cd-days" style="font-family:var(--font-display); font-size:2rem; background:var(--surface); border-radius:8px; padding:0.5rem 0.65rem; min-width:52px; text-align:center;">--</span>
@@ -1170,7 +1427,7 @@
 
     <!-- LATEST SESSION -->
     <section class="this-week" id="this-week">
-      <div class="section-label fade-in">First Recess &mdash; March 20</div>
+      <div class="section-label fade-in">Last Friday</div>
       <h2 class="section-title fade-in">What we <em>got into</em></h2>
       <p class="fade-in" style="color: var(--chalk-dim); margin-bottom: 2rem;">Kevin shared his screen. Logan translated. V asked the question everyone was thinking. Here's what went down.</p>
 
@@ -1203,7 +1460,10 @@
 
       <div class="week-meta fade-in">
         <span class="week-date">Next recess: Friday at 4pm ET</span>
-        <a href="/archive.html" class="week-link">See the archive &rarr;</a>
+        <a href="/archive.html" class="week-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          Browse past goody bags
+        </a>
       </div>
     </section>
 
@@ -1221,13 +1481,13 @@
           <div class="goody-info">
             <h4>Kevin's Open Claw Setup</h4>
             <p>His full multi-agent system. The one he showed on the call and everyone immediately wanted to steal.</p>
-            <div class="goody-by">by Kevin &mdash; First Recess</div>
+            <div class="goody-by">by Kevin, First Recess</div>
           </div>
         </div>
       </div>
 
       <div class="goody-cta fade-in">
-        <p>Join and get <strong>every goody bag</strong> &mdash; past, present, and whatever we drop next Friday.</p>
+        <p>Join and get <strong>every goody bag</strong>: past, present, and whatever we drop next Friday.</p>
         <a href="https://www.skool.com/ai-recess" class="cta-btn-sm join-cta" data-cta="goody-bag">Grab the goody bags</a>
       </div>
     </section>
@@ -1259,22 +1519,132 @@
 
       <div class="creators stagger-children">
         <div class="creator fade-in">
+          <img src="/images/logan.jpg" alt="Logan" class="avatar" width="72" height="72" loading="lazy">
           <div class="name">Logan</div>
-          <div class="handle">@loganinthefuture</div>
+          <a href="https://www.tiktok.com/@loganinthefuture" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Logan on TikTok">@loganinthefuture <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></a>
           <div class="bio">Started in learning design, fell into AI, never looked back. Reads the research, translates the jargon, connects it to your career whether you asked her to or not.</div>
         </div>
         <div class="creator fade-in">
+          <img src="/images/kevin.jpg" alt="Kevin" class="avatar" width="72" height="72" loading="lazy">
           <div class="name">Kevin</div>
-          <div class="handle">@vibewithkevin</div>
-          <div class="bio">Builder. Posts every single day. Will share his screen and show you the thing he broke last night at 2am. Has a sourdough app.</div>
+          <a href="https://www.tiktok.com/@vibewithkevin" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Kevin on TikTok">@vibewithkevin <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></a>
+          <div class="bio">Consultant who builds real tools with AI, not slide decks. Will share his screen and show you exactly what he shipped and what broke at 2am.</div>
         </div>
         <div class="creator fade-in">
+          <img src="/images/vanessa.jpg" alt="Vanessa" class="avatar" width="72" height="72" loading="lazy">
           <div class="name">Vanessa</div>
-          <div class="handle">@thinkwithv</div>
+          <a href="https://www.tiktok.com/@thinkwithv" class="handle" target="_blank" rel="noopener noreferrer" aria-label="Vanessa on TikTok">@thinkwithv <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></a>
           <div class="bio">The one who asks the question everyone was thinking. Will tell you when the hype is hype. Tested AI agents at a live conference just to see what would happen.</div>
         </div>
       </div>
     </section>
+
+    <div class="divider"></div>
+
+    <!-- TIKTOK SECTION -->
+    <section class="tiktok-section" aria-label="See us in action">
+      <p class="section-label fade-in">See us in action</p>
+      <h2 class="fade-in">We don't just talk about AI. We show it.</h2>
+      <p class="section-subtitle fade-in">Follow us on TikTok for daily takes, tool demos, and the occasional existential crisis.</p>
+
+      <div class="tiktok-grid">
+        <div class="tiktok-card fade-in">
+          <div class="tiktok-placeholder" data-video-id="7616508901588045087" role="button" tabindex="0" aria-label="Play Logan's TikTok video">
+            <img src="/images/thumb_7616508901588045087.jpg" alt="" class="tiktok-poster" loading="lazy">
+            <div class="tiktok-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+          </div>
+          <div class="tiktok-creator">
+            <img src="/images/logan.jpg" alt="" width="28" height="28" loading="lazy">
+            <span>@loganinthefuture</span>
+          </div>
+        </div>
+        <div class="tiktok-card fade-in">
+          <div class="tiktok-placeholder" data-video-id="7621765284851977502" role="button" tabindex="0" aria-label="Play Kevin's TikTok video">
+            <img src="/images/thumb_7621765284851977502.jpg" alt="" class="tiktok-poster" loading="lazy">
+            <div class="tiktok-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+          </div>
+          <div class="tiktok-creator">
+            <img src="/images/kevin.jpg" alt="" width="28" height="28" loading="lazy">
+            <span>@vibewithkevin</span>
+          </div>
+        </div>
+        <div class="tiktok-card fade-in">
+          <div class="tiktok-placeholder" data-video-id="7580186972208024863" role="button" tabindex="0" aria-label="Play Vanessa's TikTok video">
+            <img src="/images/thumb_7580186972208024863.jpg" alt="" class="tiktok-poster" loading="lazy">
+            <div class="tiktok-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+          </div>
+          <div class="tiktok-creator">
+            <img src="/images/vanessa.jpg" alt="" width="28" height="28" loading="lazy">
+            <span>@thinkwithv</span>
+          </div>
+        </div>
+        <div class="tiktok-card fade-in">
+          <div class="tiktok-placeholder" data-video-id="7603475071516019998" role="button" tabindex="0" aria-label="Play Logan's TikTok video">
+            <img src="/images/thumb_7603475071516019998.jpg" alt="" class="tiktok-poster" loading="lazy">
+            <div class="tiktok-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+          </div>
+          <div class="tiktok-creator">
+            <img src="/images/logan.jpg" alt="" width="28" height="28" loading="lazy">
+            <span>@loganinthefuture</span>
+          </div>
+        </div>
+        <div class="tiktok-card fade-in">
+          <div class="tiktok-placeholder" data-video-id="7616174787718548766" role="button" tabindex="0" aria-label="Play Kevin's TikTok video">
+            <img src="/images/thumb_7616174787718548766.jpg" alt="" class="tiktok-poster" loading="lazy">
+            <div class="tiktok-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+          </div>
+          <div class="tiktok-creator">
+            <img src="/images/kevin.jpg" alt="" width="28" height="28" loading="lazy">
+            <span>@vibewithkevin</span>
+          </div>
+        </div>
+        <div class="tiktok-card fade-in">
+          <div class="tiktok-placeholder" data-video-id="7618760600839130398" role="button" tabindex="0" aria-label="Play Vanessa's TikTok video">
+            <img src="/images/thumb_7618760600839130398.jpg" alt="" class="tiktok-poster" loading="lazy">
+            <div class="tiktok-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+          </div>
+          <div class="tiktok-creator">
+            <img src="/images/vanessa.jpg" alt="" width="28" height="28" loading="lazy">
+            <span>@thinkwithv</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials" aria-label="What members are saying">
+      <h2 class="fade-in">What the group chat looks like</h2>
+      <div class="testimonial-grid">
+        <div class="testimonial fade-in">
+          <p>"Just finished watching, what a great first session. Today was AMAZING content. I came away with two questions I thought I'd throw out."</p>
+          <div class="attribution">Micki M.</div>
+        </div>
+        <div class="testimonial fade-in">
+          <p>"Had to hop off when Kevin started the OpenClaw portion. Just watched it over coffee and ready for my 'homework.'"</p>
+          <div class="attribution">Chris G.</div>
+        </div>
+        <div class="testimonial fade-in">
+          <p>"Relieved to be in a group focused on what matters as it pertains to learning and growing in my AI proficiency. So excited!"</p>
+          <div class="attribution">Beauly C.</div>
+        </div>
+        <div class="testimonial fade-in">
+          <p>"I feel behind in my AI learning journey because my company limits which tools we have access to. I'm here to change that."</p>
+          <div class="attribution">Kristin S.</div>
+        </div>
+        <div class="testimonial fade-in">
+          <p>"Happy to transition from following on TikTok to a community setting. Absolutely amazed at how deep I was able to go because AI took on so many of the time-intensive tasks."</p>
+          <div class="attribution">Micki M.</div>
+        </div>
+        <div class="testimonial fade-in">
+          <p>"Already excited for next week! Love what you all have started. Thank you for creating it!"</p>
+          <div class="attribution">TikTok follower</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
 
     <!-- CTA -->
     <section class="cta-section">
@@ -1282,7 +1652,7 @@
         No homework. Miss a Friday? We package the takeaways. You're never behind.
       </p>
       <div class="price-tag fade-in">
-        <div class="founding">Founding rate &mdash; first 100</div>
+        <div class="founding">Founding rate, first 100</div>
         <div class="price">$15 <span>/ month</span></div>
         <div class="after">Goes up after that. This is the lock-in price.</div>
       </div>
@@ -1387,6 +1757,39 @@
     }, { threshold: 0.2 });
 
     if (pills.length) pillObserver.observe(pills[0]);
+
+    // ─── MOBILE NAV TOGGLE ───
+    var navToggle = document.getElementById('nav-toggle');
+    var navLinks = document.getElementById('nav-links');
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', function() {
+        var isOpen = navLinks.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', isOpen);
+      });
+      // Close menu when clicking a link
+      navLinks.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          navLinks.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // ─── TIKTOK CLICK-TO-PLAY ───
+    document.querySelectorAll('.tiktok-placeholder').forEach(function(el) {
+      function activate() {
+        var videoId = el.dataset.videoId;
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.tiktok.com/player/v1/' + videoId + '?rel=0&autoplay=1&music_info=0&description=0';
+        iframe.allow = 'fullscreen; encrypted-media';
+        iframe.allowFullscreen = true;
+        el.replaceWith(iframe);
+      }
+      el.addEventListener('click', activate);
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+      });
+    });
 
   </script>
 </body>

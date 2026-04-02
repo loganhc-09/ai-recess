@@ -1,37 +1,36 @@
 # AI Recess
 
-Landing page and waitlist for AI Recess, a weekly AI community by three TikTok creators (Logan, Kevin, Vanessa). Live session Fridays at 4pm ET + async community on Skool.
+Live weekly AI community by three TikTok creators (Logan, Kevin, Vanessa). Sessions every Friday at 4pm ET + async community on Skool. Site is live, no waitlist.
+
+## Before You Start
+
+**Always pull the latest before making changes.** Three people push to this repo. Run `git fetch origin main && git pull` at the start of every session. Editing a stale local copy will cause conflicts and lost work.
 
 ## Tech Stack
 
-- Static HTML/CSS/JS (single `index.html`, no build tools)
+- Static HTML/CSS/JS (`index.html` + `archive.html`, no build tools)
 - GitHub Pages (auto-deploys from `main`)
-- Supabase for waitlist storage (project ref: `mbgwdivgxbphktvanusd`)
 - Domain: `joinairecess.com`
-- Google Analytics: `G-TSXP27S2PH`
+- Analytics: custom tracker in `/analytics/tracker.js`
 
 ## Deploy
 
-Push to `main`. That's it. GitHub Pages auto-deploys.
+Push to `main`. GitHub Pages auto-deploys.
 
 ## Architecture
 
-Single-page site with two logical sections controlled by `SITE_PHASE` variable (top of `<script>` block in `index.html`):
+- `index.html`: Main landing page with nav, hero, session recap, goody bags, anti-pitch, creator bios, TikTok embeds, CTA
+- `archive.html`: Past session goody bags archive
+- `images/`: Creator headshot photos (logan.jpg, kevin.jpg, vanessa.jpg)
+- All CTAs point to Skool: `https://www.skool.com/ai-recess`
 
-- **Waitlist gate** (`#waitlist-gate`): Email + phone collection form, Supabase POST
-- **Full site** (`#full-site`): Marketing page with hero, anti-pitch, features, creator bios, CTA
+## Critical: Do Not Remove
 
-## Phase Plan
+These elements have been accidentally removed in past commits. Always verify they exist:
 
-All phase changes are a single variable swap in `index.html:1001` (`SITE_PHASE`), plus CTA link updates for Phase 3.
-
-| Phase | Dates | `SITE_PHASE` | Behavior |
-|-------|-------|-------------|----------|
-| 1 | Now through March 15 | `1` | Waitlist only. Inline "you're on the list" confirmation. |
-| 2 | March 16-20 | `2` | Waitlist gate, then full site revealed after submit. |
-| 3 | March 20+ (after first session) | `3` | No waitlist. Full site with Stripe payment link + Skool portal. |
-
-**Phase 3 TODO:** Replace `href="#"` on `.cta-btn` (`index.html`) with Stripe payment link. Add Skool community link.
+- **Favicon**: `<link rel="icon" type="image/svg+xml" href="/favicon.svg">` in `<head>`
+- **OG image tags**: `og:image`, `twitter:card`, `twitter:image` meta tags in `<head>` (required for link previews)
+- **Mobile nav**: Hamburger menu toggle (`.nav-toggle`) for screens under 640px. Without it, all nav links disappear on mobile and users get trapped on subpages.
 
 ## Conventions
 
@@ -39,12 +38,7 @@ All phase changes are a single variable swap in `index.html:1001` (`SITE_PHASE`)
 - No em dashes in copy. Use commas, periods, or restructure.
 - Never say "vibe coding." Use "AI engineering" or "builds/ships."
 - Remote is SSH: `git@github.com:loganhc-09/ai-recess.git`
-
-## Supabase
-
-- Publishable key is in `index.html` (client-side, safe to expose)
-- Waitlist table: `id`, `email`, `phone`, `created_at`
-- RLS enabled with anonymous insert policy
+- Logan uses she/her pronouns.
 
 ## Design
 
@@ -52,3 +46,13 @@ All phase changes are a single variable swap in `index.html:1001` (`SITE_PHASE`)
 - Fonts: Instrument Serif (display), DM Sans (body), Caveat (handwritten)
 - Accent palette: orange `#e8734a`, yellow `#f2d06b`, green `#7ec88b`, blue `#6ba3c7`
 - Grain texture overlay via inline SVG filter
+- Creator photos are circular avatars with colored borders matching their accent color
+- TikTok embeds use click-to-play (blurred poster + play button, loads iframe on click)
+
+## Nav Pattern
+
+Both `index.html` and `archive.html` share the same nav pattern:
+- Fixed top bar with blur backdrop
+- Hamburger toggle on mobile (under 640px) that opens a dropdown menu
+- The hamburger button, toggle JS, and mobile CSS must be present on EVERY page
+- Archive page must always have a "Home" link back to `/`
