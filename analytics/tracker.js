@@ -1,15 +1,18 @@
-// AI Recess — Zero-cost attribution tracker
-// Logs visits and CTA clicks to localStorage, then beacons to a tiny
-// JSON endpoint on GitHub Pages itself (a static JSON file we update weekly).
+// AI Recess — Attribution tracker with Google Sheets beacon
 //
 // How it works:
 // 1. On page load: captures ref, UTM, referrer, page, timestamp
-// 2. On CTA click: captures which button, same attribution data
-// 3. Stores everything in localStorage under 'ar_events'
-// 4. The weekly report script (report.py) can pull GitHub traffic API data
-//    to supplement this client-side tracking
+// 2. On CTA click: beacons attribution data to Google Sheet, then redirects
+// 3. Google Sheet logs: timestamp, ref, cta, utm_campaign, referrer, page
+// 4. The weekly report script (report.py) supplements with GitHub traffic API
+//
+// Setup: Deploy the Apps Script (see analytics/sheets-beacon-setup.md),
+// then set SHEETS_BEACON_URL below.
 
 (function() {
+  // Replace with your deployed Apps Script URL (see sheets-beacon-setup.md)
+  var SHEETS_BEACON_URL = 'https://script.google.com/macros/s/AKfycbx4LHZClIfVTMZfm-rCErib8apwO3N3E4-uYxO0nhMuHXLWY4fbUT0lLVy890Lv0Je4ZA/exec';
+
   var params = new URLSearchParams(window.location.search);
 
   var attribution = {
@@ -46,7 +49,7 @@
     link.setAttribute('href', url.toString());
   });
 
-  // Log CTA clicks
+  // Log CTA clicks — beacon to Google Sheet, then let redirect happen
   document.querySelectorAll('.join-cta').forEach(function(link) {
     link.addEventListener('click', function() {
       var stored = {};
@@ -56,12 +59,25 @@
         type: 'cta_click',
         cta: link.getAttribute('data-cta') || 'unknown',
         ref: stored.ref || attribution.ref || '',
+        utm_campaign: stored.utm_campaign || attribution.utm_campaign || '',
+        referrer: stored.referrer || attribution.referrer || 'direct',
         page: window.location.pathname,
-        href: link.getAttribute('href'),
         ts: new Date().toISOString()
       };
 
       console.log('[AI Recess]', event.cta, '→', event.ref || 'organic');
+
+      // Fire-and-forget beacon to Google Sheet
+      if (SHEETS_BEACON_URL) {
+        navigator.sendBeacon(SHEETS_BEACON_URL + '?' +
+          'ref=' + encodeURIComponent(event.ref) +
+          '&cta=' + encodeURIComponent(event.cta) +
+          '&utm_campaign=' + encodeURIComponent(event.utm_campaign) +
+          '&referrer=' + encodeURIComponent(event.referrer) +
+          '&page=' + encodeURIComponent(event.page) +
+          '&ts=' + encodeURIComponent(event.ts)
+        );
+      }
     });
   });
 })();
