@@ -67,16 +67,16 @@
 
       console.log('[AI Recess]', event.cta, '→', event.ref || 'organic');
 
-      // Fire-and-forget beacon to Google Sheet
+      // Fire-and-forget GET request to Google Sheet (image pixel pattern)
       if (SHEETS_BEACON_URL) {
-        navigator.sendBeacon(SHEETS_BEACON_URL + '?' +
-          'ref=' + encodeURIComponent(event.ref) +
+        var img = new Image();
+        img.src = SHEETS_BEACON_URL +
+          '?ref=' + encodeURIComponent(event.ref) +
           '&cta=' + encodeURIComponent(event.cta) +
           '&utm_campaign=' + encodeURIComponent(event.utm_campaign) +
           '&referrer=' + encodeURIComponent(event.referrer) +
           '&page=' + encodeURIComponent(event.page) +
-          '&ts=' + encodeURIComponent(event.ts)
-        );
+          '&ts=' + encodeURIComponent(event.ts);
       }
     });
   });
