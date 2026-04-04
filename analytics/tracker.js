@@ -49,14 +49,13 @@
     link.setAttribute('href', url.toString());
   });
 
-  // Log CTA clicks — beacon to Google Sheet, then let redirect happen
+  // Log CTA clicks — pause navigation, fire GET to Sheets, then redirect
   document.querySelectorAll('.join-cta').forEach(function(link) {
-    link.addEventListener('click', function() {
+    link.addEventListener('click', function(e) {
       var stored = {};
-      try { stored = JSON.parse(sessionStorage.getItem('ar_attr') || '{}'); } catch(e) {}
+      try { stored = JSON.parse(sessionStorage.getItem('ar_attr') || '{}'); } catch(err) {}
 
-      var event = {
-        type: 'cta_click',
+      var data = {
         cta: link.getAttribute('data-cta') || 'unknown',
         ref: stored.ref || attribution.ref || '',
         utm_campaign: stored.utm_campaign || attribution.utm_campaign || '',
@@ -65,18 +64,20 @@
         ts: new Date().toISOString()
       };
 
-      console.log('[AI Recess]', event.cta, '→', event.ref || 'organic');
+      console.log('[AI Recess]', data.cta, '→', data.ref || 'organic');
 
-      // Fire-and-forget beacon to Google Sheet (survives page unload)
       if (SHEETS_BEACON_URL) {
-        var url = SHEETS_BEACON_URL +
-          '?ref=' + encodeURIComponent(event.ref) +
-          '&cta=' + encodeURIComponent(event.cta) +
-          '&utm_campaign=' + encodeURIComponent(event.utm_campaign) +
-          '&referrer=' + encodeURIComponent(event.referrer) +
-          '&page=' + encodeURIComponent(event.page) +
-          '&ts=' + encodeURIComponent(event.ts);
-        navigator.sendBeacon(url);
+        e.preventDefault();
+        var dest = link.href;
+        var img = new Image();
+        img.src = SHEETS_BEACON_URL +
+          '?ref=' + encodeURIComponent(data.ref) +
+          '&cta=' + encodeURIComponent(data.cta) +
+          '&utm_campaign=' + encodeURIComponent(data.utm_campaign) +
+          '&referrer=' + encodeURIComponent(data.referrer) +
+          '&page=' + encodeURIComponent(data.page) +
+          '&ts=' + encodeURIComponent(data.ts);
+        setTimeout(function() { window.location.href = dest; }, 150);
       }
     });
   });
