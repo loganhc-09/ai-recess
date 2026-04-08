@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>AI Recess — Attribution Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1c1e21;
+      --bg-warm: #222529;
+      --surface: #2a2d32;
+      --surface-hover: #33373d;
+      --chalk: #f0ebe3;
+      --chalk-dim: #d8d2c9;
+      --accent: #e8734a;
+      --accent-glow: #f4945f;
+      --yellow: #f2d06b;
+      --green: #7ec88b;
+      --blue: #6ba3c7;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--chalk);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* Passcode gate */
+    #gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #gate h1 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+    }
+    #gate input {
+      background: var(--surface);
+      border: 1px solid var(--surface-hover);
+      color: var(--chalk);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: var(--font-body);
+      width: 280px;
+      text-align: center;
+    }
+    #gate input:focus { outline: none; border-color: var(--accent); }
+    #gate .error { color: var(--accent); font-size: 14px; display: none; }
+
+    /* Dashboard */
+    #dashboard { display: none; max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+
+    .header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+    }
+    .header .updated {
+      font-size: 13px;
+      color: var(--chalk-dim);
+    }
+
+    /* Stat cards */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .stat {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat .value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: var(--chalk);
+    }
+    .stat .label {
+      font-size: 13px;
+      color: var(--chalk-dim);
+      margin-top: 4px;
+    }
+
+    /* Creator scoreboard */
+    .section-title {
+      font-family: var(--font-hand);
+      font-size: 24px;
+      color: var(--yellow);
+      margin-bottom: 16px;
+    }
+
+    .creators {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .creator-card {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .creator-card .name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+    .creator-card .bar-wrap {
+      background: var(--bg);
+      border-radius: 6px;
+      height: 8px;
+      margin-bottom: 8px;
+    }
+    .creator-card .bar {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.6s ease;
+    }
+    .creator-card .clicks {
+      font-size: 13px;
+      color: var(--chalk-dim);
+    }
+    .creator-card .revenue {
+      font-family: var(--font-display);
+      font-size: 24px;
+      margin-top: 8px;
+    }
+    .creator-card.logan .bar { background: var(--accent); }
+    .creator-card.logan .revenue { color: var(--accent); }
+    .creator-card.kevin .bar { background: var(--blue); }
+    .creator-card.kevin .revenue { color: var(--blue); }
+    .creator-card.v .bar { background: var(--green); }
+    .creator-card.v .revenue { color: var(--green); }
+    .creator-card.other .bar { background: var(--chalk-dim); }
+    .creator-card.other .revenue { color: var(--chalk-dim); }
+
+    /* Trend chart */
+    .chart-container {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    canvas { width: 100%; height: 200px; }
+
+    /* Activity tables */
+    .activity {
+      margin-bottom: 32px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      text-align: left;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--chalk-dim);
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--surface-hover);
+    }
+    td {
+      padding: 10px 12px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--surface);
+    }
+    .ref-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .ref-badge.logan { background: rgba(232, 115, 74, 0.2); color: var(--accent); }
+    .ref-badge.kevin { background: rgba(107, 163, 199, 0.2); color: var(--blue); }
+    .ref-badge.v { background: rgba(126, 200, 139, 0.2); color: var(--green); }
+    .ref-badge.other { background: rgba(216, 210, 201, 0.15); color: var(--chalk-dim); }
+
+    .empty-state {
+      text-align: center;
+      color: var(--chalk-dim);
+      padding: 24px;
+      font-size: 14px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--chalk-dim);
+    }
+
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .creators { grid-template-columns: 1fr; }
+      .header h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="gate">
+  <h1>AI Recess Dashboard</h1>
+  <input type="password" id="passcode" placeholder="Enter passcode" autofocus>
+  <div class="error" id="gate-error">Wrong passcode</div>
+</div>
+
+<div id="dashboard">
+  <div class="header">
+    <h1>AI Recess Dashboard</h1>
+    <span class="updated" id="updated"></span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="value" id="s-members">--</div><div class="label">Members</div></div>
+    <div class="stat"><div class="value" id="s-mrr">--</div><div class="label">MRR</div></div>
+    <div class="stat"><div class="value" id="s-new-mrr">--</div><div class="label">New MRR (this month)</div></div>
+    <div class="stat"><div class="value" id="s-clicks">--</div><div class="label">CTA Clicks</div></div>
+  </div>
+
+  <div class="section-title">Creator Scoreboard</div>
+  <div class="creators" id="creators"></div>
+
+  <div class="section-title">MRR Trend</div>
+  <div class="chart-container">
+    <canvas id="chart" height="200"></canvas>
+  </div>
+
+  <div class="section-title">Recent Signups</div>
+  <div class="activity" id="signups-section">
+    <div class="empty-state">No attributed signups yet. They'll appear here as members join.</div>
+  </div>
+
+  <div class="section-title">Recent Clicks</div>
+  <div class="activity" id="clicks-section">
+    <div class="loading">Loading...</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var PASSCODE = 'playgroundpocketmoney';
+  var API_URL = 'https://script.google.com/macros/s/AKfycbx4LHZClIfVTMZfm-rCErib8apwO3N3E4-uYxO0nhMuHXLWY4fbUT0lLVy890Lv0Je4ZA/exec';
+  var BASELINE_MEMBERS = 43;
+  var BASELINE_MRR = 600;
+  var BASELINE_DATE = '2026-04-04';
+  var PRICE = 15;
+
+  // Passcode gate
+  var gate = document.getElementById('gate');
+  var dashboard = document.getElementById('dashboard');
+  var passcodeInput = document.getElementById('passcode');
+  var gateError = document.getElementById('gate-error');
+
+  if (localStorage.getItem('ar_dash_auth') === PASSCODE) {
+    gate.style.display = 'none';
+    dashboard.style.display = 'block';
+    loadDashboard();
+  }
+
+  passcodeInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      if (passcodeInput.value === PASSCODE) {
+        localStorage.setItem('ar_dash_auth', PASSCODE);
+        gate.style.display = 'none';
+        dashboard.style.display = 'block';
+        loadDashboard();
+      } else {
+        gateError.style.display = 'block';
+        passcodeInput.value = '';
+      }
+    }
+  });
+
+  function refClass(ref) {
+    if (!ref) return 'other';
+    var r = ref.toLowerCase();
+    if (r.indexOf('logan') !== -1) return 'logan';
+    if (r.indexOf('kevin') !== -1) return 'kevin';
+    if (r.indexOf('v-') === 0 || r.indexOf('vanessa') !== -1 || r === 'v') return 'v';
+    return 'other';
+  }
+
+  function refLabel(ref) {
+    var cls = refClass(ref);
+    if (cls === 'logan') return 'Logan';
+    if (cls === 'kevin') return 'Kevin';
+    if (cls === 'v') return 'V';
+    return ref || 'Organic';
+  }
+
+  function formatTime(ts) {
+    try {
+      var d = new Date(ts);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ' +
+             d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    } catch(e) { return ts; }
+  }
+
+  function loadDashboard() {
+    document.getElementById('updated').textContent = 'Updated ' + new Date().toLocaleString();
+
+    if (!API_URL) {
+      renderWithData({ clicks: [], signups: [], by_ref: {} });
+      document.getElementById('clicks-section').innerHTML =
+        '<div class="empty-state">Dashboard ready. Waiting for Apps Script API URL to be configured.</div>';
+      return;
+    }
+
+    fetch(API_URL + '?action=report')
+      .then(function(r) { return r.json(); })
+      .then(function(data) { renderWithData(data); })
+      .catch(function(err) {
+        document.getElementById('clicks-section').innerHTML =
+          '<div class="empty-state">Failed to load data. Check API connection.</div>';
+        console.error('Dashboard fetch error:', err);
+      });
+  }
+
+  function renderWithData(data) {
+    var clicks = data.clicks || [];
+    var signups = data.signups || [];
+    var byRef = data.by_ref || {};
+
+    // Compute totals from signups
+    var newSignups = signups.length;
+    var thisMonthSignups = signups.filter(function(s) {
+      var d = new Date(s.date || s.ts);
+      var now = new Date();
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }).length;
+
+    // Stats
+    document.getElementById('s-members').textContent = BASELINE_MEMBERS + newSignups;
+    document.getElementById('s-mrr').textContent = '$' + (BASELINE_MRR + newSignups * PRICE).toLocaleString();
+    document.getElementById('s-new-mrr').textContent = '$' + (thisMonthSignups * PRICE);
+    document.getElementById('s-clicks').textContent = clicks.length;
+
+    // Creator scoreboard
+    var creators = { logan: { clicks: 0, revenue: 0 }, kevin: { clicks: 0, revenue: 0 }, v: { clicks: 0, revenue: 0 } };
+    clicks.forEach(function(c) {
+      var cls = refClass(c.ref);
+      if (creators[cls]) creators[cls].clicks++;
+    });
+    signups.forEach(function(s) {
+      var cls = refClass(s.ref);
+      if (creators[cls]) creators[cls].revenue += PRICE;
+    });
+
+    var maxClicks = Math.max(creators.logan.clicks, creators.kevin.clicks, creators.v.clicks, 1);
+    var creatorsEl = document.getElementById('creators');
+    creatorsEl.innerHTML = '';
+
+    [['Logan', 'logan'], ['Kevin', 'kevin'], ['V', 'v']].forEach(function(pair) {
+      var name = pair[0], key = pair[1];
+      var c = creators[key];
+      var pct = Math.round((c.clicks / maxClicks) * 100);
+      creatorsEl.innerHTML +=
+        '<div class="creator-card ' + key + '">' +
+          '<div class="name">' + name + '</div>' +
+          '<div class="bar-wrap"><div class="bar" style="width:' + pct + '%"></div></div>' +
+          '<div class="clicks">' + c.clicks + ' clicks</div>' +
+          '<div class="revenue">$' + c.revenue + '</div>' +
+        '</div>';
+    });
+
+    // MRR trend chart
+    drawChart(signups);
+
+    // Recent signups table
+    if (signups.length > 0) {
+      var html = '<table><thead><tr><th>Date</th><th>Member</th><th>Source</th><th>Revenue</th></tr></thead><tbody>';
+      signups.slice(-10).reverse().forEach(function(s) {
+        var cls = refClass(s.ref);
+        html += '<tr><td>' + formatTime(s.date || s.ts) + '</td>' +
+                '<td>' + (s.member || 'Unknown') + '</td>' +
+                '<td><span class="ref-badge ' + cls + '">' + refLabel(s.ref) + '</span></td>' +
+                '<td>+$' + PRICE + '</td></tr>';
+      });
+      html += '</tbody></table>';
+      document.getElementById('signups-section').innerHTML = html;
+    }
+
+    // Recent clicks table
+    if (clicks.length > 0) {
+      var html = '<table><thead><tr><th>Time</th><th>Source</th><th>CTA</th><th>Page</th></tr></thead><tbody>';
+      clicks.slice(-10).reverse().forEach(function(c) {
+        var cls = refClass(c.ref);
+        html += '<tr><td>' + formatTime(c.ts) + '</td>' +
+                '<td><span class="ref-badge ' + cls + '">' + refLabel(c.ref) + '</span></td>' +
+                '<td>' + (c.cta || '-') + '</td>' +
+                '<td>' + (c.page || '/') + '</td></tr>';
+      });
+      html += '</tbody></table>';
+      document.getElementById('clicks-section').innerHTML = html;
+    } else {
+      document.getElementById('clicks-section').innerHTML =
+        '<div class="empty-state">No CTA clicks tracked yet. They\'ll appear once ref links are in use.</div>';
+    }
+  }
+
+  function drawChart(signups) {
+    var canvas = document.getElementById('chart');
+    var ctx = canvas.getContext('2d');
+    var dpr = window.devicePixelRatio || 1;
+    var rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = 200 * dpr;
+    ctx.scale(dpr, dpr);
+
+    var w = rect.width;
+    var h = 200;
+    var pad = { top: 20, right: 20, bottom: 30, left: 50 };
+    var plotW = w - pad.left - pad.right;
+    var plotH = h - pad.top - pad.bottom;
+
+    // Build data points: baseline + each signup
+    var points = [{ date: new Date(BASELINE_DATE), mrr: BASELINE_MRR }];
+    var cumMrr = BASELINE_MRR;
+    signups.sort(function(a, b) {
+      return new Date(a.date || a.ts) - new Date(b.date || b.ts);
+    }).forEach(function(s) {
+      cumMrr += PRICE;
+      points.push({ date: new Date(s.date || s.ts), mrr: cumMrr });
+    });
+
+    // Add today if no signups yet
+    if (points.length === 1) {
+      points.push({ date: new Date(), mrr: BASELINE_MRR });
+    }
+
+    var minDate = points[0].date.getTime();
+    var maxDate = Math.max(points[points.length - 1].date.getTime(), new Date().getTime());
+    var dateRange = maxDate - minDate || 1;
+    var minMrr = BASELINE_MRR - 50;
+    var maxMrr = cumMrr + 100;
+    var mrrRange = maxMrr - minMrr;
+
+    function x(d) { return pad.left + ((d.getTime() - minDate) / dateRange) * plotW; }
+    function y(m) { return pad.top + plotH - ((m - minMrr) / mrrRange) * plotH; }
+
+    // Grid lines
+    ctx.strokeStyle = '#33373d';
+    ctx.lineWidth = 0.5;
+    for (var m = Math.ceil(minMrr / 100) * 100; m <= maxMrr; m += 100) {
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y(m));
+      ctx.lineTo(w - pad.right, y(m));
+      ctx.stroke();
+      ctx.fillStyle = '#d8d2c9';
+      ctx.font = '11px DM Sans';
+      ctx.textAlign = 'right';
+      ctx.fillText('$' + m, pad.left - 8, y(m) + 4);
+    }
+
+    // Line
+    ctx.strokeStyle = '#e8734a';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    points.forEach(function(p, i) {
+      if (i === 0) ctx.moveTo(x(p.date), y(p.mrr));
+      else {
+        // Step line (horizontal then vertical)
+        ctx.lineTo(x(p.date), y(points[i - 1].mrr));
+        ctx.lineTo(x(p.date), y(p.mrr));
+      }
+    });
+    ctx.stroke();
+
+    // Dots
+    ctx.fillStyle = '#e8734a';
+    points.forEach(function(p) {
+      ctx.beginPath();
+      ctx.arc(x(p.date), y(p.mrr), 4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Date labels
+    ctx.fillStyle = '#d8d2c9';
+    ctx.font = '11px DM Sans';
+    ctx.textAlign = 'center';
+    var labelCount = Math.min(points.length, 6);
+    var step = Math.max(1, Math.floor(points.length / labelCount));
+    for (var i = 0; i < points.length; i += step) {
+      var p = points[i];
+      var label = p.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      ctx.fillText(label, x(p.date), h - 6);
+    }
+  }
+})();
+</script>
+</body>
+</html>
