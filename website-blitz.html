@@ -547,45 +547,56 @@
       background: var(--yellow);
     }
 
-    /* ─── HOW IT WORKS ─── */
-    .phase {
-      margin-bottom: 2rem;
+    /* ─── HOW IT WORKS (timeline cards) ─── */
+    .timeline {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.25rem;
     }
 
-    .phase-label {
-      font-family: var(--font-hand);
-      font-weight: var(--font-hand-weight);
-      font-size: 1.05rem;
-      color: var(--green);
-      margin-bottom: 0.4rem;
+    @media (max-width: 640px) {
+      .timeline { grid-template-columns: 1fr; }
     }
 
-    .phase p, .phase ul {
-      color: var(--chalk-dim);
-      font-size: 0.98rem;
-    }
-
-    .phase ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .phase ul li {
+    .timeline-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
       position: relative;
-      padding-left: 1.25rem;
+    }
+
+    .timeline-card .step-num {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      line-height: 1;
+      color: var(--accent);
+      opacity: 0.3;
       margin-bottom: 0.5rem;
     }
 
-    .phase ul li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.6rem;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--chalk-dim);
-      opacity: 0.5;
+    .timeline-card .step-title {
+      font-family: var(--font-hand);
+      font-weight: var(--font-hand-weight);
+      font-size: 1.1rem;
+      color: var(--green);
+      margin-bottom: 0.6rem;
+    }
+
+    .timeline-card p {
+      font-size: 0.9rem;
+      color: var(--chalk-dim);
+      line-height: 1.55;
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-card .detail {
+      font-size: 0.82rem;
+      color: var(--chalk-dim);
+      opacity: 0.7;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(240, 235, 227, 0.06);
+      line-height: 1.5;
     }
 
     /* ─── WHO IS FOR ─── */
@@ -945,35 +956,27 @@
       <div class="section-label">How it works</div>
       <h2>Before, during, and <em>after.</em></h2>
 
-      <div class="phase">
-        <div class="phase-label">Before the Session</div>
-        <p>You'll get a short prep worksheet:</p>
-        <ul>
-          <li>Buy your domain (we'll send a 5-minute guide, this is the one piece of homework)</li>
-          <li>Gather your headshot, bio, resume/portfolio links</li>
-          <li>Pick 3 personal websites you like (we'll send inspo examples to get you started)</li>
-        </ul>
-      </div>
+      <div class="timeline">
+        <div class="timeline-card">
+          <div class="step-num">01</div>
+          <div class="step-title">Before</div>
+          <p>We send you a prep worksheet. Grab your domain, gather your headshot + bio, and pick 3 websites you like for inspo.</p>
+          <div class="detail">One piece of homework: buy your domain. We'll send a 5-minute guide.</div>
+        </div>
 
-      <div class="phase">
-        <div class="phase-label">During the 90 Minutes</div>
-        <p><strong>Main Room:</strong> Logan walks you through website strategy: what to include, how to structure it, what makes someone actually want to hire, follow, or contact you after visiting your site.</p>
-        <p style="margin-top: 0.75rem;">You'll build alongside us in real-time using <strong>Lovable</strong>, an AI website builder that turns plain English into a real, hosted website. No code. No templates. Just describe what you want.</p>
-        <p style="margin-top: 0.75rem; font-weight: 500;">Breakout support:</p>
-        <ul>
-          <li><strong>Kevin</strong> &mdash; AI integrations and advanced features (think: an AI chatbot that answers questions about your resume)</li>
-          <li><strong>V</strong> &mdash; Design eye and style coaching (making it look like you, not a LinkedIn clone)</li>
-          <li>Troubleshooting room with screen-share help if you get stuck</li>
-        </ul>
-      </div>
+        <div class="timeline-card">
+          <div class="step-num">02</div>
+          <div class="step-title">During (90 min)</div>
+          <p>Build your site live using <strong style="color: var(--chalk);">Lovable</strong>. Type what you want in plain English. No code.</p>
+          <p>Logan on strategy. Kevin on AI features. V on design. Troubleshooting room if you get stuck.</p>
+        </div>
 
-      <div class="phase">
-        <div class="phase-label">After the Session</div>
-        <ul>
-          <li>Your site is live (or ready to connect to your domain)</li>
-          <li>Full recording + resource guide + AEO checklist</li>
-          <li><strong>Ready for more?</strong> Personal Website 2.0 is our follow-up workshop where you rebuild on Claude Code: full control, pages that AI can actually crawl, and custom features you can't get from any template. Blitz attendees get a discount.</li>
-        </ul>
+        <div class="timeline-card">
+          <div class="step-num">03</div>
+          <div class="step-title">After</div>
+          <p>Your site is live. You get the recording, resource guide, and AEO checklist.</p>
+          <div class="detail">Ready for more? <strong style="color: var(--chalk);">Website 2.0</strong> is our Claude Code follow-up. Blitz attendees get a discount.</div>
+        </div>
       </div>
     </section>
 
