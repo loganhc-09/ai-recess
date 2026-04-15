@@ -806,6 +806,42 @@
       animation: fadeUp 0.6s ease forwards 0.65s;
     }
 
+    /* ── WORK STREAM TAGS ── */
+    .work-streams {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.45rem;
+      margin: 1.1rem 0 0;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.5s;
+    }
+
+    .ws-tag {
+      font-family: var(--font-hand);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+      border: 1.5px solid;
+      opacity: 0.7;
+    }
+
+    .ws-tag.c-orange { color: var(--accent); border-color: var(--accent); background: rgba(232,115,74,0.07); }
+    .ws-tag.c-yellow { color: var(--yellow); border-color: var(--yellow); background: rgba(242,208,107,0.07); }
+    .ws-tag.c-green  { color: var(--green);  border-color: var(--green);  background: rgba(126,200,139,0.07); }
+    .ws-tag.c-blue   { color: var(--blue);   border-color: var(--blue);   background: rgba(107,163,199,0.07); }
+
+    /* ── PRICE NOTE ── */
+    .price-note {
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      color: var(--chalk-dim);
+      opacity: 0;
+      margin-top: 0.65rem;
+      animation: fadeUp 0.6s ease forwards 0.9s;
+    }
+
     .scroll-hint {
       position: absolute;
       bottom: 2rem;
@@ -1585,6 +1621,17 @@
         </div>
         <h1>You have a job. A side thing. And an idea in your notes app you haven't started yet.<br>AI Recess is for <em>all of it.</em></h1>
         <p class="subtitle">AI Recess is a weekly live community for people building portfolio careers — fractional workers, consultants, founders, and multi-hyphenates who use AI to run all of it. Three creators doing it live, every Friday at 4pm ET. $30/mo on Skool.</p>
+        <div class="work-streams" aria-hidden="true">
+          <span class="ws-tag c-orange">Consulting</span>
+          <span class="ws-tag c-yellow">App Building</span>
+          <span class="ws-tag c-green">Newsletter</span>
+          <span class="ws-tag c-blue">Fractional Work</span>
+          <span class="ws-tag c-orange">Side Thing</span>
+          <span class="ws-tag c-yellow">Workshops</span>
+          <span class="ws-tag c-green">Research</span>
+          <span class="ws-tag c-blue">TikTok</span>
+          <span class="ws-tag c-orange">Startup</span>
+        </div>
         <div class="countdown" id="next-recess-countdown" style="display:flex; justify-content:center; gap:1rem; margin: 1.5rem 0;">
           <div class="countdown-unit" style="display:flex; flex-direction:column; align-items:center;">
             <span class="num" id="cd-days" style="font-family:var(--font-display); font-size:2rem; background:var(--surface); border-radius:8px; padding:0.5rem 0.65rem; min-width:52px; text-align:center;">--</span>
@@ -1605,6 +1652,7 @@
           <a href="https://www.skool.com/ai-recess" class="cta-btn-sm join-cta" data-cta="hero">I'm in</a>
           <a href="#this-week" style="color: var(--chalk-dim); font-size: 0.9rem; text-decoration: none;">or see what you missed &darr;</a>
         </div>
+        <p class="price-note">$1/day &middot; less than one client hour</p>
       </div>
 
     </header>
@@ -1749,6 +1797,7 @@
       </div>
       <p class="speed-note">^ real setups, real work streams, real decisions about what to drop.</p>
       <p class="speed-note" style="margin-top: 0.75rem; opacity: 0.6;">Courses go stale. Newsletters pile up. A live community stays current because it has to.</p>
+      <p class="speed-note" style="margin-top: 1.25rem; opacity: 0.45; font-style: italic;">The people already doing this are two steps ahead. Every Friday, they get better at it.</p>
     </section>
 
     <div class="divider"></div>
