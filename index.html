@@ -1569,6 +1569,7 @@
       .anti-pitch { max-width: 700px; margin-left: auto; margin-right: auto; }
       .hero-inner { max-width: 700px; }
       section { padding: 6rem 3rem; }
+      .venn-section { padding: 4rem 3rem; }
     }
 
     @media (max-width: 400px) {
@@ -1576,6 +1577,60 @@
       .hero { padding: 4.5rem 1.25rem 1.5rem; }
       section { padding: 3.5rem 1.25rem; }
       .price-tag { padding: 1.5rem 1.75rem; }
+    }
+
+    /* ─── VENN DIAGRAM ─── */
+    .venn-section {
+      text-align: center;
+      padding: 4rem 1.5rem 2rem;
+    }
+    .venn-section .section-label { margin-bottom: 0.5rem; }
+    .venn-section .section-title em { color: var(--accent); font-style: italic; }
+    .venn-section p.venn-lede {
+      color: var(--chalk-dim);
+      font-size: 1rem;
+      max-width: 580px;
+      margin: 0 auto 1rem;
+    }
+    .venn-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0;
+    }
+    .venn {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .venn text { user-select: none; }
+    .venn .person-name {
+      font-family: var(--font-hand);
+      font-weight: 700;
+      font-size: 30px;
+    }
+    .venn .lane {
+      font-family: var(--font-hand);
+      font-size: 17px;
+      font-weight: 600;
+      fill: var(--chalk);
+    }
+    .venn .center-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 26px;
+      fill: var(--chalk);
+    }
+    .venn .center-sub {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      fill: var(--chalk);
+      opacity: 0.9;
+    }
+    .venn .placeholder {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      fill: var(--chalk-dim);
+      font-style: italic;
     }
 
     /* ─── REDUCED MOTION ─── */
@@ -1652,7 +1707,6 @@
           <a href="https://www.skool.com/ai-recess" class="cta-btn-sm join-cta" data-cta="hero">I'm in</a>
           <a href="#this-week" style="color: var(--chalk-dim); font-size: 0.9rem; text-decoration: none;">or see what you missed &darr;</a>
         </div>
-        <p class="price-note">$1/day &middot; less than one client hour</p>
       </div>
 
     </header>
@@ -1798,6 +1852,68 @@
       <p class="speed-note">^ real setups, real work streams, real decisions about what to drop.</p>
       <p class="speed-note" style="margin-top: 0.75rem; opacity: 0.6;">Courses go stale. Newsletters pile up. A live community stays current because it has to.</p>
       <p class="speed-note" style="margin-top: 1.25rem; opacity: 0.45; font-style: italic;">The people already doing this are two steps ahead. Every Friday, they get better at it.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PORTFOLIO VENN -->
+    <section class="venn-section" id="portfolios">
+      <p class="section-label fade-in">The chalk court</p>
+      <h2 class="section-title fade-in">Three portfolio careers, <em>one show</em></h2>
+      <p class="venn-lede fade-in">We keep saying we run a bunch of things with AI. Here's the map. Three portfolio careers, all the work streams we're actually managing, and the center where we show up and share every Friday.</p>
+
+      <div class="venn-wrap">
+        <svg class="venn" viewBox="0 0 820 780" role="img" aria-label="Venn diagram of Kevin, Logan, and V's portfolio careers with AI Recess at the center">
+          <defs>
+            <filter id="chalk-rough" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2"/>
+            </filter>
+          </defs>
+
+          <g filter="url(#chalk-rough)">
+            <circle id="circle-kevin" cx="260" cy="260" r="235"
+              fill="rgba(242, 208, 107, 0.10)"
+              stroke="rgba(242, 208, 107, 0.78)"
+              stroke-width="3.5" stroke-linecap="round"/>
+            <circle id="circle-logan" cx="560" cy="260" r="235"
+              fill="rgba(232, 115, 74, 0.10)"
+              stroke="rgba(232, 115, 74, 0.78)"
+              stroke-width="3.5" stroke-linecap="round"/>
+            <circle id="circle-v" cx="410" cy="510" r="235"
+              fill="rgba(126, 200, 139, 0.10)"
+              stroke="rgba(126, 200, 139, 0.78)"
+              stroke-width="3.5" stroke-linecap="round"/>
+          </g>
+
+          <g id="text-kevin" text-anchor="middle">
+            <text class="person-name" x="195" y="185" fill="#f2d06b">Kevin</text>
+            <text class="lane" x="195" y="217">AIpplied Labs</text>
+            <text class="lane" x="195" y="241">LeaderShift + Consulting</text>
+            <text class="lane" x="195" y="265">OpenClaw</text>
+            <text class="lane" x="195" y="289">AIppliance Manager</text>
+            <text class="lane" x="195" y="313">PackLlama</text>
+            <text class="lane" x="195" y="337">Corporate job</text>
+          </g>
+
+          <g id="text-logan" text-anchor="middle">
+            <text class="person-name" x="625" y="185" fill="#e8734a">Logan</text>
+            <text class="placeholder" x="625" y="220">your lanes go here</text>
+            <text class="placeholder" x="625" y="245">...</text>
+          </g>
+
+          <g id="text-v" text-anchor="middle">
+            <text class="person-name" x="410" y="610" fill="#7ec88b">V</text>
+            <text class="placeholder" x="410" y="645">your lanes go here</text>
+          </g>
+
+          <g id="text-center" text-anchor="middle">
+            <text class="center-title" x="410" y="345">AI <tspan font-style="italic" fill="#e8734a">Recess</tspan></text>
+            <text class="center-sub" x="410" y="373">+ Resume class</text>
+            <text class="center-sub" x="410" y="395">+ TikTok</text>
+          </g>
+        </svg>
+      </div>
     </section>
 
     <div class="divider"></div>
@@ -1958,6 +2074,8 @@
 
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/ScrollTrigger.min.js"></script>
   <script src="/analytics/tracker.js"></script>
   <script>
     // ─── COUNTDOWN TO NEXT FRIDAY 4PM ET ───
@@ -2085,6 +2203,35 @@
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
       });
     });
+
+    // ─── VENN DRAW-IN (GSAP + ScrollTrigger) ───
+    gsap.registerPlugin(ScrollTrigger);
+    (function() {
+      var CIRC = 2 * Math.PI * 235;
+      var circles = ['#circle-kevin', '#circle-logan', '#circle-v'];
+      var texts = ['#text-kevin', '#text-logan', '#text-v'];
+
+      circles.forEach(function(sel) {
+        gsap.set(sel, { strokeDasharray: CIRC, strokeDashoffset: CIRC, fillOpacity: 0 });
+      });
+      texts.forEach(function(sel) { gsap.set(sel, { opacity: 0, y: 12 }); });
+      gsap.set('#text-center', { opacity: 0, y: 10 });
+
+      var tl = gsap.timeline({
+        scrollTrigger: { trigger: '.venn-wrap', start: 'top 75%', once: true }
+      });
+
+      tl.to('#circle-kevin', { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' })
+        .to('#circle-kevin', { fillOpacity: 0.10, duration: 0.4 }, '-=0.3')
+        .to('#text-kevin', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+        .to('#circle-logan', { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, '-=0.4')
+        .to('#circle-logan', { fillOpacity: 0.10, duration: 0.4 }, '-=0.3')
+        .to('#text-logan', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+        .to('#circle-v', { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, '-=0.4')
+        .to('#circle-v', { fillOpacity: 0.10, duration: 0.4 }, '-=0.3')
+        .to('#text-v', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+        .to('#text-center', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '+=0.15');
+    })();
 
   </script>
 </body>
