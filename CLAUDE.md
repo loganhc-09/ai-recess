@@ -1,6 +1,6 @@
 # AI Recess
 
-Live weekly AI community by three TikTok creators (Logan, Kevin, Vanessa). Sessions every Friday at 4pm ET + async community on Skool. Site is live, no waitlist.
+$20/month Discord community by three TikTok creators (Logan, Kevin, Vanessa). Members get the tools the creators actually use, a weekly goody bag of resources in the chat, and TikTok Lives (Tuesdays at 9pm ET) they can hop on. Site is live, no waitlist.
 
 ## Before You Start
 
@@ -8,13 +8,13 @@ Live weekly AI community by three TikTok creators (Logan, Kevin, Vanessa). Sessi
 
 ## Tech Stack
 
-- Static HTML/CSS/JS (`index.html` + `archive.html`, no build tools)
+- Static HTML/CSS/JS (single-file `index.html`, no build tools)
 - GitHub Pages (auto-deploys from `main`). Push to `main` to deploy.
 - Domain: `joinairecess.com`
 - Analytics: custom tracker in `/analytics/tracker.js`
 - `images/`: Creator photos, TikTok video thumbnails
 - `videos/`: Session teaser clips (served directly from repo)
-- All CTAs point to Skool: `https://www.skool.com/ai-recess`
+- All join CTAs point to LaunchPass: `https://www.launchpass.com/ai-recess/monthly` (set via `JOIN_URL` in the inline `<script>`; JS rewrites every `.join-cta` href on load). Live time is set via `LIVE_SCHEDULE` and fills `[data-live]`.
 
 ## Critical: Never Remove or Overwrite
 
@@ -32,13 +32,13 @@ Every page must have ALL of these. Do not "clean rewrite" the head:
 - Section headings use `<h2>`. Do not skip levels or add a second H1.
 
 ### Schema / JSON-LD
-Homepage `@graph`: **WebSite**, **Organization** (with founder Person array + sameAs links), **Event** (recurring Friday, $30 Offer). Archive: **CollectionPage**. If founder details change, update BOTH visible HTML and JSON-LD.
+Homepage `@graph`: **WebSite**, **Organization** (with founder Person array + sameAs links), **Event** (recurring weekly TikTok Live, Tuesday 9pm ET, $20 Offer), **FAQPage**. If founder details change, update BOTH visible HTML and JSON-LD.
 
 ### AEO anchor content
-Hero subtitle starts with "AI Recess is a weekly live community where..." This is the AEO anchor, designed to be quoted by AI search engines. Keep it declarative and factual. Do not rewrite into hype copy.
+Hero subtitle starts with "AI Recess is a $20/month Discord where..." This is the AEO anchor, designed to be quoted by AI search engines. Keep it declarative and factual. Do not rewrite into hype copy.
 
 ### Mobile nav
-Hamburger toggle (`.nav-toggle`) for screens under 640px on EVERY page. Without it, nav links disappear on mobile. Archive page must always have a "Home" link back to `/`.
+Hamburger toggle (`.nav-toggle`) for screens under 640px. Without it, nav links disappear on mobile.
 
 ### New page checklist
 - [ ] `<html lang="en">`, meta description, canonical, favicon
