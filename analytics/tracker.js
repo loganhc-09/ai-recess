@@ -1,17 +1,19 @@
-// AI Recess — Attribution tracker with Google Sheets beacon
+// AI Recess — Attribution tracker
 //
-// How it works:
-// 1. On page load: captures ref, UTM, referrer, page, timestamp
-// 2. On CTA click: beacons attribution data to Google Sheet, then redirects
-// 3. Google Sheet logs: timestamp, ref, cta, utm_campaign, referrer, page
-// 4. The weekly report script (report.py) supplements with GitHub traffic API
+// Captures who sent a visitor (ref / UTM / referrer) and, when they click a
+// join CTA, (1) appends that attribution to the LaunchPass join URL and
+// (2) fires a GA4 `join_click` event so the conversion shows up in Google
+// Analytics (property G-8CQ7JES2VT) right alongside traffic.
 //
-// Setup: Deploy the Apps Script (see analytics/sheets-beacon-setup.md),
-// then set SHEETS_BEACON_URL below.
+// History: this used to beacon to a Google Apps Script → Google Sheet, but
+// that deployment 403'd ("You need access") and logged nothing. GA4 is the
+// source of truth for traffic anyway, so attribution now lives there too.
+// No separate endpoint to deploy, authorize, or watch rot.
 
-(function() {
-  // Replace with your deployed Apps Script URL (see sheets-beacon-setup.md)
-  var SHEETS_BEACON_URL = 'https://script.google.com/macros/s/AKfycbx4LHZClIfVTMZfm-rCErib8apwO3N3E4-uYxO0nhMuHXLWY4fbUT0lLVy890Lv0Je4ZA/exec';
+(function () {
+  // CTA links start as href="#join"; an inline script in index.html rewrites
+  // them to JOIN_URL (LaunchPass). We read the href at CLICK time so we don't
+  // depend on which script ran first.
 
   var params = new URLSearchParams(window.location.search);
 
@@ -22,62 +24,69 @@
     utm_campaign: params.get('utm_campaign') || '',
     utm_content: params.get('utm_content') || '',
     referrer: document.referrer || 'direct',
-    page: window.location.pathname
+    landing: window.location.pathname
   };
 
-  // Store attribution in session for cross-page persistence
+  // Persist first-touch attribution for the session so it survives in-site
+  // navigation (don't overwrite an existing ref with a later blank one).
+  var stored = {};
+  try { stored = JSON.parse(sessionStorage.getItem('ar_attr') || '{}'); } catch (e) {}
   if (attribution.ref || attribution.utm_source || attribution.referrer !== 'direct') {
-    try { sessionStorage.setItem('ar_attr', JSON.stringify(attribution)); } catch(e) {}
+    var merged = {};
+    Object.keys(attribution).forEach(function (k) {
+      merged[k] = attribution[k] || stored[k] || '';
+    });
+    try { sessionStorage.setItem('ar_attr', JSON.stringify(merged)); } catch (e) {}
+    stored = merged;
   }
 
-  // Tag all Skool join links with attribution params
-  document.querySelectorAll('.join-cta').forEach(function(link) {
-    var href = link.getAttribute('href');
-    if (!href || href.indexOf('skool.com') === -1) return;
+  function attr(key) {
+    return stored[key] || attribution[key] || '';
+  }
 
-    var url = new URL(href);
-    var stored = {};
-    try { stored = JSON.parse(sessionStorage.getItem('ar_attr') || '{}'); } catch(e) {}
+  // Append attribution params to an outbound http(s) join URL so the
+  // destination (LaunchPass / Stripe) carries it too. Leaves #anchors alone.
+  function tagJoinUrl(href, ctaLocation) {
+    if (!href || href.charAt(0) === '#') return href;
+    var url;
+    try { url = new URL(href, window.location.origin); } catch (e) { return href; }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return href;
 
-    var ref = stored.ref || stored.utm_source || attribution.ref || '';
-    var ctaLocation = link.getAttribute('data-cta') || 'unknown';
-
+    var ref = attr('ref') || attr('utm_source');
     if (ref) url.searchParams.set('ref', ref);
-    url.searchParams.set('cta', ctaLocation);
-    if (stored.utm_campaign) url.searchParams.set('utm_campaign', stored.utm_campaign);
+    if (ctaLocation) url.searchParams.set('cta', ctaLocation);
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
+      if (attr(k)) url.searchParams.set(k, attr(k));
+    });
+    return url.toString();
+  }
 
-    link.setAttribute('href', url.toString());
-  });
+  document.querySelectorAll('.join-cta').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var ctaLocation = link.getAttribute('data-cta') || 'unknown';
+      var dest = tagJoinUrl(link.getAttribute('href'), ctaLocation);
 
-  // Log CTA clicks — pause navigation, fire GET to Sheets, then redirect
-  document.querySelectorAll('.join-cta').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      var stored = {};
-      try { stored = JSON.parse(sessionStorage.getItem('ar_attr') || '{}'); } catch(err) {}
-
-      var data = {
-        cta: link.getAttribute('data-cta') || 'unknown',
-        ref: stored.ref || attribution.ref || '',
-        utm_campaign: stored.utm_campaign || attribution.utm_campaign || '',
-        referrer: stored.referrer || attribution.referrer || 'direct',
-        page: window.location.pathname,
-        ts: new Date().toISOString()
+      var payload = {
+        ref: attr('ref') || 'organic',
+        cta_location: ctaLocation,
+        utm_campaign: attr('utm_campaign'),
+        page_referrer: attr('referrer'),
+        destination: dest
       };
+      console.log('[AI Recess] join_click', payload);
 
-      console.log('[AI Recess]', data.cta, '→', data.ref || 'organic');
+      // Fire GA4 event. sendBeacon transport survives the navigation, so we
+      // don't need to delay the redirect. If gtag is blocked/missing, we just
+      // fall through to normal navigation.
+      if (typeof window.gtag === 'function') {
+        try { window.gtag('event', 'join_click', payload); } catch (err) {}
+      }
 
-      if (SHEETS_BEACON_URL) {
+      // If we rewrote the destination (added attribution), navigate there
+      // ourselves; otherwise let the link's own href handle it.
+      if (dest && dest !== link.getAttribute('href') && dest.charAt(0) !== '#') {
         e.preventDefault();
-        var dest = link.href;
-        var img = new Image();
-        img.src = SHEETS_BEACON_URL +
-          '?ref=' + encodeURIComponent(data.ref) +
-          '&cta=' + encodeURIComponent(data.cta) +
-          '&utm_campaign=' + encodeURIComponent(data.utm_campaign) +
-          '&referrer=' + encodeURIComponent(data.referrer) +
-          '&page=' + encodeURIComponent(data.page) +
-          '&ts=' + encodeURIComponent(data.ts);
-        setTimeout(function() { window.location.href = dest; }, 150);
+        window.location.href = dest;
       }
     });
   });

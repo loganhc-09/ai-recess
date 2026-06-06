@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 """
-AI Recess — Weekly Attribution Report
+AI Recess — GitHub REPO activity report  (NOT website traffic)
 
-Pulls traffic data from the GitHub Pages API (free, built-in)
-and generates a simple report of:
-- Total views and unique visitors (last 14 days)
-- Top referrers (where traffic comes from)
-- Top pages (which pages get viewed)
-- Referring sites breakdown
+⚠️ READ THIS FIRST. This pulls the GitHub *repository* Traffic API, which
+counts views of the repo page on github.com (/pulls, /branches, /forks) —
+i.e. developer activity on the source, NOT visits to the live site at
+joinairecess.com. Treat the numbers here as "is anyone looking at the repo,"
+not as marketing analytics.
+
+>>> Real website traffic lives in Google Analytics 4, property G-8CQ7JES2VT.
+    See it at analytics.google.com, or wire the GA4 Data API for a CLI pull
+    (parallel to ~/Scripts/plausible.py for logancurrie.com).
+
+What this script reports (repo-scoped, last 14 days rolling):
+- Repo page views and unique viewers
+- Top referrers to the repo page
+- Top repo paths viewed
+- Repo clones
 
 Run weekly: python3 analytics/report.py
 Requires: GITHUB_TOKEN env var (or gh CLI auth)
@@ -45,16 +54,17 @@ def run_report():
     REPORT_DIR.mkdir(exist_ok=True)
 
     print("=" * 50)
-    print(f"  AI Recess — Traffic Report")
+    print(f"  AI Recess — GitHub REPO activity (NOT site traffic)")
     print(f"  Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"  Real site traffic: GA4 property G-8CQ7JES2VT")
     print("=" * 50)
 
     # --- Views ---
     views = gh_api("traffic/views")
     if views:
-        print(f"\n📊 Page Views (last 14 days)")
-        print(f"   Total views:    {views.get('count', 0)}")
-        print(f"   Unique visitors: {views.get('uniques', 0)}")
+        print(f"\n📊 Repo page views (last 14 days) — github.com, not the live site")
+        print(f"   Total repo views:    {views.get('count', 0)}")
+        print(f"   Unique repo viewers: {views.get('uniques', 0)}")
 
         if views.get("views"):
             print(f"\n   Daily breakdown:")
