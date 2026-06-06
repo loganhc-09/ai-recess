@@ -11,7 +11,7 @@ $20/month Discord community by three TikTok creators (Logan, Kevin, Vanessa). Me
 - Static HTML/CSS/JS (single-file `index.html`, no build tools)
 - GitHub Pages (auto-deploys from `main`). Push to `main` to deploy.
 - Domain: `joinairecess.com`
-- Analytics: custom tracker in `/analytics/tracker.js`
+- Analytics: custom tracker at `/recess.js` (fires GA4 `join_click` + `referral_landing`, appends `?ref=` to the LaunchPass URL). **Do NOT rename it to anything containing `analytics`, `tracker`, `track`, `stat`, or `pixel`, and do NOT move it under `/analytics/` — ad blockers block those paths by filter list. This happened: `/analytics/tracker.js` was silently blocked for adblock users, logging nothing.**
 - `images/`: Creator photos, TikTok video thumbnails
 - `videos/`: Session teaser clips (served directly from repo)
 - All join CTAs point to LaunchPass: `https://www.launchpass.com/ai-recess/monthly` (set via `JOIN_URL` in the inline `<script>`; JS rewrites every `.join-cta` href on load). Live time is set via `LIVE_SCHEDULE` and fills `[data-live]`.
