@@ -105,13 +105,12 @@ def run_report():
         print(f"\n✅ Appended to {HISTORY_FILE}")
 
     # --- Attribution summary ---
-    print(f"\n🎯 Attribution Links to Use")
-    print(f"   Logan TikTok:    joinairecess.com?ref=logan-tiktok")
-    print(f"   Kevin TikTok:    joinairecess.com?ref=kevin-tiktok")
-    print(f"   V TikTok:        joinairecess.com?ref=v-tiktok")
-    print(f"   Logan Substack:  joinairecess.com?ref=logan-substack")
-    print(f"   Member share:    joinairecess.com?ref=member-[name]")
-    print(f"   Specific video:  joinairecess.com?ref=logan-tiktok&utm_campaign=reading-scout")
+    print(f"\n🎯 Attribution Links to Use (subtle ref codes)")
+    print(f"   Logan:           joinairecess.com?ref=l")
+    print(f"   Kevin:           joinairecess.com?ref=k")
+    print(f"   V (Vanessa):     joinairecess.com?ref=v")
+    print(f"   Specific video:  joinairecess.com?ref=l&utm_campaign=reading-scout")
+    print(f"   (tracker.js reads any ?ref= value -> GA4 + LaunchPass)")
 
     print(f"\n{'=' * 50}")
     print(f"  Next: cross-reference with Skool payment emails")

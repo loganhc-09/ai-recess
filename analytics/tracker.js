@@ -44,6 +44,21 @@
     return stored[key] || attribution[key] || '';
   }
 
+  // Surface the referrer code into GA4 on landing so EVERY session is
+  // attributable (not just CTA clickers). This is what lets you segment
+  // traffic, engagement, and bounce by creator (?ref=l / ?ref=k / ?ref=v).
+  var refCode = attr('ref') || attr('utm_source');
+  if (refCode && typeof window.gtag === 'function') {
+    try {
+      window.gtag('set', 'user_properties', { ref_code: refCode });
+      window.gtag('event', 'referral_landing', {
+        ref: refCode,
+        landing_page: attribution.landing,
+        page_referrer: attr('referrer')
+      });
+    } catch (e) {}
+  }
+
   // Append attribution params to an outbound http(s) join URL so the
   // destination (LaunchPass / Stripe) carries it too. Leaves #anchors alone.
   function tagJoinUrl(href, ctaLocation) {
