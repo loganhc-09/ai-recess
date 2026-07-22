@@ -3,3 +3,6 @@
 .code-review-graph/
 .herenow/
 .DS_Store
+
+# recap pipeline: raw member message exports must NEVER be committed (public repo)
+tools/recap/exports/
