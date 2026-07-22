@@ -466,6 +466,17 @@
 
     .anti-pitch { padding-top: 3rem; }
 
+    /* weekly recess report strip (list auto-updated by tools/recap/render.mjs) */
+    .report-strip { max-width: 760px; }
+    .report-strip .section-title em { color: var(--blue); font-style: italic; }
+    .rs-kick { font-family: var(--font-hand); font-size: 1.4rem; color: var(--yellow); }
+    .rs-list { list-style: none; margin: 1.25rem 0 1.5rem; }
+    .rs-list li { display: flex; gap: 0.7rem; align-items: baseline; padding: 0.65rem 0; border-bottom: 1px dashed rgba(240,235,227,0.15); color: var(--chalk-dim); }
+    .rs-list li::before { content: "→"; color: var(--blue); font-weight: 600; }
+    .rs-links { display: flex; gap: 1.1rem; align-items: center; flex-wrap: wrap; }
+    .rs-all { color: var(--chalk-dim); font-size: 0.92rem; }
+    .rs-all:hover { color: var(--chalk); }
+
     .strikethrough-stack { margin-bottom: 2.5rem; }
 
     .strikethrough-stack p {
@@ -1152,6 +1163,7 @@
         <a href="#what">What you get</a>
         <a href="#who">Meet the three</a>
         <a href="#goody-bag">Goody bags</a>
+        <a href="/recess-report/">This week</a>
         <a href="#join" class="nav-cta join-cta" data-cta="nav">I'm in</a>
       </div>
     </nav>
@@ -1365,6 +1377,25 @@
         </figure>
       </div>
 
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- WEEKLY RECESS REPORT STRIP -->
+    <section class="report-strip" id="recess-report">
+      <p class="rs-kick">fresh off the blacktop</p>
+      <h2 class="section-title fade-in">Last week at <em>recess</em></h2>
+      <!-- RECESS-REPORT:START auto-updated by tools/recap/render.mjs, do not edit by hand -->
+      <ul class="rs-list">
+        <li>One member duct-taped a phone, a Mac mini, and Claude Code into a hands-free ADHD coach that runs while he drives</li>
+        <li>The 'models are getting nerfed' debate boiled over, and Kevin is now threatening to block people</li>
+        <li>A member built a Claude module that teaches financial advisors therapist-grade listening, and people want in</li>
+      </ul>
+      <p class="rs-links">
+        <a href="/recess-report/2026-07-19/" class="cta-btn-sm">Read the recap</a>
+        <a href="/recess-report/" class="rs-all">every issue →</a>
+      </p>
+      <!-- RECESS-REPORT:END -->
     </section>
 
     <div class="divider"></div>
