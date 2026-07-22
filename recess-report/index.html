@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8CQ7JES2VT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8CQ7JES2VT');
+  </script>
+  <title>The Recess Report: Weekly AI Recess Recaps</title>
+  <meta name="description" content="The Recess Report is the weekly public recap of what the AI Recess Discord community discussed: AI tools, builds, debates, and the goody bag. New issue every week.">
+  <link rel="canonical" href="https://joinairecess.com/recess-report/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta property="og:title" content="The Recess Report: Weekly AI Recess Recaps">
+  <meta property="og:description" content="What the AI Recess Discord talked about each week: tools, builds, debates, and the goody bag.">
+  <meta property="og:image" content="https://joinairecess.com/og-image.png">
+  <meta property="og:url" content="https://joinairecess.com/recess-report/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AI Recess">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Recess Report: Weekly AI Recess Recaps">
+  <meta name="twitter:description" content="What the AI Recess Discord talked about each week: tools, builds, debates, and the goody bag.">
+  <meta name="twitter:image" content="https://joinairecess.com/og-image.png">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"CollectionPage","name":"The Recess Report","description":"Weekly public recaps of the AI Recess Discord community.","url":"https://joinairecess.com/recess-report/","publisher":{"@type":"Organization","name":"AI Recess","url":"https://joinairecess.com"}}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#1c1e21; --surface:#2a2d32; --chalk:#f0ebe3; --chalk-dim:#d8d2c9; --accent:#e8734a; --accent-glow:#f4945f; --yellow:#f2d06b; --green:#7ec88b; --font-display:'Instrument Serif',Georgia,serif; --font-body:'DM Sans',-apple-system,sans-serif; --font-hand:'Caveat',cursive; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--chalk); font-family:var(--font-body); line-height:1.6; -webkit-font-smoothing:antialiased; }
+    .nav { display:flex; justify-content:space-between; align-items:center; max-width:1040px; margin:0 auto; padding:1.25rem 1.5rem; position:relative; }
+    .nav-logo { font-family:var(--font-display); font-size:1.4rem; color:var(--chalk); text-decoration:none; }
+    .nav-logo em { color:var(--accent); font-style:italic; }
+    .nav-links { display:flex; gap:1.5rem; align-items:center; list-style:none; }
+    .nav-links a { color:var(--chalk-dim); text-decoration:none; font-size:0.95rem; }
+    .nav-links a:hover { color:var(--chalk); }
+    .nav-cta { background:var(--accent); color:#fff !important; padding:0.45rem 1.1rem; border-radius:999px; font-weight:600; }
+    .nav-toggle { display:none; background:none; border:none; cursor:pointer; flex-direction:column; gap:5px; padding:6px; }
+    .nav-toggle span { width:22px; height:2px; background:var(--chalk); display:block; }
+    @media (max-width:640px) {
+      .nav-toggle { display:flex; }
+      .nav-links { display:none; position:absolute; top:100%; right:1.5rem; background:var(--surface); border-radius:12px; padding:1rem 1.5rem; flex-direction:column; gap:0.9rem; z-index:10; }
+      .nav-links.open { display:flex; }
+    }
+    main { max-width:760px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+    .kicker { font-family:var(--font-hand); font-size:1.5rem; color:var(--yellow); }
+    h1 { font-family:var(--font-display); font-size:clamp(2.1rem,6vw,3.2rem); line-height:1.1; margin:0.3rem 0 1rem; }
+    h1 em { color:var(--accent); font-style:italic; }
+    .lede { color:var(--chalk-dim); max-width:620px; margin-bottom:2.5rem; }
+    .issue { display:block; background:var(--surface); border-radius:14px; padding:1.25rem 1.4rem; margin-bottom:1rem; text-decoration:none; transition:transform 0.15s; }
+    .issue:hover { transform:translateY(-2px); }
+    .issue .no { font-family:var(--font-hand); color:var(--green); font-size:1.25rem; }
+    .issue h2 { font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--chalk); margin:0.15rem 0; }
+    .issue p { color:var(--chalk-dim); font-size:0.92rem; }
+    .cta-btn { display:inline-block; background:var(--accent); color:#fff; text-decoration:none; font-weight:600; padding:0.85rem 2rem; border-radius:999px; font-size:1.05rem; margin-top:2rem; }
+    .cta-btn:hover { background:var(--accent-glow); }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-logo" href="/">AI <em>Recess</em></a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="#join" class="nav-cta join-cta">I'm in</a></li>
+    </ul>
+  </nav>
+  <main>
+    <p class="kicker">the recess report</p>
+    <h1>What we talk about at <em>AI Recess</em></h1>
+    <p class="lede">Every week the AI Recess Discord compares notes on AI tools, builds, and debates, and drops a goody bag of resources. This is the public recap. The full version lives in the Discord.</p>
+    <a class="issue" href="/recess-report/2026-07-19/">
+      <span class="no">#1</span>
+      <h2>A hands-free ADHD coach built from a phone and a Mac mini, the model-nerfing debate, and a therapist-grade listening trainer for financial advisors</h2>
+      <p>July 12 to July 19, 2026 · 104 messages · 23 links shared</p>
+    </a>
+    <a class="cta-btn join-cta" href="#join" id="join">I'm in</a>
+  </main>
+  <script src="/recess.js"></script>
+  <script>
+    var JOIN_URL = "https://www.launchpass.com/ai-recess/monthly";
+    document.querySelectorAll('.join-cta').forEach(function (a) { a.setAttribute('href', JOIN_URL); });
+    var t = document.getElementById('nav-toggle'), l = document.getElementById('nav-links');
+    t.addEventListener('click', function () { l.classList.toggle('open'); t.setAttribute('aria-expanded', l.classList.contains('open')); });
+  </script>
+</body>
+</html>
