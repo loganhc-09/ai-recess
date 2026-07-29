@@ -178,10 +178,14 @@ const md = [
   `${r.stats.messages} messages, ${r.stats.activeMembers} of you talking, ${r.stats.linksShared} links dropped. Busiest room: #${busiest}. Here is everything worth keeping from this week.`,
   ``,
   `## The wavetops`,
-  ...r.wavetops.flatMap((w) => [``, `**${w.headline}**`, w.memberDetail]),
+  // public page carries every wavetop; Discord gets only the top 3, ranked by engagement,
+  // because a long dump in #weekly-recap does not get read
+  ...r.wavetops.slice(0, 3).flatMap((w) => [``, `**${w.headline}**`, w.memberDetail]),
   ``,
   `## Goody bag`,
-  ...r.goodyBag.map((g, i) => `${i + 1}. **${g.title}**: ${g.url}${g.note ? `\n   ${g.note}` : ''}`),
+  // title and link only: notes roughly double the bag and push it into a second message.
+  // (note is still used on the public page for the freebie, so the digest keeps writing it)
+  ...r.goodyBag.map((g, i) => `${i + 1}. **${g.title}**: ${g.url}`),
   ``,
   `The public teaser for this week is live at https://joinairecess.com/recess-report/${slug}/. Share it with someone who should be in here.`,
 ].join('\n');
@@ -191,7 +195,11 @@ await mkdir(pageDir, { recursive: true });
 await writeFile(join(pageDir, 'index.html'), html);
 await writeFile(join(dirname(resolve(recapPath)), `member-recap-${slug}.md`), md);
 console.log(`✓ teaser  → recess-report/${slug}/index.html`);
-console.log(`✓ member  → member-recap-${slug}.md`);
+// the skimmable half is everything above the goody bag; the bag posts separately and is
+// allowed to be long, so only the recap itself is held to one message
+const skim = md.split('\n## Goody bag')[0];
+console.log(`✓ member  → member-recap-${slug}.md (recap ${skim.length} chars, goody bag ${md.length - skim.length})`);
+if (skim.length > 1500) console.warn(`⚠ recap section is ${skim.length} chars, over the 1500 budget; cut a wavetop in digest-prompt.md`);
 
 // refresh the homepage "Last week at recess" strip between its markers
 const homePath = join(repo, 'index.html');
