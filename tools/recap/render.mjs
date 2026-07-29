@@ -194,6 +194,33 @@ const pageDir = join(repo, 'recess-report', slug);
 await mkdir(pageDir, { recursive: true });
 await writeFile(join(pageDir, 'index.html'), html);
 await writeFile(join(dirname(resolve(recapPath)), `member-recap-${slug}.md`), md);
+
+// what a visitor actually READS on the public page, minus the markup. The skeptic reviewer
+// gets this instead of the HTML so it reacts to the copy and not to the stylesheet.
+const preview = [
+  `the recess report`,
+  `# This week at AI Recess`,
+  ``,
+  `AI Recess is a $20/month Discord where three AI creators share how they actually use AI. This is what the community talked about from ${label}. Members got all of it. Here are the wavetops.`,
+  ``,
+  `${num(r.stats.messages)} messages | ${num(r.stats.activeMembers)} members talking | ${num(r.stats.linksShared)} links shared | busiest: #${busiest}`,
+  ``,
+  `## What we talked about`,
+  ...r.wavetops.flatMap((w) => [``, `### ${w.headline}`, w.teaser, `The takeaways: [REDACTED, members only]`]),
+  ``,
+  `## The goody bag`,
+  ``,
+  freebie
+    ? `FREE, ON US: ${freebie.title} (${freebie.url})\n${freebie.note}`
+    : `(no free item this week)`,
+  ``,
+  `${locked.length} more ${locked.length === 1 ? 'resource' : 'resources'} listed but redacted. Members already have them.`,
+  ``,
+  `## Want next week's in full?`,
+  `Everything scribbled out above is sitting in the Discord right now. $20 a month, cancel whenever, recess never ends.`,
+].join('\n');
+await writeFile(join(dirname(resolve(recapPath)), `public-preview.md`), preview);
+
 console.log(`✓ teaser  → recess-report/${slug}/index.html`);
 // the skimmable half is everything above the goody bag; the bag posts separately and is
 // allowed to be long, so only the recap itself is held to one message

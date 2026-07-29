@@ -61,17 +61,7 @@ node -e '
 node compact.mjs "$OUT" > "$OUT/transcript.md"
 
 cat digest-prompt.md "$OUT/transcript.md" | claude -p --output-format text > "$OUT/recap.raw"
-START="$START" END="$END" node -e '
-  const { readFileSync } = require("fs");
-  const s = readFileSync(process.argv[1], "utf8");
-  const a = s.indexOf("{"), b = s.lastIndexOf("}");
-  if (a < 0 || b < 0) throw new Error(`No JSON object in recap.raw; inspect ${process.argv[1]}`);
-  const j = JSON.parse(s.slice(a, b + 1));
-  if (!j.stats || !Array.isArray(j.wavetops) || !Array.isArray(j.goodyBag))
-    throw new Error(`recap.raw parsed but is not a recap (missing stats/wavetops/goodyBag); inspect ${process.argv[1]}`);
-  j.week = { ...j.week, start: process.env.START, end: process.env.END };
-  console.log(JSON.stringify(j, null, 2));
-' "$OUT/recap.raw" > "$OUT/recap.json"
+WEEK_START="$START" WEEK_END="$END" node extract-json.mjs "$OUT/recap.raw" stats wavetops goodyBag > "$OUT/recap.json"
 
 # nothing to publish is a real outcome (quiet week, dead bot token); never ship an empty report
 node -e '
@@ -83,6 +73,47 @@ node -e '
 '
 
 node render.mjs "$OUT/recap.json"
+
+# --- review gates: two personas read the draft before anything is published or posted ---
+# Each reads only what it would really see. Neither is told the other exists.
+echo ""
+# One flaky model response should not cost the week's post, so each reviewer gets a second
+# try. If it still will not come back as JSON, we stop: an unread gate is not a passed gate.
+review() {
+  local persona="$1" draft="$2" name="$3" label="$4"
+  for attempt in 1 2; do
+    echo "Review gate: $label (attempt $attempt)"
+    cat "$persona" "$draft" | claude -p --output-format text > "$OUT/$name.raw" || true
+    if node extract-json.mjs "$OUT/$name.raw" verdict > "$OUT/$name.json" 2>/dev/null; then return 0; fi
+    echo "  ⚠ $label did not return usable JSON"
+  done
+  echo "✗ $label failed twice. Refusing to publish past a gate that never ran."
+  return 1
+}
+
+review personas/member-reviewer.md "$OUT/member-recap-$END.md" review-member "the busy member, reading the Discord draft"
+review personas/skeptic-reviewer.md "$OUT/public-preview.md" review-skeptic "the skeptic, reading the public page"
+
+set +e; node review-gate.mjs "$OUT"; GATE=$?; set -e
+case "$GATE" in
+  0) ;;  # both reviewers would ship the draft as written
+  10)
+    cat revise-prompt.md "$OUT/revise-input.md" | claude -p --output-format text > "$OUT/recap.revised.raw"
+    WEEK_START="$START" WEEK_END="$END" node extract-json.mjs "$OUT/recap.revised.raw" stats wavetops goodyBag > "$OUT/recap.revised.json"
+    # a revision that touched links or stats is worse than no revision: keep the draft the
+    # reviewers already cleared rather than halting the whole week over an editing slip
+    if node verify-revision.mjs "$OUT/recap.json" "$OUT/recap.revised.json"; then
+      cp "$OUT/recap.json" "$OUT/recap.predraft.json"
+      mv "$OUT/recap.revised.json" "$OUT/recap.json"
+      node render.mjs "$OUT/recap.json"
+      echo "✓ reviewer feedback applied and re-rendered"
+    else
+      echo "⚠ discarding the revision and shipping the pre-revision draft (see errors above)"
+    fi
+    ;;
+  3) echo "Halted at the review gate. Nothing published, nothing posted."; exit 3 ;;
+  *) echo "Review gate failed unexpectedly (exit $GATE)"; exit 1 ;;
+esac
 
 if [ "$DRY_RUN" = "1" ]; then
   echo ""
