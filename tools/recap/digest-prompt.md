@@ -7,6 +7,7 @@ Read the transcript below and return ONLY valid JSON matching this schema, no pr
 ```json
 {
   "week": { "start": "YYYY-MM-DD", "end": "YYYY-MM-DD" },
+  "archiveHeadline": "One line for the archive list: the 2-3 biggest things this week as noun phrases",
   "stats": { "messages": 0, "activeMembers": 0, "linksShared": 0, "busiestChannel": "" },
   "wavetops": [
     {
@@ -23,6 +24,7 @@ Read the transcript below and return ONLY valid JSON matching this schema, no pr
 
 Rules:
 - 3 to 6 wavetops. Rank by engagement (reactions, reply depth, number of participants), not chronology.
+- archiveHeadline is ONE line under 160 characters, listing the week's 2-3 biggest items as comma-separated noun phrases, not sentences. It is a title, so it does not end in a period. Example: "A hands-free ADHD coach built from a phone and a Mac mini, the model-nerfing debate, and a therapist-grade listening trainer for financial advisors". Same public-facing rules as headline: no member names, no quotes, no links.
 - Headlines must be specific enough to create pull ("We stress-tested three MCP servers and two failed the same way"), never generic ("AI tools discussed").
 - Public-facing fields (headline, teaser) must contain NO member names, NO verbatim member quotes, and NO links. Creator names (Logan, Kevin, V/Vanessa) are allowed.
 - Never frame anyone, creator or member, negatively or as being in conflict. No "threatening," "fighting," "calling out," "blocking people," or drama framing, even when it is accurate to the thread and even when it is funny. Frame debates by what they PRODUCED (the takeaway, the standard the group landed on, the question left open), never by who clashed with whom. The community must always come across as a place you would want to walk into. This applies to every field, member-facing included, and to any email edition later.

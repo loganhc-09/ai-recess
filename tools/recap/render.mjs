@@ -181,9 +181,9 @@ const md = [
   ...r.wavetops.flatMap((w) => [``, `**${w.headline}**`, w.memberDetail]),
   ``,
   `## Goody bag`,
-  ...r.goodyBag.map((g, i) => `${i + 1}. **${g.title}** — ${g.url}${g.note ? `\n   ${g.note}` : ''}`),
+  ...r.goodyBag.map((g, i) => `${i + 1}. **${g.title}**: ${g.url}${g.note ? `\n   ${g.note}` : ''}`),
   ``,
-  `The public teaser for this week is live at https://joinairecess.com/recess-report/${slug}/ — share it with someone who should be in here.`,
+  `The public teaser for this week is live at https://joinairecess.com/recess-report/${slug}/. Share it with someone who should be in here.`,
 ].join('\n');
 
 const pageDir = join(repo, 'recess-report', slug);
@@ -214,4 +214,58 @@ if (a < 0 || b < 0) {
   await writeFile(homePath, home.slice(0, a) + strip + home.slice(b + END.length));
   console.log('✓ homepage strip updated');
 }
-console.log(`Reminder: add /recess-report/${slug}/ to sitemap.xml before pushing.`);
+
+// issues.json is the archive's source of truth: newest first, issue number = position from the end
+const issuesPath = join(repo, 'recess-report', 'issues.json');
+const issues = JSON.parse(await readFile(issuesPath, 'utf8'));
+// the digest writes archiveHeadline as a title-style noun phrase; older recaps predate it
+const headline = String(r.archiveHeadline || r.wavetops[0].headline).replace(/\.$/, '');
+if (headline.length > 200) console.warn(`⚠ archive headline is ${headline.length} chars; expected a title under 160`);
+const entry = {
+  slug,
+  headline,
+  meta: `${label} · ${num(r.stats.messages)} messages · ${num(r.stats.linksShared)} links shared`,
+};
+// rerunning a week replaces that issue in place rather than adding a duplicate
+const existing = issues.findIndex((x) => x.slug === slug);
+if (existing >= 0) issues[existing] = entry;
+else issues.unshift(entry);
+await writeFile(issuesPath, `${JSON.stringify(issues, null, 2)}\n`);
+
+const archivePath = join(repo, 'recess-report', 'index.html');
+const archive = await readFile(archivePath, 'utf8');
+const A_START = '<!-- ISSUES:START auto-updated by tools/recap/render.mjs from issues.json, do not edit by hand -->';
+const A_END = '<!-- ISSUES:END -->';
+const c = archive.indexOf(A_START), d = archive.indexOf(A_END);
+if (c < 0 || d < 0) {
+  console.warn('⚠ archive markers not found; recess-report/index.html NOT updated');
+} else {
+  const list = issues.map((x, i) => `<a class="issue" href="/recess-report/${x.slug}/">
+      <span class="no">#${issues.length - i}</span>
+      <h2>${esc(x.headline)}</h2>
+      <p>${esc(x.meta)}</p>
+    </a>`).join('\n    ');
+  await writeFile(archivePath, `${archive.slice(0, c) + A_START}\n    ${list}\n    ${A_END}${archive.slice(d + A_END.length)}`);
+  console.log('✓ archive index updated');
+}
+
+// sitemap: rewrite every per-issue <url> from issues.json, leave the static entries alone
+const sitemapPath = join(repo, 'sitemap.xml');
+let sitemap = await readFile(sitemapPath, 'utf8');
+sitemap = sitemap.replace(/\s*<url>\s*<loc>https:\/\/joinairecess\.com\/recess-report\/\d{4}-\d{2}-\d{2}\/<\/loc>[\s\S]*?<\/url>/g, '');
+sitemap = sitemap.replace(
+  /(<loc>https:\/\/joinairecess\.com\/recess-report\/<\/loc>\s*<lastmod>)[^<]*/,
+  `$1${slug}`,
+);
+const urls = issues.map((x) => `  <url>
+    <loc>https://joinairecess.com/recess-report/${x.slug}/</loc>
+    <lastmod>${x.slug}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('\n');
+if (!sitemap.includes('</urlset>')) {
+  console.warn('⚠ sitemap.xml has no </urlset>; NOT updated');
+} else {
+  await writeFile(sitemapPath, sitemap.replace('</urlset>', `${urls}\n</urlset>\n`).replace(/\n{3,}/g, '\n\n'));
+  console.log('✓ sitemap updated');
+}
