@@ -43,6 +43,16 @@ read -r AFTER BEFORE START END <<< "$(node -e '
 OUT="exports/$END"
 echo "Recess Report window: $AFTER → $BEFORE"
 
+# This repo keeps accumulating a stale .git/index.lock with no git process behind it (the
+# code-review-graph pre-commit and PostToolUse hooks are the likely source). Unattended that
+# is fatal: the run dies at `git add` AFTER all four model calls are already spent, so the
+# week is lost and nothing posts. No real git operation holds the index for ten minutes.
+LOCK="../../.git/index.lock"
+if [ -f "$LOCK" ] && [ -z "$(find "$LOCK" -mmin -10 2>/dev/null)" ]; then
+  echo "⚠ removing stale .git/index.lock (untouched for 10+ minutes)"
+  rm -f "$LOCK"
+fi
+
 # three people push to this repo; never build a page on top of a stale tree
 git -C ../.. pull --rebase --autostash
 
