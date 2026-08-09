@@ -70,7 +70,23 @@ node -e '
 
 node compact.mjs "$OUT" > "$OUT/transcript.md"
 
-cat digest-prompt.md "$OUT/transcript.md" | claude -p --output-format text > "$OUT/recap.raw"
+# Anti-slop is a living spec; read it at run time so the recap always writes against the
+# current rule library instead of the snapshot baked into digest-prompt.md. Missing file
+# degrades to the baked-in rules rather than losing the week.
+ANTISLOP="$HOME/.claude/skills/anti-slop/references/patterns.md"
+if [ ! -f "$ANTISLOP" ]; then
+  echo "⚠ anti-slop patterns not found at $ANTISLOP; digesting with the prompt's baked-in rules only"
+  ANTISLOP=/dev/null
+fi
+
+{
+  cat digest-prompt.md
+  echo
+  echo "## Anti-slop rule library (current spec; applies to every field you write, on top of the style rules above)"
+  cat "$ANTISLOP"
+  echo
+  cat "$OUT/transcript.md"
+} | claude -p --output-format text > "$OUT/recap.raw"
 WEEK_START="$START" WEEK_END="$END" node extract-json.mjs "$OUT/recap.raw" stats wavetops goodyBag > "$OUT/recap.json"
 
 # nothing to publish is a real outcome (quiet week, dead bot token); never ship an empty report
@@ -84,21 +100,23 @@ node -e '
 
 node render.mjs "$OUT/recap.json"
 
-# --- review gates: two personas read the draft before anything is published or posted ---
+# --- review pass: two personas read the draft before anything is published or posted ---
 # Each reads only what it would really see. Neither is told the other exists.
+# ADVISORY since 2026-08-08 (Kevin: post without approval, we edit live now): reviewer
+# notes still drive the revision pass, but nothing a reviewer says or fails to say can
+# stop the post. A reviewer that will not return JSON is logged and skipped.
 echo ""
-# One flaky model response should not cost the week's post, so each reviewer gets a second
-# try. If it still will not come back as JSON, we stop: an unread gate is not a passed gate.
 review() {
   local persona="$1" draft="$2" name="$3" label="$4"
   for attempt in 1 2; do
-    echo "Review gate: $label (attempt $attempt)"
+    echo "Review pass: $label (attempt $attempt)"
     cat "$persona" "$draft" | claude -p --output-format text > "$OUT/$name.raw" || true
     if node extract-json.mjs "$OUT/$name.raw" verdict > "$OUT/$name.json" 2>/dev/null; then return 0; fi
     echo "  ⚠ $label did not return usable JSON"
   done
-  echo "✗ $label failed twice. Refusing to publish past a gate that never ran."
-  return 1
+  echo "⚠ $label failed twice; shipping without this review (advisory mode)"
+  rm -f "$OUT/$name.json"
+  return 0
 }
 
 review personas/member-reviewer.md "$OUT/member-recap-$END.md" review-member "the busy member, reading the Discord draft"
@@ -106,9 +124,16 @@ review personas/skeptic-reviewer.md "$OUT/public-preview.md" review-skeptic "the
 
 set +e; node review-gate.mjs "$OUT"; GATE=$?; set -e
 case "$GATE" in
-  0) ;;  # both reviewers would ship the draft as written
+  0) ;;  # nothing to change (or no usable reviews); ship the draft as rendered
   10)
-    cat revise-prompt.md "$OUT/revise-input.md" | claude -p --output-format text > "$OUT/recap.revised.raw"
+    {
+      cat revise-prompt.md
+      echo
+      echo "## Anti-slop rule library (current spec; the revision must also honor these)"
+      cat "$ANTISLOP"
+      echo
+      cat "$OUT/revise-input.md"
+    } | claude -p --output-format text > "$OUT/recap.revised.raw"
     WEEK_START="$START" WEEK_END="$END" node extract-json.mjs "$OUT/recap.revised.raw" stats wavetops goodyBag > "$OUT/recap.revised.json"
     # a revision that touched links or stats is worse than no revision: keep the draft the
     # reviewers already cleared rather than halting the whole week over an editing slip
@@ -121,8 +146,7 @@ case "$GATE" in
       echo "⚠ discarding the revision and shipping the pre-revision draft (see errors above)"
     fi
     ;;
-  3) echo "Halted at the review gate. Nothing published, nothing posted."; exit 3 ;;
-  *) echo "Review gate failed unexpectedly (exit $GATE)"; exit 1 ;;
+  *) echo "⚠ review pass failed unexpectedly (exit $GATE); shipping the draft unreviewed (advisory mode)" ;;
 esac
 
 if [ "$DRY_RUN" = "1" ]; then
