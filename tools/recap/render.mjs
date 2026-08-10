@@ -186,8 +186,6 @@ const md = [
   // title and link only: notes roughly double the bag and push it into a second message.
   // (note is still used on the public page for the freebie, so the digest keeps writing it)
   ...r.goodyBag.map((g, i) => `${i + 1}. **${g.title}**: ${g.url}`),
-  ``,
-  `The public teaser for this week is live at https://joinairecess.com/recess-report/${slug}/. Share it with someone who should be in here.`,
 ].join('\n');
 
 const pageDir = join(repo, 'recess-report', slug);
