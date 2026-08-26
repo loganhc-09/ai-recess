@@ -13,7 +13,7 @@ Read the transcript below and return ONLY valid JSON matching this schema, no pr
     {
       "headline": "Specific, curiosity-gap headline for the public page",
       "teaser": "1-2 sentences that say WHAT was discussed without giving away the useful part.",
-      "memberDetail": "AT MOST 2 sentences, 45 words: the takeaway a member can act on, not a retelling of the thread."
+      "memberDetail": "AT MOST 2 sentences, 45 words: the takeaway a member can act on, not a retelling of the thread. NAME the tool or thing it is about."
     }
   ],
   "goodyBag": [
@@ -30,6 +30,7 @@ Rules:
 - Public-facing fields (headline, teaser) must contain NO member names, NO verbatim member quotes, and NO links. Creator names (Logan, Kevin, V/Vanessa) are allowed.
 - Never frame anyone, creator or member, negatively or as being in conflict. No "threatening," "fighting," "calling out," "blocking people," or drama framing, even when it is accurate to the thread and even when it is funny. Frame debates by what they PRODUCED (the takeaway, the standard the group landed on, the question left open), never by who clashed with whom. The community must always come across as a place you would want to walk into. This applies to every field, member-facing included, and to any email edition later.
 - memberDetail and goodyBag are member-only fields: names and specifics are allowed there. Do NOT produce win lists or quote-of-the-week callouts that single out individual members. Keep links OUT of memberDetail; every link belongs in the goody bag instead, so the same URL never appears twice.
+- memberDetail must NAME the specific subject the wavetop is about: the tool, product, model, or resource at the center of the thread. A member reading the headline and memberDetail alone must know what to go look up, without reopening Discord. "One message triggered fourteen agent replies and burned real tokens" FAILS this, because it never says the tool was Buzz. "Buzz fans agents out fast, so one message triggered fourteen replies and burned real tokens" passes. The public headline stays curiosity-gapped, so memberDetail is usually the only place the name appears. If a thread genuinely has no named subject, name the concrete situation instead of abstracting it.
 - goodyBag: every distinct useful link shared this week, newest thinking first. The goody bag is the paid promise, so do not trim it for length. Mark exactly ONE as "freebie": true, picking the one that best proves the community's value to outsiders.
 - goodyBag "title" says what the link IS, in words someone can decide to tap on. Never just a handle, a username, or "X thread": "Zara Zhang Rui thread" gives a member no reason to click, where "The agent benchmark thread everyone argued about" does. You have the transcript and the surrounding messages, so use what the link was actually about. If you genuinely cannot tell, leave it out of the bag rather than padding the list.
 - goodyBag "note" is AT MOST 10 words and earns its place by saying why the link is worth opening. If you cannot beat the title in 10 words, return an empty note.
